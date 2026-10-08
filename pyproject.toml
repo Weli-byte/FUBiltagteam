@@ -20,6 +20,7 @@ dev = [
     "pre-commit>=3.7",
     "types-PyYAML",
     "openapi-spec-validator>=0.7",
+    "types-requests",
 ]
 
 train = [
@@ -30,6 +31,9 @@ train = [
 ]
 data = [
     "dvc>=3.50",
+    "requests>=2.31",
+    "pandas>=2.1",
+    "pyarrow>=15.0",
 ]
 
 [build-system]
@@ -56,7 +60,7 @@ strict = true
 files = ["onkos", "models", "services", "scripts", "tests"]
 
 [[tool.mypy.overrides]]
-module = ["torch.*", "mlflow.*", "numpy.*", "h5py.*", "openapi_spec_validator.*"]
+module = ["torch.*", "mlflow.*", "numpy.*", "h5py.*", "openapi_spec_validator.*", "pandas.*", "pyarrow.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
