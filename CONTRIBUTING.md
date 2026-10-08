@@ -26,7 +26,8 @@ Bir modül başka bir modülün iç koduna **doğrudan bağımlı olamaz**. Konu
 
 ## Sözleşme (contract) değişikliği
 `onkos/contracts` değişiklikleri yalnızca PR ile ve ilgili modül sahibinin onayıyla yapılır;
-`SCHEMA_VERSION` artırılır.
+`SCHEMA_VERSION` artırılır ve `uv run python scripts/export_contracts.py` çıktısı commit edilir.
+Ayrıntılı süreç: [docs/veri_sozlesmesi.md](docs/veri_sozlesmesi.md).
 
 ## Veri ve model dosyaları
 Ham/işlenmiş veri ve model ağırlıkları git'e girmez (DVC). Hasta düzeyinde kişisel veri paylaşılmaz;

@@ -51,6 +51,8 @@ uv run pre-commit install     # commit öncesi kontroller
 uv run pytest                 # kurulum doğrulaması
 ```
 
+Modüller arası veri sözleşmesi ve değişiklik süreci: [docs/veri_sozlesmesi.md](docs/veri_sozlesmesi.md).
+
 Eğitim araçları (torch, MLflow, DVC) ve Docker/Colab/AWS kurulumu: [docs/ortam_kurulumu.md](docs/ortam_kurulumu.md).
 
 Kalite kontrolleri: `uv run ruff check . && uv run black --check . && uv run mypy && uv run pytest`

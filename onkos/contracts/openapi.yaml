@@ -1,0 +1,1124 @@
+openapi: 3.1.0
+info:
+  title: ONKOS API
+  version: 0.1.0
+  description: Araştırma prototipi çıktısıdır; klinik tanı veya tedavi kararı için kullanılamaz ve 'kesin
+    tanı' ya da 'reçete' değildir. Bu belge onkos/contracts/schemas.py'den üretilir; elle düzenlemeyin
+    (scripts/export_contracts.py).
+paths:
+  /health:
+    get:
+      operationId: health
+      summary: Servis sağlık kontrolü
+      responses:
+        '200':
+          description: Servis ayakta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+  /predict/mutation:
+    post:
+      operationId: predictMutation
+      summary: Gen mutasyon olasılıklarını tahmin et
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MutationPredictionRequest'
+      responses:
+        '200':
+          description: Başarılı
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MutationPrediction'
+        '400':
+          description: Geçersiz istek
+          content: &id001
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Kaynak bulunamadı
+          content: *id001
+        '422':
+          description: Doğrulama hatası
+          content: *id001
+        '429':
+          description: Çok fazla istek
+          content: *id001
+        '500':
+          description: Sunucu hatası
+          content: *id001
+        '503':
+          description: Model kullanılamıyor
+          content: *id001
+  /recommend/drugs:
+    post:
+      operationId: recommendDrugs
+      summary: Mutasyon profiline göre ilaç sırala
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DrugRecommendationRequest'
+      responses:
+        '200':
+          description: Başarılı
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DrugRecommendation'
+        '400':
+          description: Geçersiz istek
+          content: *id001
+        '404':
+          description: Kaynak bulunamadı
+          content: *id001
+        '422':
+          description: Doğrulama hatası
+          content: *id001
+        '429':
+          description: Çok fazla istek
+          content: *id001
+        '500':
+          description: Sunucu hatası
+          content: *id001
+        '503':
+          description: Model kullanılamıyor
+          content: *id001
+  /report:
+    post:
+      operationId: generateReport
+      summary: Doktor raporu üret
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportRequest'
+      responses:
+        '200':
+          description: Başarılı
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+        '400':
+          description: Geçersiz istek
+          content: *id001
+        '404':
+          description: Kaynak bulunamadı
+          content: *id001
+        '422':
+          description: Doğrulama hatası
+          content: *id001
+        '429':
+          description: Çok fazla istek
+          content: *id001
+        '500':
+          description: Sunucu hatası
+          content: *id001
+        '503':
+          description: Model kullanılamıyor
+          content: *id001
+  /simulate:
+    post:
+      operationId: simulateTreatment
+      summary: Kavramsal tedavi simülasyonu
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimulationRequest'
+      responses:
+        '200':
+          description: Başarılı
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimulationResponse'
+        '400':
+          description: Geçersiz istek
+          content: *id001
+        '404':
+          description: Kaynak bulunamadı
+          content: *id001
+        '422':
+          description: Doğrulama hatası
+          content: *id001
+        '429':
+          description: Çok fazla istek
+          content: *id001
+        '500':
+          description: Sunucu hatası
+          content: *id001
+        '503':
+          description: Model kullanılamıyor
+          content: *id001
+  /explain:
+    post:
+      operationId: explainSlide
+      summary: Isı haritası ile açıkla
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExplainRequest'
+      responses:
+        '200':
+          description: Başarılı
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExplainResponse'
+        '400':
+          description: Geçersiz istek
+          content: *id001
+        '404':
+          description: Kaynak bulunamadı
+          content: *id001
+        '422':
+          description: Doğrulama hatası
+          content: *id001
+        '429':
+          description: Çok fazla istek
+          content: *id001
+        '500':
+          description: Sunucu hatası
+          content: *id001
+        '503':
+          description: Model kullanılamıyor
+          content: *id001
+components:
+  schemas:
+    Citation:
+      additionalProperties: false
+      properties:
+        pmid:
+          anyOf:
+          - pattern: ^\d{1,9}$
+            type: string
+          - type: 'null'
+          default: null
+          description: PubMed kimliği.
+          title: Pmid
+        title:
+          description: Kaynak başlığı.
+          minLength: 1
+          title: Title
+          type: string
+        year:
+          anyOf:
+          - maximum: 2100
+            minimum: 1900
+            type: integer
+          - type: 'null'
+          default: null
+          description: Yayın yılı.
+          title: Year
+      required:
+      - title
+      title: Citation
+      type: object
+    ConfidenceInterval:
+      additionalProperties: false
+      properties:
+        lower:
+          description: Güven aralığı alt sınırı (olasılık, 0-1).
+          maximum: 1.0
+          minimum: 0.0
+          title: Lower
+          type: number
+        upper:
+          description: Güven aralığı üst sınırı (olasılık, 0-1).
+          maximum: 1.0
+          minimum: 0.0
+          title: Upper
+          type: number
+        level:
+          default: 0.95
+          description: Aralığın güven düzeyi (örn. 0.95).
+          exclusiveMaximum: 1.0
+          exclusiveMinimum: 0.0
+          title: Level
+          type: number
+      required:
+      - lower
+      - upper
+      title: ConfidenceInterval
+      type: object
+    DrugCandidate:
+      additionalProperties: false
+      properties:
+        rank:
+          description: Sıra (1 = en uyumlu).
+          minimum: 1
+          title: Rank
+          type: integer
+        drug_name:
+          description: İlaç adı (etken madde).
+          minLength: 1
+          title: Drug Name
+          type: string
+        drugbank_id:
+          anyOf:
+          - pattern: ^DB\d{5}$
+            type: string
+          - type: 'null'
+          default: null
+          description: DrugBank kimliği (örn. DB00530).
+          title: Drugbank Id
+        compatibility_score:
+          description: Mutasyon profili ile uyum skoru (0-1); göreli sıralama içindir, klinik etki olasılığı
+            DEĞİLDİR.
+          maximum: 1.0
+          minimum: 0.0
+          title: Compatibility Score
+          type: number
+        target_proteins:
+          description: Hedef proteinler.
+          items:
+            type: string
+          title: Target Proteins
+          type: array
+        rationale:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Kısa gerekçe metni (varsa).
+          title: Rationale
+      required:
+      - rank
+      - drug_name
+      - compatibility_score
+      title: DrugCandidate
+      type: object
+    DrugRecommendation:
+      additionalProperties: false
+      properties:
+        schema_version:
+          default: 0.1.0
+          description: Sözleşme sürümü (MAJOR.MINOR.PATCH). MAJOR uyuşmazsa mesaj reddedilir.
+          pattern: ^\d+\.\d+\.\d+$
+          title: Schema Version
+          type: string
+        research_use_only:
+          const: true
+          default: true
+          description: 'Her zaman true: çıktı yalnızca araştırma amaçlıdır.'
+          title: Research Use Only
+          type: boolean
+        disclaimer:
+          default: Araştırma prototipi çıktısıdır; klinik tanı veya tedavi kararı için kullanılamaz ve
+            'kesin tanı' ya da 'reçete' değildir.
+          description: Kullanıcıya gösterilecek uyarı metni.
+          title: Disclaimer
+          type: string
+        slide_id:
+          description: 'Anonim slayt anahtarı (4-64 karakter: harf, rakam, _ ve -). Hasta kimliği veya
+            TCGA barkodu OLAMAZ.'
+          pattern: ^[A-Za-z0-9_-]{4,64}$
+          title: Slide Id
+          type: string
+        candidates:
+          description: Uyum skoruna göre azalan sırada ilaç adayları.
+          items:
+            $ref: '#/components/schemas/DrugCandidate'
+          minItems: 1
+          title: Candidates
+          type: array
+        model_version:
+          description: GNN modelinin sürümü.
+          minLength: 1
+          title: Model Version
+          type: string
+        knowledge_base_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Kullanılan ilaç veritabanı sürümü (örn. DrugBank sürümü).
+          title: Knowledge Base Version
+      required:
+      - slide_id
+      - candidates
+      - model_version
+      title: DrugRecommendation
+      type: object
+    DrugRecommendationRequest:
+      additionalProperties: false
+      properties:
+        schema_version:
+          default: 0.1.0
+          description: Sözleşme sürümü (MAJOR.MINOR.PATCH). MAJOR uyuşmazsa mesaj reddedilir.
+          pattern: ^\d+\.\d+\.\d+$
+          title: Schema Version
+          type: string
+        slide_id:
+          description: 'Anonim slayt anahtarı (4-64 karakter: harf, rakam, _ ve -). Hasta kimliği veya
+            TCGA barkodu OLAMAZ.'
+          pattern: ^[A-Za-z0-9_-]{4,64}$
+          title: Slide Id
+          type: string
+        mutations:
+          description: Mutasyon profili (Modül 2 çıktısındaki skorlar).
+          items:
+            $ref: '#/components/schemas/GeneMutationScore'
+          minItems: 1
+          title: Mutations
+          type: array
+        top_k:
+          default: 5
+          description: İstenen en fazla ilaç sayısı (1-20).
+          maximum: 20
+          minimum: 1
+          title: Top K
+          type: integer
+      required:
+      - slide_id
+      - mutations
+      title: DrugRecommendationRequest
+      type: object
+    ErrorCode:
+      description: Machine-readable error codes returned in :class:`ProblemDetails`.
+      enum:
+      - validation_error
+      - slide_not_found
+      - features_incompatible
+      - calibration_missing
+      - model_unavailable
+      - rate_limited
+      - internal_error
+      title: ErrorCode
+      type: string
+    ExplainMethod:
+      enum:
+      - gradcam
+      - attention
+      title: ExplainMethod
+      type: string
+    ExplainRequest:
+      additionalProperties: false
+      properties:
+        schema_version:
+          default: 0.1.0
+          description: Sözleşme sürümü (MAJOR.MINOR.PATCH). MAJOR uyuşmazsa mesaj reddedilir.
+          pattern: ^\d+\.\d+\.\d+$
+          title: Schema Version
+          type: string
+        slide_id:
+          description: 'Anonim slayt anahtarı (4-64 karakter: harf, rakam, _ ve -). Hasta kimliği veya
+            TCGA barkodu OLAMAZ.'
+          pattern: ^[A-Za-z0-9_-]{4,64}$
+          title: Slide Id
+          type: string
+        method:
+          $ref: '#/components/schemas/ExplainMethod'
+          description: Açıklama yöntemi.
+        target_gene:
+          anyOf:
+          - $ref: '#/components/schemas/Gene'
+          - type: 'null'
+          default: null
+          description: Açıklanacak gen (varsa).
+      required:
+      - slide_id
+      - method
+      title: ExplainRequest
+      type: object
+    ExplainResponse:
+      additionalProperties: false
+      properties:
+        schema_version:
+          default: 0.1.0
+          description: Sözleşme sürümü (MAJOR.MINOR.PATCH). MAJOR uyuşmazsa mesaj reddedilir.
+          pattern: ^\d+\.\d+\.\d+$
+          title: Schema Version
+          type: string
+        research_use_only:
+          const: true
+          default: true
+          description: 'Her zaman true: çıktı yalnızca araştırma amaçlıdır.'
+          title: Research Use Only
+          type: boolean
+        disclaimer:
+          default: Araştırma prototipi çıktısıdır; klinik tanı veya tedavi kararı için kullanılamaz ve
+            'kesin tanı' ya da 'reçete' değildir.
+          description: Kullanıcıya gösterilecek uyarı metni.
+          title: Disclaimer
+          type: string
+        slide_id:
+          description: 'Anonim slayt anahtarı (4-64 karakter: harf, rakam, _ ve -). Hasta kimliği veya
+            TCGA barkodu OLAMAZ.'
+          pattern: ^[A-Za-z0-9_-]{4,64}$
+          title: Slide Id
+          type: string
+        slide_width:
+          description: Slayt genişliği (seviye-0 piksel).
+          exclusiveMinimum: 0
+          title: Slide Width
+          type: integer
+        slide_height:
+          description: Slayt yüksekliği (seviye-0 piksel).
+          exclusiveMinimum: 0
+          title: Slide Height
+          type: integer
+        tile_size:
+          description: Isı haritası döşeme boyutu (piksel).
+          exclusiveMinimum: 0
+          title: Tile Size
+          type: integer
+        layers:
+          description: Isı haritası katmanları.
+          items:
+            $ref: '#/components/schemas/HeatmapLayer'
+          minItems: 1
+          title: Layers
+          type: array
+        regions:
+          description: Vurgulanan bölgeler.
+          items:
+            $ref: '#/components/schemas/Region'
+          title: Regions
+          type: array
+        summary_text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Kısa açıklama metni (varsa).
+          title: Summary Text
+      required:
+      - slide_id
+      - slide_width
+      - slide_height
+      - tile_size
+      - layers
+      title: ExplainResponse
+      type: object
+    FieldError:
+      additionalProperties: false
+      properties:
+        loc:
+          description: Hatalı alanın yolu.
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          title: Loc
+          type: array
+        msg:
+          description: Hata açıklaması.
+          title: Msg
+          type: string
+        type:
+          description: Hata türü.
+          title: Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: FieldError
+      type: object
+    FusionAttention:
+      additionalProperties: false
+      properties:
+        image_weight:
+          description: Görüntü modalitesinin füzyon ağırlığı (0-1).
+          maximum: 1.0
+          minimum: 0.0
+          title: Image Weight
+          type: number
+        omics_weight:
+          description: Omics modalitesinin füzyon ağırlığı (0-1).
+          maximum: 1.0
+          minimum: 0.0
+          title: Omics Weight
+          type: number
+        top_patches:
+          description: En yüksek dikkatli patch'ler (<= 50).
+          items:
+            $ref: '#/components/schemas/PatchAttention'
+          maxItems: 50
+          title: Top Patches
+          type: array
+      required:
+      - image_weight
+      - omics_weight
+      title: FusionAttention
+      type: object
+    Gene:
+      description: Genes with a mutation-prediction head (extend here when a new gene is added).
+      enum:
+      - TP53
+      - KRAS
+      - EGFR
+      - BRCA1
+      title: Gene
+      type: string
+    GeneMutationScore:
+      additionalProperties: false
+      properties:
+        gene:
+          $ref: '#/components/schemas/Gene'
+          description: Hedef gen.
+        probability:
+          description: Kalibre edilmiş mutasyon olasılığı (0-1).
+          maximum: 1.0
+          minimum: 0.0
+          title: Probability
+          type: number
+        uncertainty:
+          description: 'Belirsizlik: tahminin standart sapması (olasılık biriminde, >= 0).'
+          minimum: 0.0
+          title: Uncertainty
+          type: number
+        ci:
+          $ref: '#/components/schemas/ConfidenceInterval'
+          description: Olasılık için güven aralığı.
+      required:
+      - gene
+      - probability
+      - uncertainty
+      - ci
+      title: GeneMutationScore
+      type: object
+    HealthResponse:
+      additionalProperties: false
+      properties:
+        schema_version:
+          default: 0.1.0
+          description: Sözleşme sürümü (MAJOR.MINOR.PATCH). MAJOR uyuşmazsa mesaj reddedilir.
+          pattern: ^\d+\.\d+\.\d+$
+          title: Schema Version
+          type: string
+        status:
+          const: ok
+          default: ok
+          title: Status
+          type: string
+      title: HealthResponse
+      type: object
+    HeatmapLayer:
+      additionalProperties: false
+      properties:
+        name:
+          description: Katman adı (arayüzde gösterilir).
+          minLength: 1
+          title: Name
+          type: string
+        method:
+          $ref: '#/components/schemas/ExplainMethod'
+        uri:
+          description: Isı haritası görüntüsü/dizisi konumu.
+          minLength: 1
+          title: Uri
+          type: string
+        width:
+          description: Katman genişliği (piksel).
+          exclusiveMinimum: 0
+          title: Width
+          type: integer
+        height:
+          description: Katman yüksekliği (piksel).
+          exclusiveMinimum: 0
+          title: Height
+          type: integer
+        value_min:
+          default: 0.0
+          description: Renk skalasının alt değeri.
+          title: Value Min
+          type: number
+        value_max:
+          default: 1.0
+          description: Renk skalasının üst değeri.
+          title: Value Max
+          type: number
+      required:
+      - name
+      - method
+      - uri
+      - width
+      - height
+      title: HeatmapLayer
+      type: object
+    MutationPrediction:
+      additionalProperties: false
+      properties:
+        schema_version:
+          default: 0.1.0
+          description: Sözleşme sürümü (MAJOR.MINOR.PATCH). MAJOR uyuşmazsa mesaj reddedilir.
+          pattern: ^\d+\.\d+\.\d+$
+          title: Schema Version
+          type: string
+        research_use_only:
+          const: true
+          default: true
+          description: 'Her zaman true: çıktı yalnızca araştırma amaçlıdır.'
+          title: Research Use Only
+          type: boolean
+        disclaimer:
+          default: Araştırma prototipi çıktısıdır; klinik tanı veya tedavi kararı için kullanılamaz ve
+            'kesin tanı' ya da 'reçete' değildir.
+          description: Kullanıcıya gösterilecek uyarı metni.
+          title: Disclaimer
+          type: string
+        slide_id:
+          description: 'Anonim slayt anahtarı (4-64 karakter: harf, rakam, _ ve -). Hasta kimliği veya
+            TCGA barkodu OLAMAZ.'
+          pattern: ^[A-Za-z0-9_-]{4,64}$
+          title: Slide Id
+          type: string
+        predictions:
+          description: Gen başına mutasyon skorları (her gen en fazla bir kez).
+          items:
+            $ref: '#/components/schemas/GeneMutationScore'
+          minItems: 1
+          title: Predictions
+          type: array
+        calibration_version:
+          description: Kalibrasyon modülünün sürümü (örn. 'isotonic-2026-01').
+          minLength: 1
+          title: Calibration Version
+          type: string
+        model_version:
+          description: Mutasyon modelinin sürümü.
+          minLength: 1
+          title: Model Version
+          type: string
+        fusion_attention:
+          anyOf:
+          - $ref: '#/components/schemas/FusionAttention'
+          - type: 'null'
+          default: null
+          description: Cross-attention füzyon dikkat ağırlıkları (varsa).
+      required:
+      - slide_id
+      - predictions
+      - calibration_version
+      - model_version
+      title: MutationPrediction
+      type: object
+    MutationPredictionRequest:
+      additionalProperties: false
+      properties:
+        schema_version:
+          default: 0.1.0
+          description: Sözleşme sürümü (MAJOR.MINOR.PATCH). MAJOR uyuşmazsa mesaj reddedilir.
+          pattern: ^\d+\.\d+\.\d+$
+          title: Schema Version
+          type: string
+        slide_id:
+          description: 'Anonim slayt anahtarı (4-64 karakter: harf, rakam, _ ve -). Hasta kimliği veya
+            TCGA barkodu OLAMAZ.'
+          pattern: ^[A-Za-z0-9_-]{4,64}$
+          title: Slide Id
+          type: string
+        patch_features_uri:
+          description: Nisa'nın ürettiği patch özellik HDF5 dosyasının konumu (dosya yolu veya URI).
+          minLength: 1
+          title: Patch Features Uri
+          type: string
+        omics_sample_id:
+          anyOf:
+          - description: 'Anonim slayt anahtarı (4-64 karakter: harf, rakam, _ ve -). Hasta kimliği veya
+              TCGA barkodu OLAMAZ.'
+            pattern: ^[A-Za-z0-9_-]{4,64}$
+            type: string
+          - type: 'null'
+          default: null
+          description: Varsa omics örneğinin anonim anahtarı; yoksa yalnızca görüntü.
+          title: Omics Sample Id
+        genes:
+          description: 'Tahmin istenen genler (varsayılan: hepsi).'
+          items:
+            $ref: '#/components/schemas/Gene'
+          minItems: 1
+          title: Genes
+          type: array
+      required:
+      - slide_id
+      - patch_features_uri
+      title: MutationPredictionRequest
+      type: object
+    PatchAttention:
+      additionalProperties: false
+      properties:
+        x:
+          description: Patch sol-üst köşesi, seviye-0 piksel X koordinatı.
+          minimum: 0
+          title: X
+          type: integer
+        y:
+          description: Patch sol-üst köşesi, seviye-0 piksel Y koordinatı.
+          minimum: 0
+          title: Y
+          type: integer
+        weight:
+          description: Patch'e verilen normalize dikkat ağırlığı (0-1).
+          maximum: 1.0
+          minimum: 0.0
+          title: Weight
+          type: number
+      required:
+      - x
+      - y
+      - weight
+      title: PatchAttention
+      type: object
+    PatchRef:
+      additionalProperties: false
+      properties:
+        x:
+          description: Patch sol-üst köşesi, seviye-0 piksel X koordinatı.
+          minimum: 0
+          title: X
+          type: integer
+        y:
+          description: Patch sol-üst köşesi, seviye-0 piksel Y koordinatı.
+          minimum: 0
+          title: Y
+          type: integer
+      required:
+      - x
+      - y
+      title: PatchRef
+      type: object
+    ProblemDetails:
+      additionalProperties: false
+      description: Error body (RFC 7807 style), served as ``application/problem+json``.
+      properties:
+        type:
+          default: about:blank
+          description: Hata türünü tanımlayan URI.
+          title: Type
+          type: string
+        title:
+          description: Kısa, insan okuyabilir başlık.
+          minLength: 1
+          title: Title
+          type: string
+        status:
+          description: HTTP durum kodu.
+          maximum: 599
+          minimum: 100
+          title: Status
+          type: integer
+        detail:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Bu hataya özgü açıklama.
+          title: Detail
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+          description: Makine tarafından okunabilir hata kodu.
+        instance:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Hatanın oluştuğu istek yolu.
+          title: Instance
+        errors:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/FieldError'
+            type: array
+          - type: 'null'
+          default: null
+          description: Alan düzeyinde hatalar.
+          title: Errors
+      required:
+      - title
+      - status
+      - code
+      title: ProblemDetails
+      type: object
+    Region:
+      additionalProperties: false
+      properties:
+        x:
+          description: Sol-üst X (seviye-0 piksel).
+          minimum: 0
+          title: X
+          type: integer
+        y:
+          description: Sol-üst Y (seviye-0 piksel).
+          minimum: 0
+          title: Y
+          type: integer
+        width:
+          description: Genişlik (piksel).
+          exclusiveMinimum: 0
+          title: Width
+          type: integer
+        height:
+          description: Yükseklik (piksel).
+          exclusiveMinimum: 0
+          title: Height
+          type: integer
+        score:
+          description: Bölgenin önem skoru (0-1).
+          maximum: 1.0
+          minimum: 0.0
+          title: Score
+          type: number
+      required:
+      - x
+      - y
+      - width
+      - height
+      - score
+      title: Region
+      type: object
+    ReportRequest:
+      additionalProperties: false
+      properties:
+        schema_version:
+          default: 0.1.0
+          description: Sözleşme sürümü (MAJOR.MINOR.PATCH). MAJOR uyuşmazsa mesaj reddedilir.
+          pattern: ^\d+\.\d+\.\d+$
+          title: Schema Version
+          type: string
+        slide_id:
+          description: 'Anonim slayt anahtarı (4-64 karakter: harf, rakam, _ ve -). Hasta kimliği veya
+            TCGA barkodu OLAMAZ.'
+          pattern: ^[A-Za-z0-9_-]{4,64}$
+          title: Slide Id
+          type: string
+        mutation_prediction:
+          $ref: '#/components/schemas/MutationPrediction'
+        drug_recommendation:
+          anyOf:
+          - $ref: '#/components/schemas/DrugRecommendation'
+          - type: 'null'
+          default: null
+          description: Varsa ilaç önerisi; rapor bunu da özetler.
+        language:
+          default: tr
+          description: Rapor dili.
+          enum:
+          - tr
+          - en
+          title: Language
+          type: string
+      required:
+      - slide_id
+      - mutation_prediction
+      title: ReportRequest
+      type: object
+    ReportResponse:
+      additionalProperties: false
+      properties:
+        schema_version:
+          default: 0.1.0
+          description: Sözleşme sürümü (MAJOR.MINOR.PATCH). MAJOR uyuşmazsa mesaj reddedilir.
+          pattern: ^\d+\.\d+\.\d+$
+          title: Schema Version
+          type: string
+        research_use_only:
+          const: true
+          default: true
+          description: 'Her zaman true: çıktı yalnızca araştırma amaçlıdır.'
+          title: Research Use Only
+          type: boolean
+        disclaimer:
+          default: Araştırma prototipi çıktısıdır; klinik tanı veya tedavi kararı için kullanılamaz ve
+            'kesin tanı' ya da 'reçete' değildir.
+          description: Kullanıcıya gösterilecek uyarı metni.
+          title: Disclaimer
+          type: string
+        slide_id:
+          description: 'Anonim slayt anahtarı (4-64 karakter: harf, rakam, _ ve -). Hasta kimliği veya
+            TCGA barkodu OLAMAZ.'
+          pattern: ^[A-Za-z0-9_-]{4,64}$
+          title: Slide Id
+          type: string
+        report_text:
+          description: Doktorun okuyacağı rapor metni.
+          minLength: 1
+          title: Report Text
+          type: string
+        citations:
+          description: Rapora dayanak kaynaklar (RAG).
+          items:
+            $ref: '#/components/schemas/Citation'
+          title: Citations
+          type: array
+        language:
+          enum:
+          - tr
+          - en
+          title: Language
+          type: string
+        llm_model:
+          description: Raporu üreten dil modelinin adı/sürümü.
+          minLength: 1
+          title: Llm Model
+          type: string
+        retrieval_index_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Kullanılan literatür vektör indeksinin sürümü.
+          title: Retrieval Index Version
+      required:
+      - slide_id
+      - report_text
+      - language
+      - llm_model
+      title: ReportResponse
+      type: object
+    SimulatedImage:
+      additionalProperties: false
+      properties:
+        role:
+          description: Tedavi öncesi mi sonrası mı.
+          enum:
+          - before
+          - after
+          title: Role
+          type: string
+        uri:
+          description: Görüntü konumu (dosya yolu veya URL).
+          minLength: 1
+          title: Uri
+          type: string
+        width:
+          description: Genişlik (piksel).
+          exclusiveMinimum: 0
+          title: Width
+          type: integer
+        height:
+          description: Yükseklik (piksel).
+          exclusiveMinimum: 0
+          title: Height
+          type: integer
+      required:
+      - role
+      - uri
+      - width
+      - height
+      title: SimulatedImage
+      type: object
+    SimulationRequest:
+      additionalProperties: false
+      properties:
+        schema_version:
+          default: 0.1.0
+          description: Sözleşme sürümü (MAJOR.MINOR.PATCH). MAJOR uyuşmazsa mesaj reddedilir.
+          pattern: ^\d+\.\d+\.\d+$
+          title: Schema Version
+          type: string
+        slide_id:
+          description: 'Anonim slayt anahtarı (4-64 karakter: harf, rakam, _ ve -). Hasta kimliği veya
+            TCGA barkodu OLAMAZ.'
+          pattern: ^[A-Za-z0-9_-]{4,64}$
+          title: Slide Id
+          type: string
+        drug_name:
+          description: Simüle edilecek ilaç.
+          minLength: 1
+          title: Drug Name
+          type: string
+        region:
+          anyOf:
+          - $ref: '#/components/schemas/PatchRef'
+          - type: 'null'
+          default: null
+          description: Simüle edilecek patch; yoksa sistem seçer.
+        seed:
+          default: 0
+          description: Tekrarlanabilirlik için rastgelelik tohumu.
+          minimum: 0
+          title: Seed
+          type: integer
+        num_inference_steps:
+          default: 50
+          description: Difüzyon örnekleme adım sayısı (1-1000).
+          maximum: 1000
+          minimum: 1
+          title: Num Inference Steps
+          type: integer
+      required:
+      - slide_id
+      - drug_name
+      title: SimulationRequest
+      type: object
+    SimulationResponse:
+      additionalProperties: false
+      properties:
+        schema_version:
+          default: 0.1.0
+          description: Sözleşme sürümü (MAJOR.MINOR.PATCH). MAJOR uyuşmazsa mesaj reddedilir.
+          pattern: ^\d+\.\d+\.\d+$
+          title: Schema Version
+          type: string
+        research_use_only:
+          const: true
+          default: true
+          description: 'Her zaman true: çıktı yalnızca araştırma amaçlıdır.'
+          title: Research Use Only
+          type: boolean
+        disclaimer:
+          default: Araştırma prototipi çıktısıdır; klinik tanı veya tedavi kararı için kullanılamaz ve
+            'kesin tanı' ya da 'reçete' değildir.
+          description: Kullanıcıya gösterilecek uyarı metni.
+          title: Disclaimer
+          type: string
+        slide_id:
+          description: 'Anonim slayt anahtarı (4-64 karakter: harf, rakam, _ ve -). Hasta kimliği veya
+            TCGA barkodu OLAMAZ.'
+          pattern: ^[A-Za-z0-9_-]{4,64}$
+          title: Slide Id
+          type: string
+        drug_name:
+          title: Drug Name
+          type: string
+        images:
+          description: En az bir 'before' ve bir 'after' görüntüsü.
+          items:
+            $ref: '#/components/schemas/SimulatedImage'
+          minItems: 2
+          title: Images
+          type: array
+        seed:
+          minimum: 0
+          title: Seed
+          type: integer
+        model_version:
+          description: Difüzyon modelinin sürümü.
+          minLength: 1
+          title: Model Version
+          type: string
+        is_conceptual:
+          const: true
+          default: true
+          description: 'Her zaman true: simülasyon kavramsaldır, doğrulanmamıştır.'
+          title: Is Conceptual
+          type: boolean
+        limitations:
+          default: Kavramsal dijital ikiz gösterimidir; tedavi öncesi/sonrası eşleşmiş görüntü ile doğrulanmamıştır
+            ve klinik olarak geçerli bir tedavi tahmini değildir.
+          description: Arayüzde gösterilecek sınırlılık metni.
+          title: Limitations
+          type: string
+      required:
+      - slide_id
+      - drug_name
+      - images
+      - seed
+      - model_version
+      title: SimulationResponse
+      type: object

@@ -20,5 +20,5 @@ repos:
     rev: v1.11.2
     hooks:
       - id: mypy
-        additional_dependencies: ["pydantic>=2.6", "types-PyYAML"]
+        additional_dependencies: ["pydantic>=2.6", "omegaconf>=2.3", "pytest>=8.0", "types-PyYAML"]
         files: ^(onkos|models|services|tests)/
