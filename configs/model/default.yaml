@@ -1,0 +1,3 @@
+name: linear
+in_features: 8
+out_features: 1

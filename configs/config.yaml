@@ -1,0 +1,9 @@
+# Root config. Groups listed in `defaults` are loaded from configs/<group>/default.yaml.
+defaults: [model, data, train]
+seed: 42
+run:
+  module: common
+  experiment: smoke
+tracking:
+  uri: "sqlite:///mlflow.db"   # overridden by the MLFLOW_TRACKING_URI environment variable
+  experiment: onkos

@@ -31,6 +31,8 @@ Mimari ve veri akışı: [docs/architecture.md](docs/architecture.md). Kararlar:
 ├── onkos/            Ortak paket: common/ (seed, config, log), contracts/ (sürümlü Pydantic şemaları)
 ├── apps/web/         React/Next.js arayüzü
 ├── data/             raw/ interim/ processed/ (git'te değil, DVC ile)
+├── configs/          YAML konfigürasyonları (model/data/train grupları)
+├── scripts/          Çalıştırılabilir betikler (hello_world.py)
 ├── infra/            Dockerfile, docker-compose, bulut betikleri
 ├── docs/             Mimari, ADR'ler, rehberler
 ├── notebooks/        Keşif defterleri
@@ -48,6 +50,8 @@ uv sync                       # Python 3.11 + bağımlılıklar
 uv run pre-commit install     # commit öncesi kontroller
 uv run pytest                 # kurulum doğrulaması
 ```
+
+Eğitim araçları (torch, MLflow, DVC) ve Docker/Colab/AWS kurulumu: [docs/ortam_kurulumu.md](docs/ortam_kurulumu.md).
 
 Kalite kontrolleri: `uv run ruff check . && uv run black --check . && uv run mypy && uv run pytest`
 

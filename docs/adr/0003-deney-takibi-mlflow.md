@@ -7,7 +7,7 @@
 Deneyler, hiperparametreler, metrikler ve veri sürümleri birbirine bağlanabilmeli. Bütçe: ücretsiz.
 
 ## Karar
-**MLflow** (self-hosted, yerel dosya/SQLite veya küçük sunucu) kullanılır. Run adı standardı:
+**MLflow** (self-hosted, SQLite (yerel) veya küçük sunucu; dosya tabanlı depo MLflow tarafından artık reddedildiği için kullanılmaz) kullanılır. Run adı standardı:
 `<modül>-<deney>-<seed>`; her run config'i ve git commit hash'ini kaydeder.
 
 ## Alternatifler
