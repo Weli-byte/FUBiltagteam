@@ -1,0 +1,5 @@
+lr: 0.05
+steps: 100
+amp: false
+grad_checkpointing: false
+checkpoint_dir: outputs/checkpoints

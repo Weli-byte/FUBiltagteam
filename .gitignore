@@ -14,10 +14,7 @@ __pycache__/
 !.env.example
 
 # Data and model artifacts (tracked by DVC, never by git)
-data/raw/*
-data/interim/*
-data/processed/*
-!data/**/.gitkeep
+# data/ contents are added with `dvc add`, which writes its own .gitignore entries
 *.h5
 *.h5ad
 *.parquet
@@ -36,3 +33,6 @@ node_modules/
 .DS_Store
 .idea/
 .vscode/
+
+mlflow.db
+outputs/

@@ -1,0 +1,30 @@
+# Run from the repository root:  docker compose -f infra/docker-compose.yml up mlflow
+services:
+  dev:
+    build: { context: .., dockerfile: infra/Dockerfile, target: dev }
+    volumes: ["..:/workspace"]
+    environment: [MLFLOW_TRACKING_URI=http://mlflow:5000]
+    depends_on: [mlflow]
+    command: bash
+    stdin_open: true
+    tty: true
+
+  train:
+    build: { context: .., dockerfile: infra/Dockerfile, target: train }
+    volumes: ["..:/workspace"]
+    environment: [MLFLOW_TRACKING_URI=http://mlflow:5000]
+    depends_on: [mlflow]
+    deploy:
+      resources:
+        reservations:
+          devices: [{ driver: nvidia, count: all, capabilities: [gpu] }]
+
+  mlflow:
+    # Verify the image tag exists before first use.
+    image: ghcr.io/mlflow/mlflow:latest
+    command: mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri sqlite:////mlflow/mlflow.db --default-artifact-root /mlflow/artifacts
+    ports: ["5000:5000"]
+    volumes: ["mlflow-data:/mlflow"]
+
+volumes:
+  mlflow-data:
