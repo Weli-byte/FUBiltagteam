@@ -1,0 +1,25 @@
+{
+  "schema_version": "0.1.0",
+  "research_use_only": true,
+  "disclaimer": "Araştırma prototipi çıktısıdır; klinik tanı veya tedavi kararı için kullanılamaz ve 'kesin tanı' ya da 'reçete' değildir.",
+  "slide_id": "slide_101414",
+  "drug_name": "Erlotinib",
+  "images": [
+    {
+      "role": "before",
+      "uri": "mock://sim/before.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "role": "after",
+      "uri": "mock://sim/after.png",
+      "width": 256,
+      "height": 256
+    }
+  ],
+  "seed": 0,
+  "model_version": "mock-diffusion-0.0",
+  "is_conceptual": true,
+  "limitations": "Kavramsal dijital ikiz gösterimidir; tedavi öncesi/sonrası eşleşmiş görüntü ile doğrulanmamıştır ve klinik olarak geçerli bir tedavi tahmini değildir."
+}

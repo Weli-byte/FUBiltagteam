@@ -1,0 +1,4 @@
+# Contract changes need the contract owner. Add each module owner's GitHub handle below once
+# known (e.g. `/onkos/contracts/consumers.py @Weli-byte @nisa-handle @idil-handle @yusuf-handle`).
+/onkos/contracts/ @Weli-byte
+/docs/veri_sozlesmesi*.md @Weli-byte

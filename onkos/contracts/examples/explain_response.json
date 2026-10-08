@@ -1,0 +1,30 @@
+{
+  "schema_version": "0.1.0",
+  "research_use_only": true,
+  "disclaimer": "Araştırma prototipi çıktısıdır; klinik tanı veya tedavi kararı için kullanılamaz ve 'kesin tanı' ya da 'reçete' değildir.",
+  "slide_id": "slide_376417",
+  "slide_width": 40960,
+  "slide_height": 30720,
+  "tile_size": 256,
+  "layers": [
+    {
+      "name": "gradcam (mock)",
+      "method": "gradcam",
+      "uri": "mock://explain/gradcam.png",
+      "width": 160,
+      "height": 120,
+      "value_min": 0.0,
+      "value_max": 1.0
+    }
+  ],
+  "regions": [
+    {
+      "x": 2048,
+      "y": 1024,
+      "width": 512,
+      "height": 512,
+      "score": 0.3801
+    }
+  ],
+  "summary_text": "[MOCK] Örnek açıklama metni."
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": "0.1.0",
+  "research_use_only": true,
+  "disclaimer": "Araştırma prototipi çıktısıdır; klinik tanı veya tedavi kararı için kullanılamaz ve 'kesin tanı' ya da 'reçete' değildir.",
+  "slide_id": "slide_670487",
+  "report_text": "[MOCK] Bu metin sözleşme testi için üretilmiştir; gerçek bir analiz değildir. Araştırma prototipi çıktısıdır, klinik karar için kullanılamaz.",
+  "citations": [
+    {
+      "pmid": null,
+      "title": "[MOCK] Örnek kaynak 1",
+      "year": null
+    },
+    {
+      "pmid": null,
+      "title": "[MOCK] Örnek kaynak 2",
+      "year": null
+    }
+  ],
+  "language": "tr",
+  "llm_model": "mock-llm-0.0",
+  "retrieval_index_version": "mock-index-0.0"
+}

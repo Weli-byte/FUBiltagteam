@@ -1,0 +1,61 @@
+{
+  "schema_version": "0.1.0",
+  "research_use_only": true,
+  "disclaimer": "Araştırma prototipi çıktısıdır; klinik tanı veya tedavi kararı için kullanılamaz ve 'kesin tanı' ya da 'reçete' değildir.",
+  "slide_id": "slide_291704",
+  "candidates": [
+    {
+      "rank": 1,
+      "drug_name": "Gefitinib",
+      "drugbank_id": "DB00317",
+      "compatibility_score": 0.8617,
+      "target_proteins": [
+        "EGFR"
+      ],
+      "rationale": "[MOCK] Rastgele üretilmiş örnek gerekçe."
+    },
+    {
+      "rank": 2,
+      "drug_name": "Osimertinib",
+      "drugbank_id": "DB09330",
+      "compatibility_score": 0.7046,
+      "target_proteins": [
+        "EGFR"
+      ],
+      "rationale": "[MOCK] Rastgele üretilmiş örnek gerekçe."
+    },
+    {
+      "rank": 3,
+      "drug_name": "Erlotinib",
+      "drugbank_id": "DB00530",
+      "compatibility_score": 0.6185,
+      "target_proteins": [
+        "EGFR"
+      ],
+      "rationale": "[MOCK] Rastgele üretilmiş örnek gerekçe."
+    },
+    {
+      "rank": 4,
+      "drug_name": "Sotorasib",
+      "drugbank_id": "DB15569",
+      "compatibility_score": 0.5774,
+      "target_proteins": [
+        "KRAS"
+      ],
+      "rationale": "[MOCK] Rastgele üretilmiş örnek gerekçe."
+    },
+    {
+      "rank": 5,
+      "drug_name": "Olaparib",
+      "drugbank_id": "DB09074",
+      "compatibility_score": 0.0458,
+      "target_proteins": [
+        "PARP1",
+        "PARP2"
+      ],
+      "rationale": "[MOCK] Rastgele üretilmiş örnek gerekçe."
+    }
+  ],
+  "model_version": "mock-gnn-0.0",
+  "knowledge_base_version": "mock-kb-0.0"
+}
