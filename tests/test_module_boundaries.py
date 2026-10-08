@@ -1,37 +1,55 @@
-"""Enforce ADR-0001: feature modules must not import each other's internals."""
+"""Enforce ADR-0001: feature modules must not import each other's internals.
+
+Layout: models/<module>/, services/api/ are feature modules; onkos/common and
+onkos/contracts are the only shared packages they may import.
+"""
 
 import ast
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1] / "onkos"
-FEATURE_MODULES = {"histo", "omics", "gnn", "rag_llm", "diffusion", "xai", "api"}
-SHARED = {"common", "contracts"}
+REPO = Path(__file__).resolve().parents[1]
+MODEL_MODULES = {"histo", "omics", "gnn", "rag_llm", "diffusion", "xai"}
+SHARED = {"onkos.common", "onkos.contracts"}
 
 
-def _imported_onkos_modules(path: Path) -> set[str]:
+def _imports(path: Path) -> set[str]:
     found: set[str] = set()
     for node in ast.walk(ast.parse(path.read_text(encoding="utf-8"))):
-        names: list[str] = []
         if isinstance(node, ast.Import):
-            names = [alias.name for alias in node.names]
+            found.update(alias.name for alias in node.names)
         elif isinstance(node, ast.ImportFrom) and node.module and node.level == 0:
-            names = [node.module]
-        for name in names:
-            parts = name.split(".")
-            if parts[0] == "onkos" and len(parts) > 1:
-                found.add(parts[1])
+            found.add(node.module)
     return found
+
+
+def _feature_modules() -> dict[str, Path]:
+    modules = {f"models.{m}": REPO / "models" / m for m in MODEL_MODULES}
+    modules["services.api"] = REPO / "services" / "api"
+    return modules
+
+
+def _is_allowed(imported: str, own: str) -> bool:
+    if imported == own or imported.startswith(own + "."):
+        return True
+    if any(imported == s or imported.startswith(s + ".") for s in SHARED):
+        return True
+    root = imported.split(".")[0]
+    # Any other import from our own top-level packages is a boundary violation.
+    return root not in {"models", "services", "onkos"} or imported == "onkos"
 
 
 def test_feature_modules_do_not_import_each_other() -> None:
     violations: list[str] = []
-    for module in FEATURE_MODULES:
-        for py in (ROOT / module).rglob("*.py"):
-            for target in _imported_onkos_modules(py) - SHARED - {module}:
-                violations.append(f"{py.relative_to(ROOT.parent)} imports onkos.{target}")
+    for own, folder in _feature_modules().items():
+        for py in folder.rglob("*.py"):
+            for imported in _imports(py):
+                if not _is_allowed(imported, own):
+                    violations.append(f"{py.relative_to(REPO)} imports {imported}")
     assert not violations, "\n".join(violations)
 
 
-def test_all_five_architecture_layers_have_a_home() -> None:
-    for module in FEATURE_MODULES | SHARED:
-        assert (ROOT / module / "__init__.py").exists(), module
+def test_all_architecture_layers_have_a_home() -> None:
+    for folder in _feature_modules().values():
+        assert (folder / "__init__.py").exists(), folder
+    for shared in ("common", "contracts"):
+        assert (REPO / "onkos" / shared / "__init__.py").exists(), shared

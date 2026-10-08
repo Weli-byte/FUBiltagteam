@@ -21,4 +21,4 @@ repos:
     hooks:
       - id: mypy
         additional_dependencies: ["pydantic>=2.6", "types-PyYAML"]
-        files: ^(onkos|tests)/
+        files: ^(onkos|models|services|tests)/

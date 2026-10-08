@@ -17,7 +17,7 @@ flowchart LR
     HISTO -- tumor patches --> DIFF
     HISTO -- attention --> XAI[xai: GradCAM / heatmap]
     OMICS -- fusion attention --> XAI
-    RAG --> API[api: FastAPI]
+    RAG --> API[services/api: FastAPI]
     DIFF --> API
     XAI --> API
     GNN --> API
@@ -27,7 +27,7 @@ flowchart LR
 
 ## Modül bağımlılık grafiği
 
-Modüller birbirini import etmez; yalnızca ortak paketlere bağlanır (ADR-0001).
+Modüller (`models/*`, `services/api`) birbirini import etmez; yalnızca ortak paketlere bağlanır (ADR-0001).
 
 ```mermaid
 flowchart TD
@@ -37,7 +37,7 @@ flowchart TD
     rag_llm --> contracts
     diffusion --> contracts
     xai --> contracts
-    api --> contracts
+    api[services/api] --> contracts
     histo --> common
     omics --> common
     gnn --> common

@@ -11,13 +11,13 @@ Yapay zeka destekli multimodal dijital onkoloji **araştırma prototipi** (TEKNO
 
 | Modül | Paket | Sahip |
 |---|---|---|
-| 1. ViT + ABMIL histopatoloji | `onkos/histo` | Nisa |
-| 2. Omics Encoder + Cross-Attention | `onkos/omics` | Proje lideri |
-| 3a. GNN ilaç önerisi | `onkos/gnn` | İdil |
-| 3b. RAG + LLM rapor | `onkos/rag_llm` | Proje lideri |
-| 4. Conditional Diffusion (kavramsal) | `onkos/diffusion` | Proje lideri |
-| 5. XAI (GradCAM / Attention) | `onkos/xai` | Yusuf |
-| Backend API | `onkos/api` | İdil |
+| 1. ViT + ABMIL histopatoloji | `models/histo` | Nisa |
+| 2. Omics Encoder + Cross-Attention | `models/omics` | Proje lideri |
+| 3a. GNN ilaç önerisi | `models/gnn` | İdil |
+| 3b. RAG + LLM rapor | `models/rag_llm` | Proje lideri |
+| 4. Conditional Diffusion (kavramsal) | `models/diffusion` | Proje lideri |
+| 5. XAI (GradCAM / Attention) | `models/xai` | Yusuf |
+| Backend API | `services/api` | İdil |
 | Frontend | `apps/web` | Yusuf |
 
 Mimari ve veri akışı: [docs/architecture.md](docs/architecture.md). Kararlar: [docs/adr/](docs/adr/).
@@ -26,10 +26,9 @@ Mimari ve veri akışı: [docs/architecture.md](docs/architecture.md). Kararlar:
 
 ```
 .
-├── onkos/            Python paketi (modüller burada; ADR-0001)
-│   ├── common/       Ortak yardımcılar (seed, config, log)
-│   ├── contracts/    Modüller arası sürümlü Pydantic şemaları
-│   ├── histo/ omics/ gnn/ rag_llm/ diffusion/ xai/ api/
+├── models/           AI modülleri: histo/ omics/ gnn/ rag_llm/ diffusion/ xai/
+├── services/api/     FastAPI backend
+├── onkos/            Ortak paket: common/ (seed, config, log), contracts/ (sürümlü Pydantic şemaları)
 ├── apps/web/         React/Next.js arayüzü
 ├── data/             raw/ interim/ processed/ (git'te değil, DVC ile)
 ├── infra/            Dockerfile, docker-compose, bulut betikleri
