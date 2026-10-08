@@ -6,7 +6,7 @@ Conventions
 * Every top-level message carries ``schema_version`` (``MAJOR.MINOR.PATCH``). A message whose
   MAJOR differs from :data:`onkos.contracts.SCHEMA_VERSION` is rejected. MINOR/PATCH bumps only add
   optional fields or tighten documentation, so existing producers keep working.
-* Models forbid unknown fields, so typos in mocks and clients fail loudly.
+* Models forbid unknown fields, so typos in clients and producers fail loudly.
 * No field may carry a patient identifier. Slides are referenced by an anonymous ``slide_id``; TCGA
   barcodes are rejected.
 * Every model output is research-use-only and says so (``research_use_only`` + ``disclaimer``).
@@ -81,6 +81,10 @@ class ErrorCode(StrEnum):
 class ExplainMethod(StrEnum):
     GRADCAM = "gradcam"
     ATTENTION = "attention"
+
+
+def _all_genes() -> list[Gene]:
+    return list(Gene)
 
 
 class ContractModel(BaseModel):
@@ -171,7 +175,7 @@ class MutationPredictionRequest(VersionedMessage):
         default=None, description="Varsa omics örneğinin anonim anahtarı; yoksa yalnızca görüntü."
     )
     genes: list[Gene] = Field(
-        default_factory=lambda: list(Gene),
+        default_factory=_all_genes,
         min_length=1,
         description="Tahmin istenen genler (varsayılan: hepsi).",
     )

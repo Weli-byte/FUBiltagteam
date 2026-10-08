@@ -7,14 +7,12 @@ pytest.importorskip("h5py")
 np = pytest.importorskip("numpy")
 import h5py  # noqa: E402
 
-from onkos.contracts.patch_features import (  # noqa: E402
-    validate_patch_feature_file,
-    write_mock_patch_features,
-)
+from onkos.contracts.patch_features import validate_patch_feature_file  # noqa: E402
+from tests.contract_fixtures import write_test_patch_features  # noqa: E402
 
 
-def test_mock_file_satisfies_contract(tmp_path: Path) -> None:
-    path = write_mock_patch_features(
+def test_fixture_file_satisfies_contract(tmp_path: Path) -> None:
+    path = write_test_patch_features(
         tmp_path / "s.h5", slide_id="slide_000009", n_patches=50, feature_dim=32
     )
     meta = validate_patch_feature_file(path)
@@ -23,7 +21,7 @@ def test_mock_file_satisfies_contract(tmp_path: Path) -> None:
 
 
 def test_optional_datasets_may_be_absent(tmp_path: Path) -> None:
-    path = write_mock_patch_features(
+    path = write_test_patch_features(
         tmp_path / "s.h5", with_attention=False, with_slide_embedding=False
     )
     meta = validate_patch_feature_file(path)
@@ -48,14 +46,14 @@ def _rewrite(path: Path, name: str, data: Any) -> None:
 def test_contract_violations_are_reported(
     tmp_path: Path, dataset: str, bad: Any, message: str
 ) -> None:
-    path = write_mock_patch_features(tmp_path / "s.h5", n_patches=64, feature_dim=16)
+    path = write_test_patch_features(tmp_path / "s.h5", n_patches=64, feature_dim=16)
     _rewrite(path, dataset, bad)
     with pytest.raises(ValueError, match=message):
         validate_patch_feature_file(path)
 
 
 def test_missing_attribute_is_reported(tmp_path: Path) -> None:
-    path = write_mock_patch_features(tmp_path / "s.h5")
+    path = write_test_patch_features(tmp_path / "s.h5")
     with h5py.File(path, "r+") as f:
         del f.attrs["encoder_version"]
     with pytest.raises(ValueError, match="encoder_version"):
@@ -63,7 +61,7 @@ def test_missing_attribute_is_reported(tmp_path: Path) -> None:
 
 
 def test_nan_features_rejected(tmp_path: Path) -> None:
-    path = write_mock_patch_features(tmp_path / "s.h5", n_patches=8, feature_dim=4)
+    path = write_test_patch_features(tmp_path / "s.h5", n_patches=8, feature_dim=4)
     bad = np.full((8, 4), np.nan, dtype="float16")
     _rewrite(path, "features", bad)
     with pytest.raises(ValueError, match="NaN"):

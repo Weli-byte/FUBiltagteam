@@ -1,14 +1,12 @@
 # ONKOS Veri Sözleşmesi (Mini sprint 1.7)
 
 Modüller birbirinin koduna değil, bu sözleşmeye bağımlıdır (ADR-0001). Böylece Nisa (ViT/ABMIL),
-proje lideri (Omics, RAG, Diffusion), İdil (GNN, backend) ve Yusuf (frontend, XAI) mock veriyle
-birbirini beklemeden geliştirir.
+proje lideri (Omics, RAG, Diffusion), İdil (GNN, backend) ve Yusuf (frontend, XAI) aynı sözleşmeye
+karşı birbirini beklemeden geliştirir.
 
 - Şemalar: `onkos/contracts/schemas.py` (tek doğruluk kaynağı)
 - Alan alan anlam/birim/aralık: [veri_sozlesmesi_alanlar.md](veri_sozlesmesi_alanlar.md) (otomatik üretilir)
 - API taslağı: `onkos/contracts/openapi.yaml` (OpenAPI 3.1, otomatik üretilir)
-- Örnek mesajlar: `onkos/contracts/examples/*.json`
-- Mock veri: `onkos/contracts/mock.py`, mock sunucu: `scripts/mock_server.py`
 
 > **Araştırma prototipi.** Her model çıktısı `research_use_only: true` ve `disclaimer` taşır.
 > Simülasyon çıktısı ayrıca `is_conceptual: true` ve `limitations` taşır. Arayüz bu metinleri
@@ -43,7 +41,7 @@ Uç noktalar (hepsi `POST`, JSON; `GET /health` ayrıca): `/predict/mutation`, `
 | attr `patch_size_px` | int | evet | patch kenarı (piksel) |
 
 Doğrulama: `onkos.contracts.patch_features.validate_patch_feature_file(path)`.
-Sahte dosya: `write_mock_patch_features(path)`. Modül 2/4/5 gerçek özellikleri beklemeden bununla başlar.
+Modül 2/4/5 gerçek dosyaları Nisa'nın hattından alır; sözleşmeye uymayan dosya doğrulayıcıda reddedilir.
 
 ## Kimlik ve gizlilik kuralları
 - Hasta kimliği taşıyan alan yoktur. Slaytlar anonim `slide_id` ile anılır (4-64 karakter).
@@ -66,26 +64,25 @@ Hatalar `application/problem+json` (RFC 7807 biçimi) ve `ProblemDetails` şemas
 Kodlar: `validation_error`, `slide_not_found`, `features_incompatible`, `calibration_missing`,
 `model_unavailable`, `rate_limited`, `internal_error`.
 
-## Mock ile bağımsız geliştirme
-```bash
-uv run python scripts/mock_server.py 8000      # frontend bunu çağırır (CORS açık, yalnızca geliştirme)
-curl -s -X POST localhost:8000/predict/mutation -H 'Content-Type: application/json' \
-     -d @onkos/contracts/examples/mutation_request.json
-```
-- Mock değerler rastgeledir; **biyolojik/klinik anlamı yoktur**. Metinler `[MOCK]` ile işaretlidir;
-  kaynakçalar yer tutucudur, gerçek atıf değildir. Mock'taki DrugBank kimlikleri gerçek kullanımdan
-  önce doğrulanmalıdır.
-- Backend (İdil) gerçek uç noktaları yazarken aynı Pydantic modellerini kullanır; Yusuf mock sunucuya
-  karşı çalışır; aynı JSON şekli iki taraf için geçerlidir (testlerle doğrulanır).
+## Gerçekçi veri ilkesi (uydurma veri yok)
+Projede sahte/uydurma sonuç üreten mock sunucu, mock üretici veya örnek tahmin dosyası **yoktur** ve
+eklenmez. Sözleşme testlerinin kullandığı küçük sabit yükler yalnızca `tests/contract_fixtures.py`
+içindedir; hiçbir uç nokta tarafından sunulmaz ve gerçekçi veri gibi sunulmaz.
+Bağımsız geliştirme için gerçek çıktılar şu sırayla üretilir:
+1. Omics: gerçek TCGA verisinden (mini sprint 1.3-1.8) eğitilen baseline modellerin gerçek tahminleri
+   `MutationPrediction` biçimine yazılır; Yusuf ve İdil bunlarla çalışır.
+2. Görüntü: Nisa'nın gerçek WSI'lardan çıkardığı HDF5 dosyaları.
+3. İlaç/literatür: DrugBank, PubChem, PubMed gibi gerçek kaynaklardan indirilen kayıtlar.
+Bu çıktılar hazır olana kadar ilgili taraf yalnızca şema ve OpenAPI belgesine göre geliştirir.
 
 ## Sözleşme değişiklik süreci (kim onaylar, nasıl sürümlenir)
 1. `onkos/contracts/schemas.py` (ve gerekirse `consumers.py`) değiştirilir.
-2. `uv run python scripts/export_contracts.py` çalıştırılır; `openapi.yaml`, `examples/` ve alan
+2. `uv run python scripts/export_contracts.py` çalıştırılır; `openapi.yaml` ve alan
    referansı güncellenir. **Bu çıktılar commit'e girmezse CI kırılır.**
 3. Uyumluluk kuralına göre `SCHEMA_VERSION` artırılır.
 4. PR açılır. `.github/CODEOWNERS` gereği sözleşme sahibi, ayrıca etkilenen tüketicilerin sahipleri
    (`consumers.py` hangi alanlara dayandıklarını listeler) onaylar.
-5. **CI neleri yakalar:** (a) üretilen dosyaların güncelliği, (b) örneklerin şemaya uyumu,
+5. **CI neleri yakalar:** (a) üretilen dosyaların güncelliği, (b) OpenAPI belgesinin geçerliliği,
    (c) `consumers.py`'deki alanlardan biri silinir/adı değişirse hangi tüketicinin bozulduğunu
    adıyla söyleyen test.
 6. Kırıcı değişiklik (MAJOR) için önce ekip toplantısında karar alınır ve ADR yazılır.

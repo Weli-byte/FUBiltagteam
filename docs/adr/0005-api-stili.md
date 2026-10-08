@@ -13,4 +13,4 @@
 gRPC (frontend için ek yük), GraphQL (kapsam için gereksiz).
 
 ## Sonuçlar
-Frontend ve backend mock veriyle bağımsız geliştirilebilir. Risk: uzun süren çıkarımlar için asenkron iş modeli sonra gerekebilir.
+Frontend ve backend aynı sözleşmeye karşı bağımsız geliştirilebilir; gerçekçi örnekler gerçek veri hattı çıktılarından gelir (uydurma veri kullanılmaz). Risk: uzun süren çıkarımlar için asenkron iş modeli sonra gerekebilir.

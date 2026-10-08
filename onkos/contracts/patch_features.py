@@ -9,7 +9,8 @@ Layout (``features``/``coords`` required; ``attention``/``slide_embedding`` opti
     attrs: schema_version, slide_id, magnification (float), encoder_name, encoder_version,
            patch_size_px (int)
 
-``h5py`` and ``numpy`` are imported lazily (they live in the ``train`` dependency group).
+Real files come from module 1 (ViT + ABMIL). ``h5py`` and ``numpy`` are imported lazily
+(they live in the ``train`` dependency group).
 """
 
 import math
@@ -95,45 +96,3 @@ def validate_patch_feature_file(path: str | Path) -> PatchFeatureMeta:
             has_attention=has_attention,
             has_slide_embedding=has_embedding,
         )
-
-
-def write_mock_patch_features(
-    path: str | Path,
-    slide_id: str = "slide_000001",
-    n_patches: int = 64,
-    feature_dim: int = 128,
-    seed: int = 0,
-    with_attention: bool = True,
-    with_slide_embedding: bool = True,
-) -> Path:
-    """Write a random but contract-valid feature file (for developing modules 2/4/5 early)."""
-    import h5py
-    import numpy as np
-
-    rng = np.random.default_rng(seed)
-    out = Path(path)
-    out.parent.mkdir(parents=True, exist_ok=True)
-    with h5py.File(out, "w") as f:
-        f.create_dataset(
-            "features", data=rng.standard_normal((n_patches, feature_dim)).astype(FEATURES_DTYPE)
-        )
-        grid = int(math.ceil(math.sqrt(n_patches)))
-        xs = (np.arange(n_patches) % grid) * 256
-        ys = (np.arange(n_patches) // grid) * 256
-        f.create_dataset("coords", data=np.stack([xs, ys], axis=1).astype(COORDS_DTYPE))
-        if with_attention:
-            att = rng.random(n_patches).astype("float32")
-            f.create_dataset("attention", data=att / att.sum())
-        if with_slide_embedding:
-            f.create_dataset(
-                "slide_embedding", data=rng.standard_normal(feature_dim).astype("float32")
-            )
-        f.attrs.update(
-            schema_version=SCHEMA_VERSION,
-            slide_id=slide_id,
-            magnification=20.0,
-            encoder_name="mock-vit",
-            encoder_version="0.0.0-mock",
-            patch_size_px=256,
-        )
-    return out
