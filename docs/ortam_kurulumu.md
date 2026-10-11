@@ -8,7 +8,8 @@ Amaç: aynı komut, aynı seed → aynı metrik; yerelde, Colab'da ve bulut GPU'
 |---|---|---|
 | (çekirdek) | pydantic, pyyaml, omegaconf | `uv sync` |
 | `train` | torch, numpy, mlflow | `uv sync --group train` |
-| `data` | dvc | `uv sync --group data` |
+| `data` | dvc, requests, pandas, pyarrow | `uv sync --group data` |
+| `omics` | scikit-learn, matplotlib, anndata, umap-learn | `uv sync --group omics` |
 
 Sürümler `uv.lock` ile sabittir (requirements lock). CI yalnızca çekirdek + dev kurar; torch/mlflow
 gerektiren testler orada **atlanır** (`importorskip`), `--group train` ile yerelde çalışır.

@@ -29,6 +29,12 @@ train = [
     "mlflow>=2.14",
     "h5py>=3.10",
 ]
+omics = [
+    "scikit-learn>=1.4",
+    "matplotlib>=3.8",
+    "anndata>=0.10",
+    "umap-learn>=0.5",
+]
 data = [
     "dvc>=3.50",
     "requests>=2.31",
@@ -60,8 +66,13 @@ strict = true
 files = ["onkos", "models", "services", "scripts", "tests"]
 
 [[tool.mypy.overrides]]
-module = ["torch.*", "mlflow.*", "numpy.*", "h5py.*", "openapi_spec_validator.*", "pandas.*", "pyarrow.*"]
+module = ["torch.*", "mlflow.*", "numpy.*", "h5py.*", "openapi_spec_validator.*", "pandas.*", "pyarrow.*", "sklearn.*", "matplotlib.*", "anndata.*", "umap.*", "scipy.*", "joblib.*"]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# numpy/pandas/sklearn return loosely typed values; strict return checks add noise here.
+module = ["models.omics.*"]
+warn_return_any = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

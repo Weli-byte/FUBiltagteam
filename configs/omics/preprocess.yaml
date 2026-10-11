@@ -1,0 +1,18 @@
+# Omics preprocessing parameters (mini sprint 1.4). Override on the CLI: key=value
+seed: 42
+# Gene filter (learned on the training samples only): expressed = TPM > min_tpm
+min_tpm: 1.0
+min_fraction: 0.2        # keep genes expressed in >= 20% of training samples
+# Output variants: gene universe x number of highest-variance genes (null = no cut)
+versions: [all, protein_coding]
+top_genes: [2000, 5000, 10000]
+zscore: true
+clip: null               # e.g. 5.0 to clip z-scores
+# Sample QC
+mad_threshold: 4.0       # |robust z| beyond this is flagged (flagged samples are not dropped by default)
+pca_components: 20
+pca_top_genes: 2000
+max_corr_samples: 300
+# Optional gene-set (pathway) aggregation; path to a .gmt file (e.g. MSigDB Hallmark), null = off
+gene_sets: null
+min_gene_set_overlap: 5
