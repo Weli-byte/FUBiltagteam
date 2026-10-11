@@ -1,0 +1,25 @@
+{
+  "data_release": "Data Release 46.0 - August 10, 2026",
+  "queried_at": "2026-10-09T14:17:32+00:00",
+  "projects": [
+    "TCGA-LUAD",
+    "TCGA-BRCA",
+    "TCGA-COAD"
+  ],
+  "kinds": {
+    "rnaseq": {
+      "data_category": "Transcriptome Profiling",
+      "data_type": "Gene Expression Quantification",
+      "analysis.workflow_type": "STAR - Counts"
+    },
+    "maf": {
+      "data_category": "Simple Nucleotide Variation",
+      "data_type": "Masked Somatic Mutation"
+    },
+    "slides": {
+      "data_type": "Slide Image",
+      "experimental_strategy": "Diagnostic Slide"
+    }
+  },
+  "include_normal": false
+}
