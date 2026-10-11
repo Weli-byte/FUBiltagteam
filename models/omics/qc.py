@@ -29,36 +29,58 @@ def log2_tpm(tpm: np.ndarray[Any, Any]) -> np.ndarray[Any, Any]:
     return np.log2(np.asarray(tpm, dtype=np.float32) + 1.0)
 
 
+BLOCK = 4000  # genes per block: keeps temporary arrays small (n_samples x BLOCK)
+
+
+def _gene_blocks(n_genes: int, block: int) -> list[slice]:
+    return [slice(start, min(start + block, n_genes)) for start in range(0, n_genes, block)]
+
+
+def _log_block(raw: np.ndarray[Any, Any]) -> tuple[np.ndarray[Any, Any], np.ndarray[Any, Any]]:
+    """log2(TPM+1) of a gene block (non-finite -> 0) and the per-sample 'all finite' mask."""
+    finite = np.isfinite(raw)
+    return log2_tpm(np.where(finite, raw, 0.0)), finite.all(axis=1)
+
+
 def sample_qc(
     tpm: np.ndarray[Any, Any],
     library_size: np.ndarray[Any, Any],
     n_detected: np.ndarray[Any, Any],
     mad_threshold: float = 4.0,
-    logged: np.ndarray[Any, Any] | None = None,
-    chunk: int = 256,
+    block: int = BLOCK,
 ) -> pd.DataFrame:
     """Per-sample QC table with outlier flags (nothing is dropped here).
 
     Flags: missing/non-finite values, library size or detected-gene count far from the cohort
     median (robust z beyond ``mad_threshold``, either direction), and low correlation of the
     sample's log2(TPM+1) profile with the cohort median profile (one-sided: only low is bad).
-    Pass a precomputed ``logged`` matrix to save memory; correlation is computed in row chunks.
+
+    Memory: the matrix is processed in gene blocks (a single pass), so no full-size copy of the
+    log-transformed matrix is created. Pearson correlation is assembled from running sums.
     """
-    has_missing = ~np.isfinite(tpm).all(axis=1)
-    matrix = log2_tpm(tpm) if logged is None else logged
-    if has_missing.any():
-        matrix = np.where(np.isfinite(matrix), matrix, 0.0).astype(np.float32)
-    profile = np.median(matrix, axis=0)
-    centred_profile = profile - profile.mean()
-    profile_norm = np.linalg.norm(centred_profile)
-    corr = np.zeros(len(matrix))
-    for start in range(0, len(matrix), chunk):
-        block = matrix[start : start + chunk]
-        block = block - block.mean(axis=1, keepdims=True)
-        denom = np.linalg.norm(block, axis=1) * profile_norm
-        corr[start : start + chunk] = np.divide(
-            block @ centred_profile, denom, out=np.zeros(len(block)), where=denom > 0
-        )
+    n_samples, n_genes = tpm.shape
+    complete = np.ones(n_samples, dtype=bool)
+    sum_x = np.zeros(n_samples)
+    sum_xx = np.zeros(n_samples)
+    sum_xp = np.zeros(n_samples)
+    sum_p = 0.0
+    sum_pp = 0.0
+    for part in _gene_blocks(n_genes, block):
+        x, ok = _log_block(tpm[:, part])
+        complete &= ok
+        profile = np.median(x, axis=0).astype(np.float64)
+        x = x.astype(np.float64)
+        sum_x += x.sum(axis=1)
+        sum_xx += (x * x).sum(axis=1)
+        sum_xp += x @ profile
+        sum_p += profile.sum()
+        sum_pp += float((profile * profile).sum())
+    cov = sum_xp - sum_x * sum_p / n_genes
+    var_x = np.maximum(sum_xx - sum_x**2 / n_genes, 0.0)
+    var_p = max(sum_pp - sum_p**2 / n_genes, 0.0)
+    denom = np.sqrt(var_x * var_p)
+    corr = np.divide(cov, denom, out=np.zeros(n_samples), where=denom > 0)
+    has_missing = ~complete
 
     z_lib = robust_z(np.log10(np.maximum(library_size, 1.0)))
     z_det = robust_z(n_detected)
@@ -82,19 +104,39 @@ def sample_qc(
     return table
 
 
-def pca_embedding(
-    logged: np.ndarray[Any, Any], n_components: int = 20, n_top_genes: int = 2000, seed: int = 0
+def top_variance_log(
+    tpm: np.ndarray[Any, Any], n_top: int, block: int = BLOCK
 ) -> np.ndarray[Any, Any]:
-    """PCA of the ``n_top_genes`` highest-variance genes (centred and scaled)."""
+    """log2(TPM+1) of the ``n_top`` highest-variance genes, found block by block."""
+    n_genes = tpm.shape[1]
+    variance = np.empty(n_genes)
+    for part in _gene_blocks(n_genes, block):
+        variance[part] = _log_block(tpm[:, part])[0].var(axis=0)
+    top = np.sort(np.argsort(-variance, kind="stable")[: min(n_top, n_genes)])
+    return _log_block(tpm[:, top])[0]
+
+
+def pca_embedding(
+    logged_top: np.ndarray[Any, Any], n_components: int = 20, seed: int = 0
+) -> np.ndarray[Any, Any]:
+    """PCA of an already variance-selected log matrix (centred and scaled per gene)."""
     from sklearn.decomposition import PCA
 
-    variance = logged.var(axis=0)
-    top = np.argsort(-variance, kind="stable")[: min(n_top_genes, logged.shape[1])]
-    x = logged[:, top]
+    x = logged_top.astype(np.float64)
     std = x.std(axis=0)
     x = (x - x.mean(axis=0)) / np.where(std > 0, std, 1.0)
     n = min(n_components, x.shape[0] - 1, x.shape[1])
     return np.asarray(PCA(n_components=n, random_state=seed).fit_transform(x), dtype=np.float32)
+
+
+def sample_correlation(
+    tpm: np.ndarray[Any, Any], project: np.ndarray[Any, Any], max_samples: int = 300, seed: int = 0
+) -> np.ndarray[Any, Any]:
+    """Pearson correlation matrix of up to ``max_samples`` random samples, grouped by project."""
+    rng = np.random.default_rng(seed)
+    pick = np.sort(rng.choice(len(tpm), size=min(max_samples, len(tpm)), replace=False))
+    order = pick[np.argsort(project[pick], kind="stable")]
+    return np.corrcoef(_log_block(tpm[order])[0])
 
 
 def silhouette(embedding: np.ndarray[Any, Any], labels: np.ndarray[Any, Any]) -> float | None:
@@ -154,13 +196,11 @@ def _scatter(ax: Any, xy: np.ndarray[Any, Any], labels: np.ndarray[Any, Any], ti
 def save_qc_plots(
     out_dir: Path,
     qc: pd.DataFrame,
-    logged: np.ndarray[Any, Any],
+    corr: np.ndarray[Any, Any],
     project: np.ndarray[Any, Any],
     tss: np.ndarray[Any, Any],
     pca: np.ndarray[Any, Any],
     umap_xy: np.ndarray[Any, Any] | None,
-    max_corr_samples: int = 300,
-    seed: int = 0,
 ) -> list[Path]:
     """Write library-size, PCA, UMAP and sample-correlation figures; return their paths."""
     import matplotlib
@@ -173,20 +213,16 @@ def save_qc_plots(
 
     fig, ax = plt.subplots(figsize=(6, 4))
     for name in np.unique(project):
-        ax.hist(
-            np.log10(np.maximum(qc.loc[project == name, "library_size"], 1)),
-            bins=40,
-            alpha=0.5,
-            label=str(name),
-        )
+        sizes = np.log10(np.maximum(qc.loc[project == name, "library_size"], 1))
+        ax.hist(sizes, bins=40, alpha=0.5, label=str(name))
     ax.set_xlabel("log10(library size = sum of counts)")
     ax.set_ylabel("samples")
     ax.legend()
     written.append(_save(fig, out_dir / "library_size_hist.png"))
 
-    plots = [("pca", pca[:, :2], "PCA")] + (
-        [("umap", umap_xy, "UMAP")] if umap_xy is not None else []
-    )
+    plots = [("pca", pca[:, :2], "PCA")]
+    if umap_xy is not None:
+        plots.append(("umap", umap_xy, "UMAP"))
     for stem, xy, title in plots:
         fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
         _scatter(axes[0], xy, project, f"{title}: cancer type")
@@ -194,14 +230,10 @@ def save_qc_plots(
         _scatter(axes[1], xy, tss, f"{title}: tissue source site (batch proxy)")
         written.append(_save(fig, out_dir / f"{stem}_project_vs_tss.png"))
 
-    rng = np.random.default_rng(seed)
-    pick = np.sort(rng.choice(len(logged), size=min(max_corr_samples, len(logged)), replace=False))
-    order = pick[np.argsort(project[pick], kind="stable")]
-    corr = np.corrcoef(logged[order])
     fig, ax = plt.subplots(figsize=(6, 5))
     image = ax.imshow(corr, cmap="viridis", vmin=max(-1.0, float(np.nanmin(corr))), vmax=1.0)
     fig.colorbar(image, ax=ax, label="Pearson r (log2 TPM+1)")
-    ax.set_title(f"Sample correlation ({len(order)} random samples, grouped by cancer type)")
+    ax.set_title(f"Sample correlation ({len(corr)} random samples, grouped by cancer type)")
     written.append(_save(fig, out_dir / "sample_correlation.png"))
     return written
 

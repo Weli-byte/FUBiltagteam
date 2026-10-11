@@ -67,9 +67,9 @@ def write_maf(path: Path, rows: list[list[Any]], gz: bool = False) -> Path:
 
 
 def rules(**kw: Any) -> LabelRules:
-    cfg = OmegaConf.load(ROOT / "configs" / "omics" / "labels.yaml")
+    cfg: Any = OmegaConf.load(ROOT / "configs" / "omics" / "labels.yaml")
     cfg = OmegaConf.merge(cfg, OmegaConf.create(kw))
-    return rules_from_config(cfg)  # type: ignore[arg-type]
+    return rules_from_config(cfg)
 
 
 def test_config_rules_loaded_from_yaml_not_code() -> None:

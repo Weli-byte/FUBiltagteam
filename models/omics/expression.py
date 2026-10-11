@@ -134,12 +134,14 @@ def assemble_expression(
     genes = gene_dictionary(first)
     tpm = np.empty((len(paths), len(first.gene_id)), dtype=np.float32)
     library = np.empty(len(paths), dtype=np.float64)
+    detected = np.empty(len(paths), dtype=np.int64)
     for i, path in enumerate(paths):
         parsed = first if i == 0 else parse_star_counts(path)
         if not np.array_equal(parsed.gene_id, first.gene_id):
             raise ValueError(f"{path.name}: gene order/content differs from the first file")
         tpm[i] = parsed.tpm
         library[i] = parsed.counts.sum()
+        detected[i] = int((parsed.tpm > 0).sum())
         if log_every and (i + 1) % log_every == 0:
             LOG.info("parsed %d/%d files", i + 1, len(paths))
 
@@ -149,7 +151,7 @@ def assemble_expression(
             "project_id": rows["project_id"].to_numpy(),
             "tss": [tss_of(b) for b in rows["rnaseq_sample_barcode"]],
             "library_size": library,
-            "n_detected_genes": (tpm > 0).sum(axis=1),
+            "n_detected_genes": detected,
         },
         index=pd.Index(rows["rnaseq_sample_barcode"].to_numpy(), name="sample_barcode"),
     )

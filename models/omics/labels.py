@@ -19,7 +19,7 @@ These labels are research annotations, not clinical determinations.
 
 import gzip
 import logging
-from collections.abc import Sequence
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -98,15 +98,23 @@ def sample_type_code(barcode: str) -> str:
     return barcode[13:15]
 
 
-def _leading_comment_lines(path: Path) -> int:
-    opener = gzip.open if path.suffix == ".gz" else open
+def _count_leading_comments(lines: Iterable[str]) -> int:
     skip = 0
-    with opener(path, "rt", encoding="utf-8") as handle:
-        for line in handle:
-            if not line.startswith("#"):
-                break
-            skip += 1
+    for line in lines:
+        if not line.startswith("#"):
+            break
+        skip += 1
     return skip
+
+
+def _leading_comment_lines(path: Path) -> int:
+    with path.open("rb") as raw:
+        gzipped = raw.read(2) == b"\x1f\x8b"
+    if gzipped:
+        with gzip.open(path, "rt", encoding="utf-8") as handle:
+            return _count_leading_comments(handle)
+    with path.open("r", encoding="utf-8") as handle:
+        return _count_leading_comments(handle)
 
 
 @dataclass(frozen=True)

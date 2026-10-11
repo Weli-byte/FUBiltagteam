@@ -202,6 +202,15 @@ def test_parameters_come_from_training_samples_only() -> None:
     np.testing.assert_array_equal(again.mean_, prep.mean_)
 
 
+def test_constant_gene_with_float_noise_is_not_zscored() -> None:
+    tpm = _tpm(g=4)
+    tpm[:, 1] = np.float32(0.1) * 3  # constant column; log2 mean may differ by ~1e-16
+    tpm[:, 1] += 5.0
+    prep = ExpressionPreprocessor(min_fraction=0.0).fit(tpm)
+    assert 1 not in set(prep.selected_idx_)
+    assert np.isfinite(prep.transform(tpm)).all()
+
+
 def test_train_set_is_standardised() -> None:
     tpm = _tpm()
     prep = ExpressionPreprocessor(min_fraction=0.0)

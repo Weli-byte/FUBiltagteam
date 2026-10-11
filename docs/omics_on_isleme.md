@@ -48,7 +48,7 @@ test kümesine bakılarak değil.
 uv sync --group data --group omics
 # 0) Dosya biçimini doğrula (ilk gerçek dosyada; sütunlar beklenenden farklıysa hata verir)
 uv run python scripts/preprocess_omics.py inspect <data/raw/gdc/TCGA-LUAD/rnaseq/<id>/<dosya>.tsv>
-# 1) Matris + QC (öğrenme yok), tahmini 5-15 dk, ~3 GB bellek
+# 1) Matris + QC (öğrenme yok), tahmini 5-15 dk, tepe bellek ~1,5 GB
 uv run python scripts/preprocess_omics.py build
 # 2a) Keşif amaçlı (model eğitiminde KULLANMA):
 uv run python scripts/preprocess_omics.py fit-transform --eda-all-samples
@@ -61,9 +61,23 @@ Rapor ve şekiller `docs/omics_qc/` altında (toplu sayılar ve grafikler; hasta
 Opsiyonel yol/gen kümesi skorları: `--gene-sets <dosya.gmt>` (ör. MSigDB Hallmark; indirmek ve
 lisansını doğrulamak sana ait).
 
+## Bellek az olan bilgisayarlarda
+Tepe bellek kullanımı yaklaşık **1,5 GB**'tır. Önce doğru şeye bak:
+1. **"Boş" (free) değil "kullanılabilir" (available) belleğe bak.** Görev Yöneticisi → Performans →
+   Bellek → "Kullanılabilir"; ya da PowerShell: `(Get-Counter '\Memory\Available MBytes').CounterSamples.CookedValue`.
+   Windows önbelleği (standby) "boş" saymaz ama gerektiğinde hemen serbest bırakır. Kullanılabilir
+   bellek ≥ 2 GB ise çalıştırmak güvenlidir.
+2. **Hiçbir uygulamayı kapatamıyorsan sanal belleği (pagefile) büyüt:** Ayarlar → Sistem → Hakkında →
+   Gelişmiş sistem ayarları → Performans → Ayarlar → Gelişmiş → Sanal bellek → Değiştir → özel boyut
+   (başlangıç 8192 MB, en büyük 24576 MB). Yavaşlar ama bellek yetmezliğiyle düşmez.
+3. **Projeyi tek tek çalıştır** (her proje < 0,3 GB):
+   `build --projects TCGA-LUAD --out data/processed/omics_LUAD --report-dir docs/omics_qc/LUAD`
+   (aynısını BRCA ve COAD için). Havuzlu (pan-cancer) matris gerekiyorsa sonra tek seferde kurulur.
+
 ## Sınırlılıklar
 - STAR-Counts sütun adları belgelerden yazıldı; `inspect` ilk gerçek dosyada doğrular.
-- Ölçek (2.100 örnek x 60.660 gen) için bellek/süre sentetik matrisle ölçüldü (~2,2 GB, ~20 sn);
-  gerçek dosya okuma süresi (disk) ayrıca eklenir.
+- Ölçek (2.100 örnek x 60.660 gen) için bellek/süre sentetik matrisle ölçüldü: tepe ~1,2 GB
+  (matris 0,5 GB + ~0,55 GB geçici), ~12 sn işlem; gerçek dosya okuma süresi (disk) ayrıca eklenir.
+  Tüm işlemler gen blokları halinde yapılır, tam boyutlu kopya üretilmez.
 - Yol (KEGG/Hallmark) gruplaması kod olarak vardır ama gen kümesi dosyası repoda yoktur.
 - `joblib` ile kaydedilen model dosyaları yalnızca güvendiğiniz kaynaklardan yüklenmelidir.

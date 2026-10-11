@@ -42,32 +42,23 @@ def build_cohort(
     if projects:
         patient_map = patient_map[patient_map["project_id"].isin(list(projects))]
     data: ExpressionData = assemble_expression(patient_map, raw_root)
-    logged = qcm.log2_tpm(data.tpm)
     qc = qcm.sample_qc(
         data.tpm,
         data.obs["library_size"].to_numpy(),
         data.obs["n_detected_genes"].to_numpy(),
         mad_threshold=float(cfg.mad_threshold),
-        logged=logged,
     )
     qc.index = data.obs.index
-    pca = qcm.pca_embedding(
-        logged, int(cfg.pca_components), int(cfg.pca_top_genes), seed=int(cfg.seed)
-    )
+    logged_top = qcm.top_variance_log(data.tpm, int(cfg.pca_top_genes))
+    pca = qcm.pca_embedding(logged_top, int(cfg.pca_components), seed=int(cfg.seed))
+    del logged_top
     umap_xy = qcm.umap_embedding(pca, seed=int(cfg.seed))
     project = data.obs["project_id"].to_numpy()
     tss = data.obs["tss"].to_numpy()
     batch = qcm.batch_effect_summary(pca, project, tss)
+    corr = qcm.sample_correlation(data.tpm, project, int(cfg.max_corr_samples), seed=int(cfg.seed))
     figures = qcm.save_qc_plots(
-        report_dir,
-        qc.reset_index(drop=True),
-        logged,
-        project,
-        tss,
-        pca,
-        umap_xy,
-        max_corr_samples=int(cfg.max_corr_samples),
-        seed=int(cfg.seed),
+        report_dir, qc.reset_index(drop=True), corr, project, tss, pca, umap_xy
     )
     report_dir.mkdir(parents=True, exist_ok=True)
     (report_dir / "qc_report.md").write_text(
@@ -112,7 +103,7 @@ def fit_transform(
     adata = ad.read_h5ad(tpm_h5ad)
     if drop_flagged:
         adata = adata[~adata.obs["flag_any"].to_numpy()].copy()
-    tpm = np.asarray(adata.X, dtype=np.float32)
+    tpm = np.asarray(adata.X, dtype=np.float32)  # no copy when already float32
     fit_idx = np.arange(adata.n_obs) if train_ids is None else select_samples(adata.obs, train_ids)
     if len(fit_idx) < 2:
         raise ValueError(f"only {len(fit_idx)} training samples after QC filtering; need >= 2")
@@ -139,7 +130,7 @@ def fit_transform(
                 allowed_genes=allowed,
                 zscore=bool(cfg.zscore),
                 clip=None if cfg.clip is None else float(cfg.clip),
-            ).fit(tpm[fit_idx])
+            ).fit(tpm, sample_idx=fit_idx)
             z = prep.transform(tpm)
             tag = f"{version}_top{k if k is not None else 'all'}"
             var = adata.var.iloc[prep.selected_idx_].copy()
