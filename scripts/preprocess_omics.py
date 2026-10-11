@@ -60,7 +60,10 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("fit-transform")
     _common(p)
     p.add_argument(
-        "--input", type=Path, default=ROOT / "data" / "processed" / "omics" / "expression_tpm.h5ad"
+        "--input",
+        type=Path,
+        default=ROOT / "data" / "processed" / "omics",
+        help="cohort directory made by `build`",
     )
     p.add_argument("--out", type=Path, default=ROOT / "data" / "processed" / "omics")
     group = p.add_mutually_exclusive_group(required=True)

@@ -145,6 +145,20 @@ def test_assemble_expression_builds_matrix_and_obs(tmp_path: Path) -> None:
     assert list(data.genes.index) == [g[0] for g in make_genes(12)]
 
 
+def test_assemble_to_disk_never_overwrites_and_leaves_no_part_file(tmp_path: Path) -> None:
+    pm = _cohort_files(tmp_path)
+    target = tmp_path / "out" / "m.npy"
+    data = assemble_expression(pm, tmp_path, tpm_path=target)
+    assert isinstance(data.tpm, np.memmap) and target.exists()
+    assert not list(target.parent.glob("*.part"))
+    in_memory = assemble_expression(pm, tmp_path)
+    np.testing.assert_array_equal(data.tpm, in_memory.tpm)
+    before = target.stat().st_mtime_ns
+    with pytest.raises(FileExistsError, match="not overwriting"):
+        assemble_expression(pm, tmp_path, tpm_path=target)
+    assert target.stat().st_mtime_ns == before
+
+
 def test_assemble_rejects_changed_gene_order_and_missing_files(tmp_path: Path) -> None:
     pm = _cohort_files(tmp_path)
     shuffled = list(reversed(make_genes(12)))

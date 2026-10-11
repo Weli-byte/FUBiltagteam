@@ -44,40 +44,59 @@ test kümesine bakılarak değil.
   işaretlenir ve loglanır (pseudo-otozomal `_PAR_Y` genleri X kopyalarıyla aynı Ensembl kimliğini paylaşır).
 
 ## Çalıştırma (kendi bilgisayarında, veri `data/raw/gdc` altında)
+**En kolay yol (Claude Code gerekmez):** PowerShell'de depo klasöründe tek komut:
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\run_local_pipeline.ps1
+```
+Betik 1.4 ve 1.5'i sırayla çalıştırır, tüm çıktıyı `logs\pipeline_<tarih>.txt` dosyasına kaydeder
+(paylaşabilirsin). **Hiçbir dosyayı silmez/taşımaz/üzerine yazmaz, hiçbir işlemi sonlandırmaz, sistem
+ayarı değiştirmez, git'e bir şey eklemez.** Çıktı klasörleri doluysa üzerine yazmadan durur.
+
+Adım adım (elle):
 ```bash
 uv sync --group data --group omics
 # 0) Dosya biçimini doğrula (ilk gerçek dosyada; sütunlar beklenenden farklıysa hata verir)
 uv run python scripts/preprocess_omics.py inspect <data/raw/gdc/TCGA-LUAD/rnaseq/<id>/<dosya>.tsv>
-# 1) Matris + QC (öğrenme yok), tahmini 5-15 dk, tepe bellek ~1,5 GB
+# 1) Matris + QC (öğrenme yok); tepe özel bellek ~0,5 GB, süre disk hızına bağlı
 uv run python scripts/preprocess_omics.py build
 # 2a) Keşif amaçlı (model eğitiminde KULLANMA):
 uv run python scripts/preprocess_omics.py fit-transform --eda-all-samples
 # 2b) Gerçek kullanım (1.6'dan sonra): yalnızca eğitim hastalarının listesiyle
 uv run python scripts/preprocess_omics.py fit-transform --train-ids data/interim/train_ids.txt
 ```
-Çıktılar `data/processed/omics/` altında (git'e girmez, DVC): `expression_tpm.h5ad`,
-`expression_<all|protein_coding>_top<k>.h5ad`, `preprocessor_*.joblib`, `sample_qc.parquet`.
+Çıktılar `data/processed/omics/` altında (git'e girmez, DVC):
+- `expression_tpm.npy` (örnek x gen, float32, **diskte**; bellek-eşlemeli okunur),
+  `expression_tpm_obs.parquet` (örnek tablosu + QC bayrakları), `expression_tpm_var.parquet`
+  (gen sözlüğü), `expression_tpm_meta.json`, `sample_qc.parquet`
+- `expression_<all|protein_coding>_top<k>.h5ad` (z-skorlu, seçilmiş genler), `preprocessor_*.joblib`
+
 Rapor ve şekiller `docs/omics_qc/` altında (toplu sayılar ve grafikler; hasta kimliği içermez).
 Opsiyonel yol/gen kümesi skorları: `--gene-sets <dosya.gmt>` (ör. MSigDB Hallmark; indirmek ve
 lisansını doğrulamak sana ait).
 
+**Üzerine yazma yoktur:** `build` ve `fit-transform`, çıktı dosyası zaten varsa `FileExistsError` ile
+durur. Yeniden çalıştırmak için eski çıktıyı kendin başka yere taşı/yeniden adlandır.
+
 ## Bellek az olan bilgisayarlarda
-Tepe bellek kullanımı yaklaşık **1,5 GB**'tır. Önce doğru şeye bak:
-1. **"Boş" (free) değil "kullanılabilir" (available) belleğe bak.** Görev Yöneticisi → Performans →
-   Bellek → "Kullanılabilir"; ya da PowerShell: `(Get-Counter '\Memory\Available MBytes').CounterSamples.CookedValue`.
-   Windows önbelleği (standby) "boş" saymaz ama gerektiğinde hemen serbest bırakır. Kullanılabilir
-   bellek ≥ 2 GB ise çalıştırmak güvenlidir.
-2. **Hiçbir uygulamayı kapatamıyorsan sanal belleği (pagefile) büyüt:** Ayarlar → Sistem → Hakkında →
-   Gelişmiş sistem ayarları → Performans → Ayarlar → Gelişmiş → Sanal bellek → Değiştir → özel boyut
-   (başlangıç 8192 MB, en büyük 24576 MB). Yavaşlar ama bellek yetmezliğiyle düşmez.
-3. **Projeyi tek tek çalıştır** (her proje < 0,3 GB):
-   `build --projects TCGA-LUAD --out data/processed/omics_LUAD --report-dir docs/omics_qc/LUAD`
-   (aynısını BRCA ve COAD için). Havuzlu (pan-cancer) matris gerekiyorsa sonra tek seferde kurulur.
+Matris RAM'e yüklenmez; diskte tutulup gen blokları ve satır parçaları halinde okunur. Sentetik
+2.100 x 60.660'lık ölçümde **tepe özel (private) bellek ~0,5 GB**, ek olarak ~1 GB dosya-eşlemeli
+sayfa vardır (bunlar bellek baskısında sistem tarafından geri alınabilir). Sonuç olarak az boş RAM'li
+bir bilgisayarda da çalışır, yalnızca disk okuması nedeniyle daha yavaş olur.
+1. **"Kullanılabilir" RAM'e değil taahhüt payına (commit headroom) bak.** Çalıştırmanın başarılı olup
+   olmayacağını RAM + sanal bellek toplamı belirler. `run_local_pipeline.ps1` bunu dilden bağımsız
+   WMI ile okur (Türkçe Windows'ta `Get-Counter '\Memory\...'` çalışmaz) ve pay 3000 MB altındaysa durur.
+2. **Pay yetersizse sanal belleği büyüt:** Ayarlar → Sistem → Hakkında → Gelişmiş sistem ayarları →
+   Performans → Ayarlar → Gelişmiş → Sanal bellek → Değiştir → özel boyut (başlangıç 8192 MB,
+   en büyük 24576 MB). Bu "kullanılabilir RAM" sayısını yükseltmez, taahhüt payını yükseltir.
+3. **Claude Code içinde ağır işleri çalıştırma:** Claude Code bellek azaldığında alt işlemleri durdurabilir
+   (indirmede yaşandı). Yukarıdaki PowerShell betiğini doğrudan terminalde çalıştır.
+4. **Yedek:** projeleri tek tek çalıştır (`build --projects TCGA-LUAD --out data/processed/omics_LUAD
+   --report-dir docs/omics_qc/LUAD`); havuzlu matris gerekiyorsa sonra tek seferde kurulur.
 
 ## Sınırlılıklar
 - STAR-Counts sütun adları belgelerden yazıldı; `inspect` ilk gerçek dosyada doğrular.
-- Ölçek (2.100 örnek x 60.660 gen) için bellek/süre sentetik matrisle ölçüldü: tepe ~1,2 GB
-  (matris 0,5 GB + ~0,55 GB geçici), ~12 sn işlem; gerçek dosya okuma süresi (disk) ayrıca eklenir.
-  Tüm işlemler gen blokları halinde yapılır, tam boyutlu kopya üretilmez.
+- Ölçek (2.100 örnek x 60.660 gen) sentetik matrisle ölçüldü (Linux, `/proc` ile): tepe özel bellek
+  ~0,5 GB; build adımlarının toplamı soğuk diskte ~45 sn, iki fit-transform varyantı ~13 sn. Windows'ta
+  ve gerçek dosya okuma süresiyle (4.000+ dosya) değerler farklı olabilir; yerel olarak doğrulanmalı.
 - Yol (KEGG/Hallmark) gruplaması kod olarak vardır ama gen kümesi dosyası repoda yoktur.
 - `joblib` ile kaydedilen model dosyaları yalnızca güvendiğiniz kaynaklardan yüklenmelidir.
