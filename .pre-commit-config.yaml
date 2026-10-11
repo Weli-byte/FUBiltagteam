@@ -20,5 +20,13 @@ repos:
     rev: v1.11.2
     hooks:
       - id: mypy
-        additional_dependencies: ["pydantic>=2.6", "omegaconf>=2.3", "pytest>=8.0", "types-PyYAML"]
+        additional_dependencies: ["pydantic>=2.6", "omegaconf>=2.3", "pytest>=8.0", "types-PyYAML", "types-requests"]
         files: ^(onkos|models|services|tests)/
+  - repo: local
+    hooks:
+      - id: forbid-data-in-git
+        name: veri dosyaları git'e eklenemez (DVC kullanın)
+        language: fail
+        entry: "data/raw, data/interim ve data/processed altındaki veri dosyaları git'e girmez; 'dvc add' kullanın"
+        files: ^data/(raw|interim|processed)/
+        exclude: ^data/(raw|interim|processed)/(\.gitkeep|\.gitignore|.*\.dvc)$

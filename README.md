@@ -51,6 +51,10 @@ uv run pre-commit install     # commit öncesi kontroller
 uv run pytest                 # kurulum doğrulaması
 ```
 
+TCGA veri indirme: [docs/veri_indirme_rehberi.md](docs/veri_indirme_rehberi.md).
+
+Omics ön işleme (1.4): [docs/omics_on_isleme.md](docs/omics_on_isleme.md).
+
 Modüller arası veri sözleşmesi ve değişiklik süreci: [docs/veri_sozlesmesi.md](docs/veri_sozlesmesi.md).
 
 Eğitim araçları (torch, MLflow, DVC) ve Docker/Colab/AWS kurulumu: [docs/ortam_kurulumu.md](docs/ortam_kurulumu.md).
