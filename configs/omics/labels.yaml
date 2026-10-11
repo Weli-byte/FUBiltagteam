@@ -1,0 +1,32 @@
+# Mutation label rules (mini sprint 1.5). Rules live here, not in code:
+# add a gene by adding one line to `genes`.
+genes: [TP53, KRAS, EGFR, BRCA1]
+
+# A somatic variant counts as a mutation (label = 1) only if its Variant_Classification is listed.
+# Silent, Intron, UTR, flank, RNA and similar classes are excluded on purpose (not assumed functional).
+variant_classifications:
+  - Missense_Mutation
+  - Nonsense_Mutation
+  - Frame_Shift_Del
+  - Frame_Shift_Ins
+  - Splice_Site
+  - In_Frame_Del
+  - In_Frame_Ins
+  - Translation_Start_Site
+
+# TCGA sample type code (barcode characters 14-15) of the tumour sample used for labels.
+primary_sample_type_code: "01"
+
+# Class balance reporting / recommendations
+min_positives: 30        # fewer positive patients -> flagged as insufficient
+imbalance_ratio: 0.15    # positive fraction below this -> "imbalanced" recommendation
+
+# Variant-level annotations written to labels_variant_detail.parquet (NOT used as labels).
+# A variant gets the annotation when ALL given conditions match.
+annotations:
+  - {name: EGFR_L858R, gene: EGFR, hgvsp_short: ["p.L858R"]}
+  - {name: EGFR_T790M, gene: EGFR, hgvsp_short: ["p.T790M"]}
+  - {name: EGFR_exon19_deletion, gene: EGFR, variant_classification: [In_Frame_Del], exon: "19"}
+  - {name: KRAS_G12C, gene: KRAS, hgvsp_short: ["p.G12C"]}
+  - {name: KRAS_G12D, gene: KRAS, hgvsp_short: ["p.G12D"]}
+  - {name: KRAS_G12V, gene: KRAS, hgvsp_short: ["p.G12V"]}

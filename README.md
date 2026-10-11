@@ -53,6 +53,8 @@ uv run pytest                 # kurulum doğrulaması
 
 TCGA veri indirme: [docs/veri_indirme_rehberi.md](docs/veri_indirme_rehberi.md).
 
+Mutasyon etiketleri (1.5): [docs/etiket_tanimi.md](docs/etiket_tanimi.md).
+
 Omics ön işleme (1.4): [docs/omics_on_isleme.md](docs/omics_on_isleme.md).
 
 Modüller arası veri sözleşmesi ve değişiklik süreci: [docs/veri_sozlesmesi.md](docs/veri_sozlesmesi.md).
