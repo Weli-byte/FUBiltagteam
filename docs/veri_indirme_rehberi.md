@@ -26,7 +26,7 @@ cd FUBiltagteam
 uv sync --group data
 uv run python scripts/download_gdc.py --dry-run     # 1) sayıları ve toplam GB'ı gör
 uv run python scripts/download_gdc.py --limit 3     # 2) her türden 3 dosya dene
-uv run python scripts/download_gdc.py               # 3) tam indirme (kesilirse aynı komutu tekrar çalıştır)
+uv run python scripts/download_gdc.py               # 3) tam indirme (kesilirse aynı komutu tekrar çalıştır; bekleme süreleri 2-60 sn arasıdır, 8 deneme yapılır)
 ```
 > Kod `main` dalına girmediyse klonlarken `git clone -b claude/kind-euler-8kj48k ...` kullan.
 
@@ -39,7 +39,7 @@ uv run python scripts/download_gdc.py               # 3) tam indirme (kesilirse 
 | `data/interim/gdc_failed.tsv` | başarısız dosyalar (varsa) | Hayır |
 | `docs/veri_envanteri.md` | proje bazında toplu sayılar ve kesişimler | Evet (hasta düzeyi yok) |
 
-**`git add .` veya `git add -A` ile `data/` eklenmez.** Veri DVC ile izlenir (`dvc add data/raw/gdc`);
+**`git add .` veya `git add -A` ile `data/` eklenmez.** `uv run pre-commit install` yapıldıysa `data/raw|interim|processed` altındaki dosyalar commit'te otomatik engellenir; CI de bunu `tests/test_no_data_in_git.py` ile denetler. Veri DVC ile izlenir (`dvc add data/raw/gdc`);
 ortak depo (Google Drive) kurulumu ayrı bir iş, ekip karar verince `docs/ortam_kurulumu.md`'ye eklenecek.
 
 ## Nasıl doğrularım? (bitti kriteri)

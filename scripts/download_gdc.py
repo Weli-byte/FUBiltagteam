@@ -111,6 +111,8 @@ def main(argv: list[str] | None = None) -> int:
         print("--dry-run: nothing downloaded.")
         return 0
 
+    failed_path = args.interim_dir / "gdc_failed.tsv"
+    failed_path.unlink(missing_ok=True)  # a stale list from an earlier run would mislead
     failed: list[tuple[GdcFile, str]] = []
     counts = {"downloaded": 0, "skipped": 0}
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
@@ -130,8 +132,8 @@ def main(argv: list[str] | None = None) -> int:
         lines = ["file_id\tfile_name\terror"] + [
             f"{f.file_id}\t{f.file_name}\t{e}" for f, e in failed
         ]
-        (args.interim_dir / "gdc_failed.tsv").write_text("\n".join(lines) + "\n", encoding="utf-8")
-        print(f"See {args.interim_dir / 'gdc_failed.tsv'}; re-run to retry only these.")
+        failed_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        print(f"See {failed_path}; re-run to retry only these.")
         return 1
     return 0
 

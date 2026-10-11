@@ -260,7 +260,7 @@ def download_file(
     dest_root: Path,
     session: requests.Session | None = None,
     api: str = GDC_API,
-    attempts: int = 5,
+    attempts: int = 8,
     timeout: float = 120.0,
     sleep: Callable[[float], None] = time.sleep,
 ) -> str:
@@ -291,7 +291,7 @@ def download_file(
             last = exc
         part.unlink(missing_ok=True)
         if attempt < attempts - 1:
-            sleep(2**attempt)
+            sleep(min(60.0, 2.0 ** (attempt + 1)))  # 2, 4, 8, 16, 32, 60 ... seconds
     if isinstance(last, Md5MismatchError):
         raise last
     raise RuntimeError(f"download failed for {f.file_id}: {last!r}") from last
