@@ -22,15 +22,23 @@ BLOCK = 4000  # genes per block; temporary arrays stay at n_samples x BLOCK
 MIN_STD = 1e-8  # log2 units; below this a gene is constant (float rounding would give ~1e-16)
 
 
-def _check_matrix(x: Any, name: str = "X", block: int = BLOCK) -> np.ndarray[Any, Any]:
-    """Validate shape/numeric/NaN/negatives block by block (no full-size boolean copies)."""
+def _check_matrix(
+    x: Any, name: str = "X", block: int = BLOCK, rows: np.ndarray[Any, Any] | None = None
+) -> np.ndarray[Any, Any]:
+    """Validate shape/numeric/NaN/negatives block by block, optionally only for ``rows``.
+
+    Restricting the check to the rows actually used keeps ``fit(sample_idx=...)`` from reading (or
+    being broken by) samples outside the training set.
+    """
     array = np.asarray(x)
     if array.ndim != 2:
         raise ValueError(f"{name} must be 2-D (samples, genes); got shape {array.shape}")
     if not np.issubdtype(array.dtype, np.number):
         raise ValueError(f"{name} must be numeric")
     for start in range(0, array.shape[1], block):
-        part = array[:, start : start + block]
+        part = (
+            array[:, start : start + block] if rows is None else array[rows, start : start + block]
+        )
         if np.isnan(part).any():
             raise ValueError(f"{name} contains NaN; remove or impute these samples first")
         if (part < 0).any():
@@ -77,10 +85,13 @@ class ExpressionPreprocessor(BaseEstimator, TransformerMixin):  # type: ignore[m
         ``sample_idx`` restricts learning to those rows of ``X`` (e.g. the training split) without
         copying them; all statistics are computed in gene blocks to keep memory small.
         """
-        tpm = _check_matrix(X)
+        tpm = np.asarray(X)
+        if tpm.ndim != 2:
+            raise ValueError(f"X must be 2-D (samples, genes); got shape {tpm.shape}")
         n_genes = tpm.shape[1]
         rows = np.arange(tpm.shape[0]) if sample_idx is None else np.asarray(sample_idx)
         n_samples = len(rows)
+        _check_matrix(tpm, rows=rows)  # only the rows that are actually used for learning
         if n_samples < 2:
             raise ValueError("need at least 2 samples to fit")
         if not 0.0 <= self.min_fraction <= 1.0:

@@ -53,6 +53,8 @@ uv run pytest                 # kurulum doğrulaması
 
 TCGA veri indirme: [docs/veri_indirme_rehberi.md](docs/veri_indirme_rehberi.md).
 
+Baseline modeller ve değerlendirme (1.8): [docs/baseline_modeller.md](docs/baseline_modeller.md).
+
 Veri bölme ve sızıntı önleme (1.6): [docs/bolme_kullanim_rehberi.md](docs/bolme_kullanim_rehberi.md).
 
 Mutasyon etiketleri (1.5): [docs/etiket_tanimi.md](docs/etiket_tanimi.md).
