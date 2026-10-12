@@ -44,6 +44,36 @@ anlaşılamıyor; `patient_map` üzerinden **incelenmeli** (açık madde).
 4. Tümü TCGA'dır; harici doğrulama yoktur → genelleme iddiası yok.
 5. Pozitif hasta örnekleri (EGFR E746_A750del, L858R; KRAS G12D, G12V) bilinen sıcak noktalarla tutarlı; cBioPortal ile elle karşılaştırma **sizde bekliyor**.
 
-## 5. Çalıştırma sonrası doldurulacak
-- [ ] 1.6 bölme sayıları ve dağılım uyarıları (`docs/splits/splits-v1_*`)
-- [ ] 1.8 temel model sonuçları (`docs/baselines/`), kanser türü tabanına karşı eşleştirilmiş fark
+## 5. Gerçek veri koşuları (bölmeler ve ön temel model)
+
+Kaynak: yerel çalıştırma çıktısı; rapor dosyaları dal `veri/omics-bolme-baseline-raporlari` (commit 54a5265).
+
+**LUAD farkı açıklandı:** patient_map'te RNA-seq dosyası olmayan hasta sayısı LUAD 68, BRCA 3, COAD 3. 585 − 68 = 517.
+**COAD kütüphane boyutu bayrakları (18):** TSS dağılımı AA 15, A6 2, CM 1. Neden doğrulanmadı; bu merkez kaynaklı bir kalite farkı olabilir.
+
+**Bölmeler (`splits-v1`, 1.6):** 2144 hasta, 2133 slayt; doğrulama başarılı, sızıntı yok, 25/25 sızıntı testi geçti, dağılım uyarısı yok.
+
+| Proje | Train | Val | Test |
+|---|---|---|---|
+| BRCA | 771 | 165 | 162 |
+| COAD | 323 | 69 | 69 |
+| LUAD | 409 | 88 | 88 |
+| Toplam | 1503 | 322 | 319 |
+
+BRCA1 pozitifleri (train/val/test): 36/8/8. Kurum dışarıda (site held-out) senaryoda BRCA1 test pozitifi yalnızca 5: bu senaryoda güven aralığı çok geniş çıkacak.
+
+**Ön temel model koşusu (`hafif1`, NİHAİ DEĞİL):** yalnızca TP53, yalnızca havuzlu kapsam, 500 gen, 2 model, 1609 hasta (684 pozitif), 31,7 dk.
+
+| Model | AUROC [%95 GA] | AUPRC [%95 GA] |
+|---|---|---|
+| logreg_l2 | 0,878 [0,861, 0,893] | 0,817 [0,785, 0,847] |
+| gbm | 0,869 [0,850, 0,885] | (rapordan) |
+| project_only (kanser türü tabanı) | 0,586 | 0,485 |
+
+En iyi modelin kanser türü tabanına farkı: ΔAUROC +0,283 [+0,250, +0,313]. Kural tabanlı etiket: "kolay; omics, kanser türünden fazla bilgi veriyor". AUROC > 0,95 şüphesi yok.
+
+**Sınırlılıklar:** Bu koşu EGFR, KRAS ve BRCA1'i, proje bazlı modelleri ve beş modelin tamamını kapsamaz. Pozitifi az olan hedeflerde sonuç daha belirsiz olacak. Nihai sonuçlar için tam koşu gerekli.
+
+**Açık sorunlar:**
+- Tam koşu henüz yapılmadı; bellek kısıtlı makinede tahmini 1–2 gün. RAM boşaltılırsa veya bulutta daha kısa.
+- `gbm` adımı 500 gen ve 1609 örnekle bile ~28 dk sürdü; bu beklenenden uzun. Bellek sayfalaması mı yoksa gbm yapılandırması mı neden, **doğrulanmadı**; Sprint 2 başında profil çıkarılmalı.

@@ -3,12 +3,14 @@
 > Kapsam: yalnızca Sprint 2. Sonraki sprintler için bu dosya plan içermez.
 
 ## Girişte bitmiş olmalı (Sprint 1 kapanışı)
-- [ ] `splits-v1` oluşturuldu, manifest SHA-256 doğrulandı (`make_splits.py --verify splits-v1`)
-- [ ] `train_baselines.py --quick`, ardından tam çalıştırma; sonuçlar `docs/baselines/` altında
-- [ ] EDA raporu bölüm 5 dolduruldu
+- [x] `splits-v1` oluşturuldu, manifest SHA-256 doğrulandı, sızıntı testleri 25/25 geçti
+- [x] Ön temel model koşusu (`hafif1`, TP53, nihai değil)
+- [ ] **Tam `train_baselines` çalıştırması** (RAM boşken veya bulutta); gbm yavaşlığının nedeni araştırılsın
+- [x] EDA raporu bölüm 5 (ön sonuçlarla) dolduruldu; tam koşu sonrası güncellenecek
 - [ ] PR #5 birleştirildi, PR #3 için onaylar tamam
 - [ ] DVC Google Drive remote kuruldu, `data\raw\gdc` harici diske yedeklendi
-- [ ] cBioPortal ile 5 pozitif hasta kontrolü; LUAD 585→517 fark nedeni
+- [ ] cBioPortal ile 5 pozitif hasta kontrolü
+- [x] LUAD 585→517 fark nedeni: RNA-seq dosyası olmayan 68 hasta
 - [ ] Kaynak doğrulama turu başladı (1.9)
 - [ ] Risk kaydı ve retrospektif toplantıda onaylandı
 
