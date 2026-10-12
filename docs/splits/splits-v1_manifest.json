@@ -1,0 +1,35 @@
+{
+  "version": "splits-v1",
+  "seed": 42,
+  "ratios": [
+    0.7,
+    0.15,
+    0.15
+  ],
+  "n_folds": 5,
+  "genes": [
+    "TP53",
+    "KRAS",
+    "EGFR",
+    "BRCA1"
+  ],
+  "n_patients": 2144,
+  "counts": {
+    "train": 1503,
+    "val": 322,
+    "test": 319
+  },
+  "counts_site": {
+    "train": 1481,
+    "val": 313,
+    "test": 350
+  },
+  "sha256": {
+    "train": "2bfb324d2bf9fbe551b5743d9f648e7bca74e5bfe3eed7dd492355652d83dfd0",
+    "val": "d4e7085826b2ce8f55ed7bb3d4ad5bcd0f336a7434f3f99078866c743251a3d6",
+    "test": "022ae2f4d4dc08084757704acfc9c66a1d6fdf4225eb614176a7f447643ddeb7"
+  },
+  "sha256_site_test": "0bfb3df0a54c077833f204821679e223e947ad973b72c75f8c9ef2686125d580",
+  "warnings": [],
+  "test_set_rule": "final evaluation only; never for model or hyper-parameter selection"
+}
