@@ -1,0 +1,49 @@
+# DVC pipeline for the histology data line (mini sprint 1.10, Nisa).
+# `dvc repro` re-runs only stages whose inputs changed; outputs are DVC-tracked (not in git).
+# Remote storage is NOT configured yet (team decision pending; see docs/ortam_kurulumu.md):
+#   dvc remote add -d storage gdrive://<folder-id>   # or an S3-compatible bucket
+#   dvc push
+stages:
+  camelyon_masks:
+    cmd: uv run --group histo python scripts/build_tumor_masks.py
+    deps:
+      - scripts/build_tumor_masks.py
+      - models/histo/camelyon
+      - configs/histo/camelyon.yaml
+      - data/raw/camelyon/CAMELYON16/annotations
+    outs:
+      - data/processed/camelyon16/masks
+    metrics:
+      - data/manifests/camelyon16_splits.json:
+          cache: false
+
+  wsi_qc:
+    cmd: uv run --group histo python scripts/run_wsi_qc.py
+    deps:
+      - scripts/run_wsi_qc.py
+      - models/histo/wsi
+      - configs/histo/qc.yaml
+      - data/manifests/slides_to_extract.csv
+    outs:
+      - data/interim/qc_results.parquet
+
+  extract_patches:
+    cmd: uv run --group histo python scripts/extract_patches.py
+    deps:
+      - scripts/extract_patches.py
+      - models/histo/patches
+      - models/histo/wsi
+      - configs/histo/patch_extract.yaml
+      - data/manifests/slides_to_extract.csv
+    outs:
+      - data/processed/patches/coords_v1
+
+  sample_pack_v0:
+    cmd: uv run --group histo python scripts/make_sample_pack.py
+    deps:
+      - scripts/make_sample_pack.py
+      - models/histo/patches/sample_pack.py
+      - configs/histo/patch_v0.yaml
+      - data/manifests/patch_v0_slides.csv
+    outs:
+      - data/processed/patch_v0

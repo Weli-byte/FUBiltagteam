@@ -1,0 +1,54 @@
+# CAMELYON16 download, masks and official split (mini sprint 1.5).
+# Source: AWS Open Data registry entry "CAMELYON" (bucket camelyon-dataset, us-west-2, CC0).
+# Verified 2026-10-13 via anonymous HTTPS listing; re-check before a large download.
+source:
+  base_url: https://camelyon-dataset.s3.us-west-2.amazonaws.com
+  prefixes:
+    images: CAMELYON16/images/
+    annotations: CAMELYON16/annotations/
+    masks: CAMELYON16/masks/
+    evaluation: CAMELYON16/evaluation/
+  reference_csv: CAMELYON16/evaluation/reference.csv
+  readme: CAMELYON16/README.md
+  license: CAMELYON16/license.txt
+download:
+  dest_root: data/raw/camelyon
+  manifest: data/manifests/camelyon16_objects.csv
+  workers: 2
+  verify_md5: true           # only possible for single-part ETags; size is always checked
+  include: [annotations, evaluation]   # start small; add "images" for the full 0.75 TB
+  limit: null                # e.g. 10 for a trial run
+masks:
+  downsample: 32.0           # mask resolution: level-0 px per mask px (32 -> ~8 µm/px at 0.25)
+  tumor_groups: [Tumor, _0, _1, metastases, Metastases]
+  exclusion_groups: [Exclusion, _2]
+  out_dir: data/processed/camelyon16/masks
+  overlay_dir: data/processed/camelyon16/mask_overlays
+  overlay_sample: 20         # slides for the manual mask-alignment check
+  seed: 42
+  mpp_override: 0.25         # CAMELYON16 TIFFs may lack mpp tags; scanners ~0.23-0.25 µm/px
+splits:
+  out_json: data/manifests/camelyon16_splits.json
+  # Slides the official README lists as NOT exhaustively annotated (never use as 'normal' area)
+  partially_annotated:
+    - test_114
+    - tumor_010
+    - tumor_015
+    - tumor_018
+    - tumor_020
+    - tumor_025
+    - tumor_029
+    - tumor_033
+    - tumor_034
+    - tumor_044
+    - tumor_046
+    - tumor_051
+    - tumor_054
+    - tumor_055
+    - tumor_056
+    - tumor_067
+    - tumor_079
+    - tumor_085
+    - tumor_092
+    - tumor_095
+    - tumor_110

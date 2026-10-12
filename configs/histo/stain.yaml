@@ -1,0 +1,27 @@
+# Stain normalization and augmentation (mini sprint 1.8).
+normalizer:
+  method: macenko            # none | macenko | reinhard
+  reference_image: data/processed/patch_v0/reference_patch.png   # pick a representative patch
+  macenko:
+    alpha: 1.0
+    beta: 0.15
+    max_percentile: 99.0
+augment:
+  rot90: true
+  flip_horizontal: true
+  flip_vertical: true
+  hed_sigma: 0.05
+  hed_p: 0.8
+  brightness: 0.08
+  contrast: 0.08
+  color_p: 0.8
+  blur_p: 0.1
+  blur_sigma_max: 1.0
+  noise_p: 0.1
+  noise_sigma: 4.0
+compare:                      # scripts/compare_stain_norm.py
+  pack_dir: data/processed/patch_v0
+  out_dir: outputs/stain_comparison
+  n_per_centre: 300           # patches sampled per centre for the colour statistics
+  seeds: [0, 1, 2]
+  grid_examples: 8            # before/after example columns in the figure

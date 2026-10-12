@@ -1,0 +1,23 @@
+# Production patch-coordinate extraction (mini sprint 1.7).
+# All sizes in pixels AT target_mpp; the pipeline converts to level-0 pixels per slide.
+grid:
+  patch_px: 256
+  target_mpp: 0.5          # 20x; 40x slides are read from level 0 and downscaled
+  stride_px: null          # null = patch_px (no overlap)
+  min_tissue_fraction: 0.5
+  thumbnail_px: 2048       # tissue mask resolution (longest edge)
+tissue_mask:               # v1 (mini sprint 1.6)
+  median_blur_px: 7
+  saturation_floor: 15
+  morphology: true
+  open_px: 5
+  close_px: 9
+  min_object_px: 400
+  fill_holes: true
+  max_hole_px: 2000
+run:
+  workers: 4
+  overwrite: false         # false = resume: finished, valid HDF5 files are skipped
+  slide_list: data/manifests/slides_to_extract.csv   # columns: slide_id,path[,mpp_override]
+  out_dir: data/processed/patches/coords_v1
+  results_csv: data/processed/patches/coords_v1_results.csv

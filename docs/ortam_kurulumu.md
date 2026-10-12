@@ -44,6 +44,8 @@ GPU kontrolü (Nisa'nın bulut ortamında yapılmalı):
 Colab'da `MLFLOW_TRACKING_URI`'yi paylaşılan MLflow sunucusuna yönlendir veya yerel SQLite kullan.
 
 ## 4) AWS SageMaker / EC2 GPU
+Ayrıntılı GPU makinesi kurulumu, depolama düzeni ve erişim kuralları: [gpu_ortam_rehberi.md](gpu_ortam_rehberi.md) (mini sprint 1.2, Nisa).
+
 GPU'lu bir instance'ta (A100/V100) sürücü + Docker + NVIDIA Container Toolkit kur, sonra Docker
 bölümündeki komutlar. Maliyeti düşük tutmak için kullanılmayan instance'ı durdur.
 

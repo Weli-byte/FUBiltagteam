@@ -36,3 +36,6 @@ node_modules/
 
 mlflow.db
 outputs/
+
+# MkDocs build output
+site/
