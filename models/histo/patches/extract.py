@@ -22,7 +22,7 @@ from typing import Any
 from models.histo.config import config_hash
 from models.histo.patches.grid import PatchGridConfig, tissue_patch_grid
 from models.histo.patches.h5 import CoordsAttrs, validate_coords_h5, write_coords_h5
-from models.histo.wsi.reader import SlideReader
+from models.histo.wsi.reader import SlideReader, magnification_from_mpp
 from models.histo.wsi.tissue import TISSUE_MASK_VERSION, TissueMaskConfig
 
 log = logging.getLogger(__name__)
@@ -46,6 +46,7 @@ class ExtractResult:
     seconds: float
     out_path: str | None
     error: str | None = None
+    source_path: str | None = None  # local provenance only; never written into the HDF5
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -97,14 +98,19 @@ def extract_one(
     """Process one slide to ``<out_dir>/<slide_id>.h5``. Never raises: failures are reported."""
     out_path = _output_path(out_dir, spec.slide_id)
     if not overwrite and _already_done(out_path):
-        return ExtractResult(spec.slide_id, "skipped", 0, 0, 0.0, str(out_path))
+        return ExtractResult(
+            spec.slide_id, "skipped", 0, 0, 0.0, str(out_path), source_path=str(spec.path)
+        )
     started = time.perf_counter()
     try:
         with SlideReader(spec.path, mpp_override=spec.mpp_override) as reader:
             grid = tissue_patch_grid(reader, grid_cfg, mask_cfg)
             if len(grid.coords) == 0:
                 raise ValueError("no tissue patches found (empty slide or mask failure)")
-            magnification = reader.info.magnification or (0.25 / reader.mpp * 40.0)
+            # Extraction magnification (what the patches are), not the scanner's native one.
+            magnification = magnification_from_mpp(grid_cfg.target_mpp) or (
+                0.25 / grid_cfg.target_mpp * 40.0
+            )
             attrs = CoordsAttrs(
                 slide_id=spec.slide_id,
                 magnification=float(magnification),
@@ -120,7 +126,6 @@ def extract_one(
                 tissue_mask_version=TISSUE_MASK_VERSION,
                 config_hash=config_hash({"grid": grid_cfg.to_dict(), "mask": mask_cfg.to_dict()}),
                 created_at=datetime.now(UTC).isoformat(timespec="seconds"),
-                source_path=str(spec.path),
             )
             write_coords_h5(out_path, grid.coords, grid.tissue_fraction, attrs)
         return ExtractResult(
@@ -130,11 +135,19 @@ def extract_one(
             grid.n_candidates,
             time.perf_counter() - started,
             str(out_path),
+            source_path=str(spec.path),
         )
     except Exception as exc:  # a broken slide must not stop the batch
         log.exception("slide %s failed", spec.slide_id)
         return ExtractResult(
-            spec.slide_id, "failed", 0, 0, time.perf_counter() - started, None, repr(exc)
+            spec.slide_id,
+            "failed",
+            0,
+            0,
+            time.perf_counter() - started,
+            None,
+            repr(exc),
+            source_path=str(spec.path),
         )
 
 

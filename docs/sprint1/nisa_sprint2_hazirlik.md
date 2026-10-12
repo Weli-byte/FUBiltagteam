@@ -18,7 +18,7 @@
       sorun değil (araştırma) ama ürünleştirmede kısıt; raporda belirt.
 - [ ] Kota/kredi: Azure for Students, GitHub Student Pack (herkes); Google Research Credits
       (danışman); AWS/GCP kota talebi şablonu (`gpu_strateji.md` §6).
-- [ ] CODEOWNERS'a `/models/histo/ @<nisa-handle>` ekle.
+- [x] CODEOWNERS'a `/models/histo/`, `/configs/histo/`, `/docs/histo/`, `/infra/gpu/` için `@Nananisnana` eklendi (bu dalda).
 
 ## Hafta 2-3 (gerçek veriyle Sprint 1'in açık kalan doğrulamaları)
 

@@ -98,6 +98,20 @@ def test_extract_writes_validates_and_resumes(
     assert third.status == "done" and validate_coords_h5(Path(first.out_path)).slide_id == "slide_a"
 
 
+def test_attrs_describe_extraction_scale_and_carry_no_source_path(tmp_path: Path) -> None:
+    """A 40x scan extracted at 20x reports magnification 20 and 512-px level-0 boxes; the file
+    never stores the slide path (TCGA file names carry the patient barcode)."""
+    path, _ = make_slide(tmp_path, "TCGA-AA-0001-01Z-00-DX1.deadbeef", mpp=0.25)
+    result = extract_one(SlideSpec("file-uuid-0001", path), tmp_path / "out", GRID, MASK)
+    assert result.status == "done" and result.out_path and result.source_path == str(path)
+    attrs = validate_coords_h5(Path(result.out_path))
+    assert attrs.magnification == 20.0 and attrs.slide_mpp == pytest.approx(0.25, rel=1e-3)
+    assert attrs.patch_size_px == 128 and attrs.patch_level0_px == 256
+    with h5py.File(result.out_path, "r") as f:
+        blob = " ".join(str(v) for v in f.attrs.values())
+    assert "TCGA" not in blob and "deadbeef" not in blob
+
+
 def test_broken_slide_is_reported_not_raised(tmp_path: Path) -> None:
     bad = tmp_path / "broken.svs"
     bad.write_bytes(b"not a slide")

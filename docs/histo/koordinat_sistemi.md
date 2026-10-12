@@ -50,10 +50,14 @@ w_t = patch_level0_px / ds                          # patch kenarı thumbnail'de
 | `tissue_fraction` | (N,) float32 | kutunun doku maskesiyle örtüşme oranı (≥ `min_tissue_fraction`) |
 | attr `schema_version` | str | sözleşme sürümü (`onkos.contracts.SCHEMA_VERSION`) |
 | attr `slide_id` | str | anonim anahtar (TCGA'da GDC dosya UUID'si; CAMELYON'da `tumor_001`) |
-| attr `magnification`, `target_mpp`, `slide_mpp` | float | büyütme ve çözünürlükler |
+| attr `magnification`, `target_mpp`, `slide_mpp` | float | `magnification` = **çıkarım** büyütmesi (`target_mpp`'den: 0,5 → 20); tarayıcının yerel çözünürlüğü `slide_mpp` |
 | attr `patch_size_px`, `patch_level0_px`, `stride_level0_px` | int | yukarıdaki tanımlar |
 | attr `slide_width`, `slide_height`, `level_count` | int | seviye-0 boyutlar |
-| attr `tissue_mask_version`, `config_hash`, `pipeline_version`, `created_at`, `source_path` | str | tekrarlanabilirlik |
+| attr `tissue_mask_version`, `config_hash`, `pipeline_version`, `created_at` | str | tekrarlanabilirlik |
+
+Kaynak dosya yolu **bilerek dosyada yoktur**: TCGA dosya adları hasta barkodu taşır ve bu
+dosyalar diğer modüllerle paylaşılır (sözleşme kuralı: paylaşılan çıktıda hasta kimliği olmaz).
+Slayt yolu yalnızca yerel `*_results.csv` (`source_path` sütunu) ve slayt listesinde tutulur.
 
 Sprint 2'de aynı dosyaya `features (N, D) float16` ve `encoder_name/encoder_version` eklenir;
 `tests/test_histo_patches.py::test_coords_file_becomes_contract_file_once_features_are_added`
@@ -65,7 +69,8 @@ Okuma:
 from models.histo.patches.h5 import read_coords_h5
 from models.histo.wsi.reader import SlideReader
 coords, fractions, attrs = read_coords_h5("data/processed/patches/coords_v1/tumor_001.h5")
-with SlideReader(attrs.source_path, mpp_override=0.243) as reader:
+slide_path = "data/raw/camelyon/CAMELYON16/images/tumor_001.tif"   # slayt listesinden (slides.csv)
+with SlideReader(slide_path, mpp_override=0.243) as reader:
     x, y = coords[0]
     patch = reader.read_patch(int(x), int(y), attrs.patch_size_px, attrs.target_mpp)  # (256,256,3) uint8
 ```

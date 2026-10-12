@@ -12,8 +12,12 @@ Düzen::
     /tissue_fraction  (N,)   float32  doku oranı (0-1)
     attrs: schema_version, slide_id, magnification, target_mpp, slide_mpp, patch_size_px,
            patch_level0_px, stride_level0_px, slide_width, slide_height, level_count,
-           min_tissue_fraction, tissue_mask_version, config_hash, pipeline_version,
-           created_at, source_path
+           min_tissue_fraction, tissue_mask_version, config_hash, pipeline_version, created_at
+
+``magnification`` is the **extraction** magnification (derived from ``target_mpp``: 0.5 -> 20x),
+not the scanner's native one (that is implied by ``slide_mpp``). The source file path is kept
+out of the file on purpose: TCGA file names carry the patient barcode, and these files are
+shared with other modules (contract rule: no patient identifier in shared artefacts).
 """
 
 from __future__ import annotations
@@ -48,7 +52,6 @@ class CoordsAttrs:
     tissue_mask_version: str
     config_hash: str
     created_at: str
-    source_path: str
     pipeline_version: str = PIPELINE_VERSION
     schema_version: str = SCHEMA_VERSION
 
@@ -79,7 +82,6 @@ class CoordsAttrs:
             tissue_mask_version=str(values["tissue_mask_version"]),
             config_hash=str(values["config_hash"]),
             created_at=str(values["created_at"]),
-            source_path=str(values["source_path"]),
             pipeline_version=str(values["pipeline_version"]),
             schema_version=str(values["schema_version"]),
         )
