@@ -10,13 +10,14 @@
 - Sözleşme-önce yaklaşım (Pydantic + OpenAPI + HDF5 sözleşmesi).
 
 ## Başla
-- Gerçek veride çalıştırmayı kodla aynı gün yapmak (1.6 ve 1.8 hâlâ gerçek veride çalışmadı).
+- Gerçek veride çalıştırmayı kodla aynı gün yapmak (1.6 ve 1.8 gerçek veride ancak sprint sonunda çalıştı; tam temel model koşusu Sprint 2'ye kaldı).
 - Kaynakları yazıldığı anda doğrulamak (1.9 listesi tamamen doğrulanmamış).
 - Zaman çizelgesini ve takvim tarihlerini repoda tutmak.
 - PR onaylarını için bir gün sınırı koymak.
 
 ## Bırak
 - Yerel Claude Code'a belirsiz yetki bırakmak: bir kez yasaklı birleştirme yapıldı; her istemde kural yinelenmeli.
+- Belleği ve diski kontrol etmeden uzun yerel koşular başlatmak (iki koşu yarıda kesildi, 200–900 MB boş RAM).
 - Büyük çıktıları (>500 KB) commit'e kazara sokmak (hook yakaladı, dpi 100'e inildi).
 - Belleği tüketen tek parça işlemler.
 
@@ -31,7 +32,7 @@
 ## Aksiyonlar
 | Aksiyon | Sorumlu | Tarih |
 |---|---|---|
-| 1.6 ve 1.8'i gerçek veride çalıştır | Proje lideri | |
-| DVC remote + harici disk yedeği | Proje lideri | |
+| Tam temel model koşusu (Colab veya RAM boşken) | Proje lideri | Sprint 2 başı |
+| DVC remote + küçük klasör yedeği | Proje lideri | Sprint 2 başı |
 | GPU/CUDA kontrolü | Nisa | |
 | Kaynak doğrulama turu (1.9) | Ekip | |
