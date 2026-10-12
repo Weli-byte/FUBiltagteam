@@ -38,8 +38,8 @@ ADIM 1 — LUAD 585 → 517 farkı (yalnızca okuma)
 
 ADIM 2 — Bölmeler (1.6)
  uv run python scripts\make_splits.py --version splits-v1
- sonra: uv run python scripts\make_splits.py --version splits-v1 --verify
- sonra: uv run pytest tests\test_no_leakage.py -q
+ sonra: uv run python scripts\make_splits.py --verify splits-v1
+ sonra: uv run pytest tests\test_no_leakage.py -q --basetemp <yeni-ve-henüz-olmayan-klasör, örn. C:\Users\weli1\onkos_pytest_tmp_1>
  Çıktıdaki sınıf dengesi uyarılarını ve kümelerdeki hasta/pozitif sayılarını aynen göster.
 
 ADIM 3 — Hızlı temel model (1.8)

@@ -3,7 +3,7 @@
 > Kapsam: yalnızca Sprint 2. Sonraki sprintler için bu dosya plan içermez.
 
 ## Girişte bitmiş olmalı (Sprint 1 kapanışı)
-- [ ] `splits-v1` oluşturuldu, manifest SHA-256 doğrulandı (`make_splits.py --version splits-v1 --verify`)
+- [ ] `splits-v1` oluşturuldu, manifest SHA-256 doğrulandı (`make_splits.py --verify splits-v1`)
 - [ ] `train_baselines.py --quick`, ardından tam çalıştırma; sonuçlar `docs/baselines/` altında
 - [ ] EDA raporu bölüm 5 dolduruldu
 - [ ] PR #5 birleştirildi, PR #3 için onaylar tamam
