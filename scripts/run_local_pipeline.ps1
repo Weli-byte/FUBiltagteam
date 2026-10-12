@@ -11,6 +11,7 @@ OKUNUR. Cikti klasorleri doluysa durur. Tum cikti logs\ klasorune kaydedilir.
 $ErrorActionPreference = "Continue"  # native komut uyarilari (stderr) betigi dusurmesin; hatalar $LASTEXITCODE ile denetlenir
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $env:PYTHONUTF8 = "1"
+$env:PYTHONUNBUFFERED = "1"  # cikti hemen gorunsun (hat uzerinden gelirken tamponlanmasin)
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 
@@ -24,7 +25,8 @@ function Stop-Pipeline($message) {
 function Invoke-Step($title, [scriptblock]$action) {
     Write-Host ""
     Write-Host "=== $title ===" -ForegroundColor Cyan
-    & $action
+    # Native komut ciktisini PowerShell hattindan gecir: boylece pencerede ve Start-Transcript kaydinda gorunur.
+    & $action 2>&1 | ForEach-Object { $_.ToString() }
     if ($LASTEXITCODE -ne 0) { Stop-Pipeline "'$title' hata verdi (cikis kodu $LASTEXITCODE). Yukaridaki hata metnini paylasin." }
 }
 
