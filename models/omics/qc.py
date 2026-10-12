@@ -242,7 +242,7 @@ def _save(fig: Any, path: Path) -> Path:
     import matplotlib.pyplot as plt
 
     fig.tight_layout()
-    fig.savefig(path, dpi=130)
+    fig.savefig(path, dpi=100)  # keeps each figure well under the 500 KB repo limit
     plt.close(fig)
     return path
 
