@@ -62,7 +62,7 @@ uv run python scripts/preprocess_omics.py build
 # 2a) Keşif amaçlı (model eğitiminde KULLANMA):
 uv run python scripts/preprocess_omics.py fit-transform --eda-all-samples
 # 2b) Gerçek kullanım (1.6'dan sonra): yalnızca eğitim hastalarının listesiyle
-uv run python scripts/preprocess_omics.py fit-transform --train-ids data/interim/train_ids.txt
+uv run python scripts/preprocess_omics.py fit-transform --train-ids data/processed/splits/splits-v1/train_ids_omics.txt
 ```
 Çıktılar `data/processed/omics/` altında (git'e girmez, DVC):
 - `expression_tpm.npy` (örnek x gen, float32, **diskte**; bellek-eşlemeli okunur),

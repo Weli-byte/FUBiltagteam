@@ -53,6 +53,8 @@ uv run pytest                 # kurulum doğrulaması
 
 TCGA veri indirme: [docs/veri_indirme_rehberi.md](docs/veri_indirme_rehberi.md).
 
+Veri bölme ve sızıntı önleme (1.6): [docs/bolme_kullanim_rehberi.md](docs/bolme_kullanim_rehberi.md).
+
 Mutasyon etiketleri (1.5): [docs/etiket_tanimi.md](docs/etiket_tanimi.md).
 
 Omics ön işleme (1.4) ve yerel çalıştırma betiği: [docs/omics_on_isleme.md](docs/omics_on_isleme.md).
