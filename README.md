@@ -33,7 +33,7 @@ Mimari ve veri akışı: [docs/architecture.md](docs/architecture.md). Kararlar:
 ├── data/             raw/ interim/ processed/ (git'te değil, DVC ile)
 ├── configs/          YAML konfigürasyonları (model/data/train grupları)
 ├── scripts/          Çalıştırılabilir betikler (hello_world.py)
-├── infra/            Dockerfile, docker-compose, bulut betikleri
+├── infra/            Dockerfile, docker-compose; gpu/ (CUDA imajı, kurulum ve auto-shutdown betikleri)
 ├── docs/             Mimari, ADR'ler, rehberler
 ├── notebooks/        Keşif defterleri
 └── tests/            Testler (modül sınırı testi dahil)
@@ -51,7 +51,16 @@ uv run pre-commit install     # commit öncesi kontroller
 uv run pytest                 # kurulum doğrulaması
 ```
 
+Histoloji hattı (WSI okuma, QC, patch, boya normalizasyonu, ViT baseline) ve GPU ortamı için ek grup:
+`uv sync --group train --group data --group histo` (OpenSlide `openslide-bin` ile gelir; sistem paketi
+gerekmez). Doğrulama: `uv run python scripts/verify_env.py`.
+
 TCGA veri indirme: [docs/veri_indirme_rehberi.md](docs/veri_indirme_rehberi.md).
+
+Histoloji veri hattı ve Modül 1 (Nisa, Sprint 1): GPU/maliyet planı [docs/gpu_strateji.md](docs/gpu_strateji.md),
+GPU ortamı [docs/gpu_ortam_rehberi.md](docs/gpu_ortam_rehberi.md), patch koordinat sistemi
+[docs/histo/koordinat_sistemi.md](docs/histo/koordinat_sistemi.md), diğer belgeler [docs/histo/](docs/histo/),
+veri kartları [docs/data_cards/](docs/data_cards/). Dokümantasyon sitesi: `uv run --group docs mkdocs serve`.
 
 Omics ön işleme (1.4): [docs/omics_on_isleme.md](docs/omics_on_isleme.md).
 

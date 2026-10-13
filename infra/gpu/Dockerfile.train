@@ -1,0 +1,59 @@
+# syntax=docker/dockerfile:1
+# ONKOS GPU training image (mini sprint 1.2, Nisa).
+#
+# Bu dosya ne işe yarar? Ekibin aynı CUDA + PyTorch + OpenSlide ortamını her makinede birebir
+# kurmasını sağlar. Üç katman: base (CUDA runtime + uv), train (eğitim bağımlılıkları),
+# dev (test/lint araçları). OpenSlide, `openslide-bin` PyPI paketiyle gelir; apt paketi gerekmez.
+#
+# Sürüm notları (2026-10-13, Docker Hub/NVIDIA dokümanlarından doğrulandı; docs/gpu_ortam_rehberi.md):
+#   - nvidia/cuda:12.6.3-cudnn-runtime-ubuntu22.04 mevcut; host sürücüsü >= 560.35 (CUDA 12.6) olmalı.
+#   - torch 2.14.x için CUDA wheel index'leri: cu126, cu130, cu132 (cu124 YOK). Bu imaj cu126 kullanır.
+#   - uv.lock CPU torch pinler; CUDA wheel'i aşağıda `uv pip install --index` ile üzerine yazılır,
+#     böylece lock dosyası (ve CI) değişmez. Sürüm pinleri UV_TORCH_* argümanlarıdır.
+#
+# Build (repo kökünden):
+#   docker build -f infra/gpu/Dockerfile.train --target train -t onkos-train:cu126 .
+# Run:
+#   docker run --rm --gpus all -v $PWD:/workspace -v /data:/data onkos-train:cu126 \
+#       python scripts/verify_env.py --require-cuda
+
+ARG CUDA_IMAGE=nvidia/cuda:12.6.3-cudnn-runtime-ubuntu22.04
+FROM ${CUDA_IMAGE} AS base
+ENV DEBIAN_FRONTEND=noninteractive \
+    UV_LINK_MODE=copy \
+    UV_PROJECT_ENVIRONMENT=/opt/venv \
+    UV_PYTHON_INSTALL_DIR=/opt/python \
+    PATH="/opt/venv/bin:/root/.local/bin:${PATH}" \
+    PYTHONUNBUFFERED=1
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        git curl ca-certificates tmux htop \
+    && rm -rf /var/lib/apt/lists/*
+# Pin uv to a known release (update deliberately; `latest` breaks reproducibility).
+COPY --from=ghcr.io/astral-sh/uv:0.12.6 /uv /usr/local/bin/uv
+WORKDIR /workspace
+COPY pyproject.toml uv.lock .python-version README.md LICENSE ./
+RUN uv python install 3.11
+
+# ---------------------------------------------------------------- training image
+FROM base AS train
+ARG TORCH_VERSION=2.14.1
+ARG TORCHVISION_VERSION=0.29.1
+ARG TORCH_INDEX=https://download.pytorch.org/whl/cu126
+RUN uv sync --frozen --no-dev --group train --group data --group histo --no-install-project \
+    && uv pip install --python /opt/venv/bin/python \
+        --index-url ${TORCH_INDEX} \
+        "torch==${TORCH_VERSION}" "torchvision==${TORCHVISION_VERSION}"
+COPY . .
+RUN uv sync --frozen --no-dev --group train --group data --group histo --no-sync 2>/dev/null || true \
+    && uv pip install --python /opt/venv/bin/python --no-deps -e .
+# Data and outputs are mounted, never baked into the image.
+VOLUME ["/data", "/workspace/outputs"]
+CMD ["python", "scripts/verify_env.py", "--require-cuda"]
+
+# ---------------------------------------------------------------- dev image (tests, lint)
+FROM train AS dev
+RUN uv sync --frozen --group dev --group train --group data --group histo --no-sync 2>/dev/null || true \
+    && uv pip install --python /opt/venv/bin/python \
+        "pytest>=8.0" "ruff>=0.5" "black>=24.0" "mypy>=1.10" "pre-commit>=3.7" jupyterlab
+EXPOSE 8888
+CMD ["bash"]

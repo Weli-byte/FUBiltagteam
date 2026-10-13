@@ -1,0 +1,16 @@
+# TCGA diagnostic slide listing, selection and download (mini sprint 1.4).
+projects: [TCGA-LUAD, TCGA-BRCA, TCGA-COAD]
+gdc:
+  api: https://api.gdc.cancer.gov
+  workers: 2                 # slides are 0.3-5 GB; keep parallelism low on home connections
+  attempts: 8
+paths:
+  manifest_dir: data/manifests
+  interim_dir: data/interim
+  raw_dir: data/raw/tcga_slides
+  leader_patient_map: data/interim/patient_map.parquet   # project leader's 1.3 output
+  qc_results: data/interim/qc_results.parquet            # optional; refines selection
+  report: docs/histo/tcga_slayt_envanteri.md
+selection:
+  only_in_leader_list: true  # download only patients that have omics + mutation data
+  limit: null                # e.g. 5 for a trial run
