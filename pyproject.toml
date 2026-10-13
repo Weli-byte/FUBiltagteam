@@ -91,9 +91,17 @@ module = ["torch.*", "mlflow.*", "numpy.*", "h5py.*", "openapi_spec_validator.*"
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
-# numpy/pandas/sklearn/cv2 return loosely typed values; strict return checks add noise here.
-module = ["models.omics.*", "models.histo.*"]
+# numpy/pandas/sklearn return loosely typed values; strict return checks add noise here.
+module = ["models.omics.*"]
 warn_return_any = false
+
+[[tool.mypy.overrides]]
+# cv2/numpy return loosely typed values. torch is not installed in CI (core + dev only), so there
+# nn.Module / Dataset resolve to Any: allow subclassing them and the @torch.no_grad() decorator.
+module = ["models.histo.*"]
+warn_return_any = false
+disallow_subclassing_any = false
+disallow_untyped_decorators = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
