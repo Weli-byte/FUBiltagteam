@@ -43,14 +43,19 @@ def assert_slide_disjoint(*groups: Rows) -> None:
 
 
 def split_rows_by_slide(rows: Rows, val_fraction: float, seed: int) -> tuple[Rows, Rows]:
-    """Hold out whole slides for validation, stratified by the slide's majority label."""
+    """Hold out whole slides for validation, stratified by whether the slide has tumor patches.
+
+    A tumor slide usually contributes both tumor and normal patches (balanced sampling), so the
+    majority label would call it "normal"; stratifying on "has any tumor patch" keeps at least
+    one tumor-bearing and one tumor-free slide in validation whenever both kinds exist.
+    """
     rng = np.random.default_rng(seed)
     by_slide: dict[str, list[int]] = {}
     for r in rows:
         by_slide.setdefault(str(r["slide_id"]), []).append(int(r["label"]))
     strata: dict[int, list[str]] = {0: [], 1: []}
     for slide, labels in by_slide.items():
-        strata[int(round(float(np.mean(labels))))].append(slide)
+        strata[int(max(labels))].append(slide)
     val: set[str] = set()
     for slides in strata.values():
         slides = sorted(slides)

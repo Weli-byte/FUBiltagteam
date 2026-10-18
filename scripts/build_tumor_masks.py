@@ -69,8 +69,22 @@ def main(argv: list[str] | None = None) -> int:
     if not ref:
         log.warning("reference.csv not found at %s: test labels/centres will be empty", reference)
 
-    # Official split from the slide listing (fall back to annotation names when images are absent)
-    ids = [slide_id_from_path(p) for p in (slides or xmls)]
+    # Official split document from the FULL bucket listing (all 399 slides), not from whatever
+    # happens to be downloaded; local files are only used for masks. Fallback: local files.
+    manifest = ROOT / str(cfg.download.manifest)
+    if manifest.exists():
+        import csv
+
+        with manifest.open(encoding="utf-8", newline="") as handle:
+            ids = [
+                slide_id_from_path(row["key"])
+                for row in csv.DictReader(handle)
+                if row["key"].startswith(str(cfg.source.prefixes.images))
+            ]
+        print(f"split document from manifest {manifest.name}: {len(ids)} slides")
+    else:
+        ids = [slide_id_from_path(p) for p in (slides or xmls)]
+        log.warning("manifest %s not found: split document built from local files only", manifest)
     doc = build_splits(ids, ref, [str(s) for s in cfg.splits.partially_annotated])
     write_splits(doc, ROOT / str(cfg.splits.out_json))
     print(json.dumps(doc["counts"], indent=2), f"\ncentres: {doc['centres']}")
