@@ -1,0 +1,7 @@
+# Patient-level split parameters (mini sprint 1.6)
+seed: 42
+ratios: [0.70, 0.15, 0.15]     # train / val / test
+n_folds: 5                      # CV folds inside the train+val pool
+site_holdout_fraction: 0.15     # share of each project held out as WHOLE tissue-source sites
+min_positives_per_split: 5      # fewer positives of a gene in a subset -> reported as a warning
+max_ratio_deviation: 0.03       # positive fraction may deviate <= 3 points from the overall fraction

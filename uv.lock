@@ -2239,7 +2239,7 @@ histo = [
 omics = [
     { name = "anndata", specifier = ">=0.10" },
     { name = "matplotlib", specifier = ">=3.8" },
-    { name = "scikit-learn", specifier = ">=1.4" },
+    { name = "scikit-learn", specifier = ">=1.8" },
     { name = "umap-learn", specifier = ">=0.5" },
 ]
 train = [

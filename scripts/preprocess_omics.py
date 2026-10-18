@@ -60,7 +60,10 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("fit-transform")
     _common(p)
     p.add_argument(
-        "--input", type=Path, default=ROOT / "data" / "processed" / "omics" / "expression_tpm.h5ad"
+        "--input",
+        type=Path,
+        default=ROOT / "data" / "processed" / "omics",
+        help="cohort directory made by `build`",
     )
     p.add_argument("--out", type=Path, default=ROOT / "data" / "processed" / "omics")
     group = p.add_mutually_exclusive_group(required=True)
@@ -93,6 +96,11 @@ def main(argv: list[str] | None = None) -> int:
         release = None
         if args.meta.exists():
             release = json.loads(args.meta.read_text(encoding="utf-8")).get("data_release")
+        else:
+            print(
+                f"UYARI: {args.meta} bulunamadi; data_release 'unknown' olarak kaydedilecek "
+                "(manifestler veri/gdc-manifestleri dalindan gelir)."
+            )
         result = build_cohort(
             pd.read_parquet(args.patient_map),
             args.raw,

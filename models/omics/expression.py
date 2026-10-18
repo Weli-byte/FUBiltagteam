@@ -9,6 +9,7 @@ Nothing here learns parameters from data, so nothing here can leak information b
 """
 
 import logging
+import os
 from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
@@ -114,12 +115,20 @@ def tss_of(sample_barcode: str) -> str:
 
 
 def assemble_expression(
-    patient_map: pd.DataFrame, raw_root: Path | str, log_every: int = 200
+    patient_map: pd.DataFrame,
+    raw_root: Path | str,
+    log_every: int = 200,
+    tpm_path: Path | str | None = None,
 ) -> ExpressionData:
     """Read the chosen RNA-seq file of every patient that has one into one TPM matrix.
 
     Library size (sum of raw counts) and the number of detected genes are kept as sample
     attributes for QC. All files must list the same genes in the same order, otherwise this raises.
+
+    With ``tpm_path`` the matrix is written straight to a ``.npy`` file on disk (memory-mapped) and
+    returned as a read-only memory map, so the process needs only a few hundred MB of RAM however
+    large the cohort is. An existing ``tpm_path`` is never overwritten (``FileExistsError``); the
+    file is first written as ``<name>.part`` and renamed when complete.
     """
     raw_root = Path(raw_root)
     rows = patient_map[patient_map["rnaseq_file_id"].notna()].sort_values("patient_barcode")
@@ -132,14 +141,29 @@ def assemble_expression(
 
     first = parse_star_counts(paths[0])
     genes = gene_dictionary(first)
-    tpm = np.empty((len(paths), len(first.gene_id)), dtype=np.float32)
+    shape = (len(paths), len(first.gene_id))
+    final_path = Path(tpm_path) if tpm_path is not None else None
+    part_path = None if final_path is None else final_path.with_name(final_path.name + ".part")
+    tpm: Any
+    if final_path is None:
+        tpm = np.empty(shape, dtype=np.float32)
+    else:
+        assert part_path is not None
+        if final_path.exists() or part_path.exists():
+            raise FileExistsError(
+                f"{final_path} (or its .part file) already exists; not overwriting"
+            )
+        final_path.parent.mkdir(parents=True, exist_ok=True)
+        tpm = np.lib.format.open_memmap(part_path, mode="w+", dtype=np.float32, shape=shape)
     library = np.empty(len(paths), dtype=np.float64)
+    detected = np.empty(len(paths), dtype=np.int64)
     for i, path in enumerate(paths):
         parsed = first if i == 0 else parse_star_counts(path)
         if not np.array_equal(parsed.gene_id, first.gene_id):
             raise ValueError(f"{path.name}: gene order/content differs from the first file")
         tpm[i] = parsed.tpm
         library[i] = parsed.counts.sum()
+        detected[i] = int((parsed.tpm > 0).sum())
         if log_every and (i + 1) % log_every == 0:
             LOG.info("parsed %d/%d files", i + 1, len(paths))
 
@@ -149,12 +173,17 @@ def assemble_expression(
             "project_id": rows["project_id"].to_numpy(),
             "tss": [tss_of(b) for b in rows["rnaseq_sample_barcode"]],
             "library_size": library,
-            "n_detected_genes": (tpm > 0).sum(axis=1),
+            "n_detected_genes": detected,
         },
         index=pd.Index(rows["rnaseq_sample_barcode"].to_numpy(), name="sample_barcode"),
     )
     if obs.index.duplicated().any():
         raise ValueError("duplicated sample barcodes in the assembled cohort")
+    if final_path is not None and part_path is not None:
+        tpm.flush()
+        del tpm
+        os.replace(part_path, final_path)  # rename of our own temp file, nothing user-owned
+        tpm = np.load(final_path, mmap_mode="r")
     return ExpressionData(tpm=tpm, obs=obs, genes=genes)
 
 

@@ -57,12 +57,18 @@ gerekmez). Doğrulama: `uv run python scripts/verify_env.py`.
 
 TCGA veri indirme: [docs/veri_indirme_rehberi.md](docs/veri_indirme_rehberi.md).
 
+Baseline modeller ve değerlendirme (1.8): [docs/baseline_modeller.md](docs/baseline_modeller.md).
+
+Veri bölme ve sızıntı önleme (1.6): [docs/bolme_kullanim_rehberi.md](docs/bolme_kullanim_rehberi.md).
+
+Mutasyon etiketleri (1.5): [docs/etiket_tanimi.md](docs/etiket_tanimi.md).
+
+Omics ön işleme (1.4) ve yerel çalıştırma betiği: [docs/omics_on_isleme.md](docs/omics_on_isleme.md).
+
 Histoloji veri hattı ve Modül 1 (Nisa, Sprint 1): GPU/maliyet planı [docs/gpu_strateji.md](docs/gpu_strateji.md),
 GPU ortamı [docs/gpu_ortam_rehberi.md](docs/gpu_ortam_rehberi.md), patch koordinat sistemi
 [docs/histo/koordinat_sistemi.md](docs/histo/koordinat_sistemi.md), diğer belgeler [docs/histo/](docs/histo/),
 veri kartları [docs/data_cards/](docs/data_cards/). Dokümantasyon sitesi: `uv run --group docs mkdocs serve`.
-
-Omics ön işleme (1.4): [docs/omics_on_isleme.md](docs/omics_on_isleme.md).
 
 Modüller arası veri sözleşmesi ve değişiklik süreci: [docs/veri_sozlesmesi.md](docs/veri_sozlesmesi.md).
 
