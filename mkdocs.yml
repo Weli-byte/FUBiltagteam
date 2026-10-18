@@ -49,7 +49,6 @@ nav:
       - Gerçek veri raporu (18.10.2026): histo/raporlar/sprint1_gercek_veri_raporu.md
       - Gerçek veri ham tabloları: histo/raporlar/sprint1_gercek_veri_ham_tablolar.md
       - QC raporu (13 gerçek slayt, 18.10.2026): histo/raporlar/qc_raporu.md
-      - TCGA slayt envanteri: histo/tcga_slayt_envanteri.md
   - Veri kartları:
       - TCGA tanı slaytları: data_cards/tcga_tani_slaytlari.md
       - CAMELYON16: data_cards/camelyon16.md

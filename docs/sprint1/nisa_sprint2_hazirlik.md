@@ -7,7 +7,8 @@
 - [ ] **GPU makinesi** (RunPod/Lambda A100 veya L4; 2 TB NVMe) kirala, `infra/gpu/setup_gpu_machine.sh`
       çalıştır, `verify_env.py --require-cuda` çıktısını `docs/gpu_ortam_rehberi.md` §7'ye yaz.
 - [ ] **CAMELYON16 indirme**: önce `download.limit=10`, sonra tamamı (0,75 TB); `checksums.md5`
-      ile kontrol; 20 slaytta maske overlay'i gözle kontrol → `camelyon_veri_notu.md` §3.
+      kova kökünde var mı önce bakılacak (öneklerle listelemede görünmedi), varsa md5 kontrolü;
+      20 slaytta maske overlay'i gözle kontrol → `docs/histo/camelyon_veri_notu.md` §3.
 - [ ] **TCGA**: proje liderinden `patient_map.parquet` al → `download_tcga_slides.py` yeniden
       (kesişim sayıları) → ilk 300 slayt (`selection.limit=300`, 3 proje dengeli).
 - [ ] **Temel model erişimi** (Hugging Face, hepsi "gated"; 13.10.2026): UNI / UNI2-h / CONCH
@@ -23,16 +24,18 @@
 ## Hafta 2-3 (gerçek veriyle Sprint 1'in açık kalan doğrulamaları)
 
 - [x] (küçük örnek, 18.10.2026) `patch_v0` gerçek paketi: 13 slayt, 2.600 patch; 32 patch gözle
-      kontrol edildi (`raporlar/img/camelyon_patch_ornekleri.jpg`). **Kalan:** ~50 slaytlık paket ve
-      DVC paylaşımı (remote kararı), ekibe 5 dk özet.
-- [ ] QC eşik kalibrasyonu: 50 slayt manuel inceleme, uyum % → `wsi_qc.md` §4. (18.10 bulgusu:
-      Laplacian ölçeği tarayıcıya bağlı; "siyah mürekkep" aralığı BRCA slaydında olası yanlış pozitif.)
-- [x] Extraction performansı (koordinat aşaması, ÖN BULGU): 13 gerçek slayt, 0,82 sn/slayt, 73 slayt/dk →
-      `koordinat_sistemi.md` §5. **Kalan:** patch okuma/özellik çıkarımı hızı (Sprint 2).
+      kontrol edildi (`docs/histo/raporlar/img/camelyon_patch_ornekleri.jpg`). **Kalan:** ~50 slaytlık
+      paket ve DVC paylaşımı (remote kararı), ekibe 5 dk özet.
+- [ ] QC eşik kalibrasyonu: 50 slayt manuel inceleme, uyum % → `docs/histo/wsi_qc.md` §4. (18.10
+      bulgusu: Laplacian ölçeği tarayıcıya bağlı; "siyah mürekkep" aralığı BRCA slaydında olası
+      yanlış pozitif, tam çözünürlükte kontrol açık madde.)
+- [x] Extraction performansı (koordinat aşaması, ÖN BULGU): 13 gerçek slayt, işçi başına 0,82
+      sn/slayt (seri eşdeğeri 73 slayt/dk; 4 işçiyle 13 slayt ≈ 3 sn) → `docs/histo/koordinat_sistemi.md`
+      §5. **Kalan:** patch okuma/özellik çıkarımı hızı (Sprint 2).
 - [x] Boya normalizasyonu gerçek ölçümü (ÖN BULGU: 7 merkez, merkez-doku karışık, hedef patch rastgele)
-      → `boya_normalizasyonu.md` §4. **Kalan:** temsili hedef patch seçimi, aynı doku/çok merkez
-      (CAMELYON17) ölçümü ve 3 seed kısa ViT yok/var deneyi.
-- [x] ViT-S vs ResNet-50 (3 seed, 2+2 slayt) ön bulgu → `vit_baseline_v1.md` §5, model kartı.
+      → `docs/histo/boya_normalizasyonu.md` §4. **Kalan:** temsili hedef patch seçimi, aynı doku/çok
+      merkez (CAMELYON17) ölçümü ve 3 seed kısa ViT yok/var deneyi.
+- [x] ViT-S vs ResNet-50 (3 seed, 2+2 slayt) ön bulgu → `docs/histo/vit_baseline_v1.md` §5, model kartı.
       **Kalan:** ≥ 20 slaytla nihai karşılaştırma (NİHAİ DEĞİL).
 - [ ] `check_split_compat.py` liderin `slide_splits.parquet`'iyle çalıştır (kesişim 0) — dosya gelmedi.
 

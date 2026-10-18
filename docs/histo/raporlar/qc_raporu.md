@@ -1,6 +1,6 @@
-# WSI Kalite Kontrol Raporu (13 gerçek slayt, 18.10.2026)
+# WSI Kalite Kontrol Raporu
 
-> `scripts/run_wsi_qc.py` tarafından üretildi. Girdi listesi: `sprint1_gercek_ornek_slaytlar.csv`; 13 slayt.
+> `scripts/run_wsi_qc.py` tarafından üretildi. Girdi listesi: `data/manifests/sprint1_gercek_ornek_slaytlar.csv`; 13 slayt.
 > Eşikler `configs/histo/qc.yaml` içindedir; kalibrasyon notu `docs/histo/wsi_qc.md`.
 
 ## Karar dağılımı
@@ -39,6 +39,6 @@
 
 ## Manuel doğrulama
 
-Rastgele seçilen slaytların maske bindirme görselleri `overlay_dir` altındadır. Gözle
+Rastgele seçilen slaytların maske bindirme görselleri `data/interim/qc_overlays` altındadır. Gözle
 inceleme sonucunu (uyum yüzdesi, yanlış dışlananlar) `docs/histo/wsi_qc.md`'ye işleyin.
 Dışlananların kanser türü / kurum dağılımını da orada raporlayın (QC yanlılığı kontrolü).

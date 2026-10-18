@@ -18,5 +18,5 @@
 | Bilinen sınırlılıklar | lenf nodu metastazı (meme) verisi; TCGA akciğer/kolon/meme dokusuna genelleme ölçülmedi; patch bağımsızlığı varsayımı bootstrap GA'yı iyimser yapar; ön bulgu tek merkezli, merkez etkisi ölçülmedi |
 | Adil kullanım / etik | Veri CC0, anonim; model yalnızca araştırma; klinik kullanım yok |
 | Çıktı sözleşmesi | olasılık (0-1) `Probability`; slayt düzeyi karar ABMIL (Sprint 2) ile `onkos.contracts` |
-| Tekrarlanabilirlik | seed, config hash, git hash MLflow'da; `best.pt` + `results.json` |
+| Tekrarlanabilirlik | seed ve git hash MLflow'da (parametreler + `git_commit` etiketi); config hash yalnızca `results.json`'da (MLflow etiketi Sprint 2); `best.pt` + `results.json` |
 | Sorumlu | Nisa (Modül 1) |

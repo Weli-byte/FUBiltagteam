@@ -57,7 +57,8 @@ w_t = patch_level0_px / ds                          # patch kenarı thumbnail'de
 
 Kaynak dosya yolu **bilerek dosyada yoktur**: TCGA dosya adları hasta barkodu taşır ve bu
 dosyalar diğer modüllerle paylaşılır (sözleşme kuralı: paylaşılan çıktıda hasta kimliği olmaz).
-Slayt yolu yalnızca yerel `*_results.csv` (`source_path` sütunu) ve slayt listesinde tutulur.
+Slayt yolu yalnızca yerel sonuç tablosunda (`coords_v1.results.csv`, `source_path` sütunu) ve
+slayt listesinde tutulur.
 
 Sprint 2'de aynı dosyaya `features (N, D) float16` ve `encoder_name/encoder_version` eklenir;
 `tests/test_histo_patches.py::test_coords_file_becomes_contract_file_once_features_are_added`
@@ -68,8 +69,8 @@ Okuma:
 ```python
 from models.histo.patches.h5 import read_coords_h5
 from models.histo.wsi.reader import SlideReader
-coords, fractions, attrs = read_coords_h5("data/processed/patches/coords_v1/tumor_001.h5")
-slide_path = "data/raw/camelyon/CAMELYON16/images/tumor_001.tif"   # slayt listesinden (slides.csv)
+coords, fractions, attrs = read_coords_h5("data/processed/patches/coords_v1/tumor_091.h5")
+slide_path = "data/raw/camelyon/CAMELYON16/images/tumor_091.tif"   # slayt listesinden (sprint1_gercek_ornek_slaytlar.csv)
 with SlideReader(slide_path) as reader:  # CAMELYON16 TIFF'leri mpp etiketi taşıyor (0,226)
     x, y = coords[0]
     patch = reader.read_patch(int(x), int(y), attrs.patch_size_px, attrs.target_mpp)  # (256,256,3) uint8
@@ -80,16 +81,21 @@ ihtiyaç anında okur (her DataLoader işçisi slaytı kendisi açar).
 
 ## 5. Üretim hattı (`scripts/extract_patches.py`)
 
-- Girdi: `data/manifests/slides_to_extract.csv` (`slide_id,path[,mpp_override]`).
+- Girdi: `run.slide_list` (`configs/histo/patch_extract.yaml`; şu an
+  `data/manifests/sprint1_gercek_ornek_slaytlar.csv`), sütunlar `slide_id,path[,mpp_override]`.
 - Her slayt: thumbnail (2048 px) → doku maskesi v1 → ızgara → doku filtresi → HDF5 (atomik yazım).
 - Paralel (`run.workers`), **kesintiden devam** (geçerli dosya varsa atlanır; bozuksa yeniden),
-  bozuk slayt loglanıp geçilir; `_summary.json` ve `*_results.csv` (slayt, patch sayısı, süre).
+  bozuk slayt loglanıp geçilir; `_summary.json` ve `<out_dir>.results.csv` (örn.
+  `coords_v1.results.csv`: slayt, durum, patch sayısı, süre; `--out` verildiğinde `run.results_csv`
+  yerine bu ad kullanılır).
 - Milyonlarca PNG yazılmaz; yalnızca koordinatlar saklanır (slayt başına ~10-50 KB).
 
 ### Performans (dürüst not)
 
 Gerçek ölçüm (18.10.2026, dizüstü, 4 işçi, 13 gerçek slayt; `_summary.json`): 13/13 slayt,
-67.116 koordinat, **0,82 sn/slayt**, 73 slayt/dk; slayt başına 1.056–11.246 patch. Bu yalnızca
+67.116 koordinat, **işçi başına 0,82 sn/slayt** (seri eşdeğeri 73 slayt/dk; 4 işçiyle 13 slayt
+≈ 3 sn duvar saati); slayt başına 1.056–11.246 patch; 13 dosya `validate_coords_h5` ile geçerli
+(`outputs/logs/validate_coords_v1.log`). Bu yalnızca
 koordinat aşamasıdır (thumbnail 2048 px + maske + ızgara); patch okuma ve özellik çıkarımı (Sprint 2)
 darboğaz olacaktır ve ayrıca ölçülecek. Ayrıntı: `raporlar/sprint1_gercek_veri_raporu.md` §4.
 

@@ -62,8 +62,10 @@ Her iki yöntem renk farkını azaltıp merkez tahminini zorlaştırıyor; şans
 sınırlılıklar:** merkezler kanser türü/dokuyla karışık (akciğer, meme, kolon, lenf düğümü), farkın
 bir kısmı biyolojik; `n_per_centre=100` CLI override (yaml 300); hedef (referans) patch olarak
 `reference_patch.png` bulunmadığı için betik **örneklenen ilk patch'i** kullandı (temsili seçim
-yapılmadı, `outputs/logs/final_stain.log`). Macenko 700 gerçek patch'te 0 hata. Görsel:
-`raporlar/img/boya_once_sonra.jpg`. Kısa ViT deneyi (yok/var) henüz yapılmadı.
+yapılmadı, `outputs/logs/final_stain.log`). Macenko 700 gerçek patch'te 0 hata. Kısa ViT deneyi
+(yok/var) henüz yapılmadı.
+
+![Boya normalizasyonu önce/sonra: sütunlar none, macenko, reinhard](raporlar/img/boya_once_sonra.jpg)
 
 ## 5. Karar ve öneri
 

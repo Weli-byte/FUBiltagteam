@@ -20,4 +20,4 @@ run:
   overwrite: false         # false = resume: finished, valid HDF5 files are skipped
   slide_list: data/manifests/sprint1_gercek_ornek_slaytlar.csv   # columns: slide_id,path[,mpp_override]; relative paths resolve against the CSV dir
   out_dir: data/processed/patches/coords_v1
-  results_csv: data/processed/patches/coords_v1_results.csv
+  results_csv: data/processed/patches/coords_v1.results.csv

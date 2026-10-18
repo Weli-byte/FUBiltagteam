@@ -6,19 +6,19 @@
 
 | slide_id | kaynak | dosya | MB | md5 | boyut (px) | seviye | mpp | büyütme | vendor |
 |---|---|---|---|---|---|---|---|---|---|
-| tumor_09… | camelyon16 | tumor_091.tif | 546 | - | 61440x53760 | 8 | 0.2263 | 40.0 | philips |
-| tumor_08… | camelyon16 | tumor_084.tif | 838 | - | 65536x86016 | 9 | 0.2263 | 40.0 | philips |
-| normal_1… | camelyon16 | normal_108.tif | 327 | - | 45056x35840 | 8 | 0.2269 | 40.0 | philips |
-| normal_1… | camelyon16 | normal_150.tif | 752 | - | 65536x60928 | 8 | 0.2269 | 40.0 | philips |
-| 004d8238… | tcga | TCGA-75-7030-...DX1 | 479 | OK | 65963x27980 | 3 | 0.5005 | 20.0 | aperio |
-| 00efe162… | tcga | TCGA-86-6562-...DX1 | 488 | OK | 87291x55135 | 4 | 0.2520 | 40.0 | aperio |
-| 015862cf… | tcga | TCGA-97-7552-...DX1 | 465 | OK | 70024x82885 | 4 | 0.2520 | 40.0 | aperio |
-| 00ab866f… | tcga | TCGA-AC-A3BB-...DX1 | 195 | OK | 36451x57504 | 4 | 0.2520 | 40.0 | aperio |
-| 01c79d06… | tcga | TCGA-A8-A06O-...DX1 | 499 | OK | 45312x53504 | 4 | 0.2325 | 20.0 | aperio |
-| 032fc1ed… | tcga | TCGA-AC-A5XU-...DX1 | 340 | OK | 56595x63763 | 4 | 0.2520 | 40.0 | aperio |
-| 001b7d97… | tcga | TCGA-A6-2686-...DX1 | 498 | OK | 125661x61796 | 4 | 0.2520 | 40.0 | aperio |
-| 011da0ba… | tcga | TCGA-A6-2683-...DX1 | 197 | OK | 133335x26607 | 4 | 0.2520 | 40.0 | aperio |
-| 023ca8d1… | tcga | TCGA-A6-6653-...DX1 | 245 | OK | 160194x33419 | 4 | 0.2520 | 40.0 | aperio |
+| tumor_091 | camelyon16 | tumor_091.tif | 546 | - | 61440x53760 | 8 | 0.2263 | 40.0 | philips |
+| tumor_084 | camelyon16 | tumor_084.tif | 838 | - | 65536x86016 | 9 | 0.2263 | 40.0 | philips |
+| normal_108 | camelyon16 | normal_108.tif | 327 | - | 45056x35840 | 8 | 0.2269 | 40.0 | philips |
+| normal_150 | camelyon16 | normal_150.tif | 752 | - | 65536x60928 | 8 | 0.2269 | 40.0 | philips |
+| 004d8238-0… | tcga | DX1 .svs | 479 | OK | 65963x27980 | 3 | 0.5005 | 20.0 | aperio |
+| 00efe162-7… | tcga | DX1 .svs | 488 | OK | 87291x55135 | 4 | 0.2520 | 40.0 | aperio |
+| 015862cf-a… | tcga | DX1 .svs | 465 | OK | 70024x82885 | 4 | 0.2520 | 40.0 | aperio |
+| 00ab866f-a… | tcga | DX1 .svs | 195 | OK | 36451x57504 | 4 | 0.2520 | 40.0 | aperio |
+| 01c79d06-a… | tcga | DX1 .svs | 499 | OK | 45312x53504 | 4 | 0.2325 | 20.0 | aperio |
+| 032fc1ed-c… | tcga | DX1 .svs | 340 | OK | 56595x63763 | 4 | 0.2520 | 40.0 | aperio |
+| 001b7d97-9… | tcga | DX1 .svs | 498 | OK | 125661x61796 | 4 | 0.2520 | 40.0 | aperio |
+| 011da0ba-0… | tcga | DX1 .svs | 197 | OK | 133335x26607 | 4 | 0.2520 | 40.0 | aperio |
+| 023ca8d1-d… | tcga | DX1 .svs | 245 | OK | 160194x33419 | 4 | 0.2520 | 40.0 | aperio |
 
 ## QC (4c)
 

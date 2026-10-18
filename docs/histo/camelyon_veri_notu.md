@@ -53,8 +53,9 @@ uv run --group histo python scripts/build_tumor_masks.py                  # mask
 ```
 
 - İndirme HTTP Range ile kaldığı yerden devam eder; boyut her zaman, md5 yalnızca tek parçalı
-  nesnelerde (çok parçalı ETag md5 değildir) doğrulanır. Resmi `checksums.md5` dosyası indirme
-  sonrası ek kontrol için kullanılacak.
+  nesnelerde (çok parçalı ETag md5 değildir) doğrulanır. Resmi `checksums.md5` dosyası öneklerle
+  yapılan listelemede görünmedi; tam indirme öncesi kova kökünde var mı bakılacak, varsa ek
+  doğrulama için kullanılacak (henüz kullanılmadı).
 - Maskeler `masks.downsample=32` (seviye-0'ın 1/32'si; ~8 µm/px) PNG olarak yazılır; patch
   etiketi `patch_tumor_fractions` ile seviye-0 kutusundan hesaplanır (≥ %50 tümör → tümör).
   Resmi `masks/` klasöründeki maskeler (9,4 GB) alternatif olarak kullanılabilir; bizim hattımız

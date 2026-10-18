@@ -27,7 +27,7 @@ masks:
   overlay_dir: data/processed/camelyon16/mask_overlays
   overlay_sample: 20         # slides for the manual mask-alignment check
   seed: 42
-  mpp_override: 0.25         # CAMELYON16 TIFFs may lack mpp tags; scanners ~0.23-0.25 µm/px
+  mpp_override: 0.25         # fallback only if a TIFF lacks mpp tags (the 4 real slides carry 0.2263-0.2269 um/px)
 splits:
   out_json: data/manifests/camelyon16_splits.json
   # Slides the official README lists as NOT exhaustively annotated (never use as 'normal' area)

@@ -3,7 +3,7 @@
 > **Durum (18.10.2026):** Listeleme ve envanter **gerçek GDC API'siyle çalıştırıldı** (Data Release
 > 46.0): 3 projede 2.133 açık erişimli tanı slaydı, 1.991 hasta, toplam 1,86 TB (bkz.
 > `tcga_slayt_envanteri.md`). **Küçük gerçek örnek indirildi:** her kohorttan 3 slayt (9 slayt,
-> 3,2 GB, md5 9/9 OK) `--from-manifests` ile; sonuçlar `raporlar/sprint1_gercek_veri_raporu.md`.
+> 3,41 GB (3,17 GiB), md5 9/9 OK) `--from-manifests` ile; sonuçlar `raporlar/sprint1_gercek_veri_raporu.md`.
 > Tam indirme yapılmadı: proje liderinin hasta listesi (`patient_map.parquet`) bu makinede yok ve
 > bant genişliği (0,6 MB/s) yetersiz; GPU/veri makinesinde, liderin listesiyle kesişen hastalar için yapılacak.
 

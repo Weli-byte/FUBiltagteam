@@ -3,7 +3,7 @@
 > **Durum (18.10.2026):** Hat ve testler hazır; **13 gerçek slaytta çalıştırıldı** (9 TCGA + 4
 > CAMELYON16): 12 `use`, 1 `exclude` (TCGA-BRCA, kalem izi oranı 0,064 > 0,05), doku maskeleri 3
 > slaytta gözle kontrol edildi (`raporlar/sprint1_gercek_veri_raporu.md` §3). **Eşikler kalibre
-> edilmedi**: Laplacian varyans medyanı tarayıcıya göre 940–4.000 (Aperio) ile 22.000–34.000
+> edilmedi**: Laplacian varyans medyanı tarayıcıya göre 940–4.000 (Aperio) ile 22.400–34.500
 > (Philips) arasında; varsayılan bulanıklık eşiği (40) bu ölçekte anlamsız derecede düşüktür ve
 > 50 slaytlık manuel inceleme (§4) ile tarayıcı bazında belirlenecek.
 
@@ -38,11 +38,13 @@ yazılır. Eşikler `configs/histo/qc.yaml`'da; kod içinde sihirli sayı yok.
 ## 3. Komut
 
 ```bash
-uv run --group histo python scripts/run_wsi_qc.py                       # data/manifests/slides_to_extract.csv
+uv run --group histo python scripts/run_wsi_qc.py                       # qc.yaml run.slide_list = data/manifests/sprint1_gercek_ornek_slaytlar.csv
 uv run --group histo python scripts/run_wsi_qc.py run.manual_sample=50 qc.blur_laplacian_var_min=30
 ```
 Çıktı: `data/interim/qc_results.parquet`, `docs/histo/raporlar/qc_raporu.md` (dağılımlar, dışlama listesi; 13 slaytlık gerçek örnek raporu commit'te),
 `data/interim/qc_overlays/*.png` (manuel inceleme için 50 rastgele slayt; thumbnail + yeşil maske).
+**Dikkat:** betik her çalıştırmada `run.report` yolundaki dosyanın (commit'li rapor) üzerine yazar;
+başka bir liste ya da eşik denemesi için `--report outputs/<ad>.md` verin.
 `select_slides(inventory, qc)` (1.4) `exclude`'ları elemek için bu parquet'i kullanır.
 
 ## 4. Kalibrasyon protokolü (gerçek veride yapılacak)
@@ -56,6 +58,11 @@ uv run --group histo python scripts/run_wsi_qc.py run.manual_sample=50 qc.blur_l
 4. Laplacian eşiği tarayıcıya bağlıdır (JPEG sıkıştırma, mpp); CAMELYON (3DHistech/Hamamatsu) ve
    TCGA (Aperio) için ayrı medyan dağılımları kaydedilir.
 5. Sonuç tablosu (uyum %, eşikler, tarih) bu belgeye eklenir.
+6. **Açık madde (18.10.2026):** siyah mürekkep HSV aralığı (koyu + düşük doygunluk) yağ dokusu
+   içindeki koyu hücre kümelerini kalem sanabilir: dışlanan TCGA-BRCA `01c79d06…` (pen_fraction
+   0,064) thumbnail'de kalem izi göstermiyor (`raporlar/sprint1_gercek_veri_raporu.md` §3). Bu slayt
+   ve kalem kararı alan diğerleri **tam çözünürlükte** gözle kontrol edilir; yanlış pozitifse siyah
+   aralığı daraltılır.
 
 ## 5. Sınırlılıklar
 

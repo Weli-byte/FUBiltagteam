@@ -14,12 +14,12 @@
 | 1.4 TCGA slayt | barkod/envanter/seçim, `download_tcga_slides.py` (+`--from-manifests`) | **Evet**: canlı GDC listeleme (2.133 DX), 9 slayt indirildi, md5 9/9; liderin hasta listesi kesişimi yok |
 | 1.5 CAMELYON | S3 listeleme/indirme, XML→maske, resmi bölme, PAIP notu | **Evet**: 4 slayt + 160 XML; 2 tümör maskesi gözle doğrulandı; bölme belgesi 270/129 tam listeden |
 | 1.6 QC | doku maskesi v1, QC metrikleri/karar, rapor | **Evet (13 slayt)**: 12 use / 1 exclude; maskeler 3 slaytta gözle; **eşik kalibrasyonu yapılmadı** (Laplacian ölçeği tarayıcıya bağlı) |
-| 1.7 Extraction | HDF5 koordinat hattı (paralel, resume, config-hash) | **Evet**: 13/13 slayt, 67.116 koordinat; 0,82 sn/slayt **ön bulgu** (yalnızca koordinat aşaması, dizüstü); sözleşme köprüsü testle |
+| 1.7 Extraction | HDF5 koordinat hattı (paralel, resume, config-hash) | **Evet**: 13/13 slayt, 67.116 koordinat; işçi başına 0,82 sn/slayt, seri eşdeğeri 73 slayt/dk **ön bulgu** (yalnızca koordinat aşaması, dizüstü); sözleşme köprüsü testle |
 | 1.8 Boya | Macenko/Reinhard, HED augmentation, TTA, karşılaştırma | **Evet (ölçüm, ÖN BULGU)**: 7 merkez, LAB farkı 6,47 → 2,29/0,22; merkez-doku karışık, hedef patch rastgele; ViT yok/var deneyi yapılmadı |
 | 1.9 ViT baseline | eğitim hattı (AMP, layer-decay, MLflow), metrik+bootstrap, model kartı | **Evet (ön bulgu, NİHAİ DEĞİL)**: ViT-S 0,780 vs ResNet-50 0,769 AUROC, 3 seed, 2+2 slayt; fark anlamsız |
 | 1.10 Kapanış | veri kartları, dvc.yaml, sızıntı denetimi, MkDocs, references.bib, bu belge | `check_split_compat` liderin `slide_splits.parquet`'i gelmediği için **bekliyor**; DVC remote ekip kararı |
 
-Kalite: 218 test (25 dosya, ekip testleri dahil) geçiyor; `ruff`, `black`, `mypy --strict`, `mkdocs build --strict` temiz; CI yeşil.
+Kalite: 218 test toplandı, 217 geçti / 1 atlandı (28 test dosyası; `anndata` kurulu olmadığı için 3 omics test dosyası bu ortamda toplanmıyor); `ruff`, `black`, `mypy --strict`, `mkdocs build --strict` temiz; CI yeşil (son push aabc66d).
 Sentetik slayt üreticisi yalnızca `tests/histo_synthetic_fixture.py` (test düzeneği); üretim kodu
 ona bağımlı değil (koruma testi var).
 

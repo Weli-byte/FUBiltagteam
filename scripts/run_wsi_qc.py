@@ -41,7 +41,15 @@ def build_qc_config(cfg_qc: dict[str, Any], cfg_mask: dict[str, Any]) -> QcConfi
     return QcConfig(pen_ranges=ranges, tissue_mask=TissueMaskConfig(**cfg_mask), **cfg_qc)
 
 
-def report_markdown(frame: pd.DataFrame, cfg: QcConfig, slide_list: Path) -> str:
+def _display(path: Path) -> str:
+    """Repo-relative path for the report; falls back to the file name outside the repo."""
+    try:
+        return path.resolve().relative_to(ROOT).as_posix()
+    except ValueError:
+        return path.name
+
+
+def report_markdown(frame: pd.DataFrame, cfg: QcConfig, slide_list: Path, overlay_dir: Path) -> str:
     counts = frame["decision"].value_counts().to_dict()
     excluded = frame[frame["decision"] == "exclude"].sort_values("slide_id")
     suspect = frame[frame["decision"] == "suspect"].sort_values("slide_id")
@@ -51,7 +59,7 @@ def report_markdown(frame: pd.DataFrame, cfg: QcConfig, slide_list: Path) -> str
     lines = [
         "# WSI Kalite Kontrol Raporu",
         "",
-        f"> `scripts/run_wsi_qc.py` tarafından üretildi. Girdi listesi: `{slide_list.name}`; "
+        f"> `scripts/run_wsi_qc.py` tarafından üretildi. Girdi listesi: `{_display(slide_list)}`; "
         f"{len(frame)} slayt.",
         "> Eşikler `configs/histo/qc.yaml` içindedir; kalibrasyon notu `docs/histo/wsi_qc.md`.",
         "",
@@ -98,7 +106,8 @@ def report_markdown(frame: pd.DataFrame, cfg: QcConfig, slide_list: Path) -> str
         "",
         "## Manuel doğrulama",
         "",
-        "Rastgele seçilen slaytların maske bindirme görselleri `overlay_dir` altındadır. Gözle",
+        "Rastgele seçilen slaytların maske bindirme görselleri "
+        f"`{_display(overlay_dir)}` altındadır. Gözle",
         "inceleme sonucunu (uyum yüzdesi, yanlış dışlananlar) `docs/histo/wsi_qc.md`'ye işleyin.",
         "Dışlananların kanser türü / kurum dağılımını da orada raporlayın (QC yanlılığı kontrolü).",
         "",
@@ -159,7 +168,7 @@ def main(argv: list[str] | None = None) -> int:
     out.parent.mkdir(parents=True, exist_ok=True)
     frame.to_parquet(out, index=False)
     report.parent.mkdir(parents=True, exist_ok=True)
-    report.write_text(report_markdown(frame, qc_cfg, slide_list), encoding="utf-8")
+    report.write_text(report_markdown(frame, qc_cfg, slide_list, overlay_dir), encoding="utf-8")
     print(frame["decision"].value_counts().to_string())
     print(
         f"results -> {out}\nreport  -> {report}\noverlays -> {overlay_dir} ({len(sample)} slides)"

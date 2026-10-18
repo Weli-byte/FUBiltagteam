@@ -11,7 +11,7 @@
 | Toplama | GDC API `/files` filtreleri (`access=open`, `data_type=Slide Image`, `experimental_strategy=Diagnostic Slide`), `scripts/download_tcga_slides.py`; md5 doğrulamalı indirme |
 | İşleme | Barkod ayrıştırma, seçim kuralı (`docs/histo/tcga_slayt_indirme.md` §3), QC (1.6), doku maskesi, patch koordinatları (1.7), özellikler (Sprint 2) |
 | Kalite | Tarayıcı/mpp slayta göre değişir (20x/40x); kalem izi, katlanma, bulanıklık QC ile işaretlenir; QC kalibrasyonu gerçek slaytlarda yapılacak |
-| Bölme | Proje liderinin hasta düzeyi `splits-v1` (`slide_splits.parquet`); patch'ler slaytın kümesini alır; `scripts/check_split_compat.py` |
+| Bölme | Proje liderinin hasta düzeyi `splits-v1` (`slide_splits.parquet`); patch'ler slaytın kümesini alır; `scripts/check_split_compat.py` — **bekliyor (18.10.2026):** liderin `slide_splits.parquet`'i gelmedi, uyumluluk kontrolü gerçek veriyle çalıştırılmadı (yalnızca `tests/test_histo_split_leakage.py`) |
 | Sınırlılıklar | Slayt düzeyi etiket yok (tümör slaydı = zayıf etiket); merkez (TSS) etkisi; FFPE artefaktları; **yalnızca 9 slaytlık gerçek örnek indirildi** (18.10.2026, md5 9/9 OK; `docs/histo/raporlar/`), tam indirme liderin hasta listesi ve veri makinesi bekliyor |
 | Depolama | `data/raw/tcga_slides/<proje>/slides/<uuid>/` (git'te değil; DVC ile yalnızca küçük türevler) |
 | Atıf | TCGA Research Network: https://www.cancer.gov/tcga ; GDC: Grossman RL ve ark., NEJM 2016 (doğrulanmalı) |

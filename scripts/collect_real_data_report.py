@@ -72,6 +72,11 @@ def short_id(text: str, width: int) -> str:
     return text[:width] + ("…" if len(text) > width else "")
 
 
+def slide_type(filename: str) -> str:
+    """'TCGA-XX-XXXX-01Z-00-DX1.<uuid>.svs' -> 'DX1' (the patient barcode is not reproduced)."""
+    return filename.split(".")[0].split("-")[-1]
+
+
 def slide_section(lines: list[str]) -> None:
     lines += [
         "## Slaytlar (4a/4b)",
@@ -85,19 +90,23 @@ def slide_section(lines: list[str]) -> None:
     for row in rows:
         path = (SLIDE_LIST.parent / row["path"]).resolve()
         if not path.exists():
-            lines.append(f"| {row['slide_id']} | - | - | - | eksik | - | - | - | - | - |")
-            continue
+            raise FileNotFoundError(f"slide file missing for {row['slide_id']}: {path}")
         source = "camelyon16" if "camelyon" in path.as_posix().lower() else "tcga"
         md5 = "-"
         if source == "tcga":
-            md5 = "OK" if md5_of(path) == md5s.get(row["slide_id"]) else "HATA"
-        # TCGA file names carry the patient barcode; keep only the first 12 characters + DX1.
-        name = path.name if source == "camelyon16" else path.name.split(".")[0][:12] + "-...DX1"
+            expected = md5s.get(row["slide_id"])
+            if expected is None:
+                raise ValueError(f"{row['slide_id']} is not in the TCGA selection manifests")
+            if md5_of(path) != expected:
+                raise ValueError(f"md5 mismatch for {row['slide_id']}: {path.name}")
+            md5 = "OK"
+        # TCGA file names carry the patient barcode; show only the slide type (e.g. DX1).
+        name = path.name if source == "camelyon16" else f"{slide_type(path.name)} .svs"
         with SlideReader(path) as reader:
             info = reader.info
             mpp = "-" if info.mpp is None else f"{info.mpp:.4f}"
             lines.append(
-                f"| {short_id(row['slide_id'], 8)} | {source} | {name} | "
+                f"| {short_id(row['slide_id'], 10)} | {source} | {name} | "
                 f"{path.stat().st_size / 1e6:.0f} | {md5} | {info.width}x{info.height} | "
                 f"{info.level_count} | {mpp} | {info.magnification} | {info.vendor} |"
             )
