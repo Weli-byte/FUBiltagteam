@@ -88,11 +88,10 @@ ihtiyaç anında okur (her DataLoader işçisi slaytı kendisi açar).
 
 ### Performans (dürüst not)
 
-Gerçek slaytlarda henüz ölçülmedi. Sentetik 1536x1024 slaytlarda (`--demo`) 2 işçiyle slayt başına
-0,08 sn; bu sayı gerçek 100k x 100k slaytlarda geçerli değildir. Beklenti (literatür/CLAM deneyimi,
-doğrulanmalı): thumbnail + maske + ızgara slayt başına 2-10 sn (koordinat üretimi I/O'ya bağlı
-değil); patch okuma özellik çıkarımında (Sprint 2) darboğaz olur. Ölçüm Sprint 2'nin ilk haftasında
-10 gerçek slaytla yapılıp buraya yazılacak.
+Gerçek slaytlarda henüz ölçülmedi. Beklenti (literatür/CLAM deneyimi, doğrulanmalı): thumbnail +
+maske + ızgara slayt başına 2-10 sn (koordinat üretimi I/O'ya bağlı değil); patch okuma özellik
+çıkarımında (Sprint 2) darboğaz olur. Gerçek slaytlarla ölçüm yapıldığında sayılar
+`_summary.json` çıktısından alınıp buraya yazılacak; sentetik test slaytlarının süreleri raporlanmaz.
 
 ## 6. Doğrulama (bitti kriteri)
 

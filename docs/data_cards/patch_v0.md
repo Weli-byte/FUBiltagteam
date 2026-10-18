@@ -11,7 +11,7 @@
 | Bölme | CAMELYON16 resmi train/test (`split`); test kilitli; TCGA `unassigned` → proje liderinin hasta bölmesi |
 | İşleme | thumbnail → doku maskesi v0 (Otsu) → 256 px ızgara, ≥ %50 doku → dengeli rastgele seçim (seed 42) → PNG + overlay |
 | Kalite | Patch'ler gözle 30 örnekte kontrol edilecek; overlay ile koordinat doğrulaması; QC (1.6) uygulanmamış olabilir (v0) |
-| Sınırlılıklar | Küçük (~50 slayt); doku tespiti v0 basit; TCGA etiketi zayıf; sentetik `--demo` paketi gerçek doku **değildir** |
+| Sınırlılıklar | Küçük (~50 slayt); doku tespiti v0 basit; TCGA etiketi zayıf; yalnızca gerçek slaytlardan üretilir (sentetik veri yok) |
 | Depolama | `data/processed/patch_v0/` (DVC; git'te değil); boyut ~1-2 GB |
 | Durum | Hat hazır; gerçek paket WSI indirmesi sonrası üretilecek (`docs/histo/patch_v0_teslim_notu.md`) |
 | Sorumlu | Nisa |

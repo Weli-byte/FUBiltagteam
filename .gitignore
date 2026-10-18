@@ -39,3 +39,14 @@ outputs/
 
 # MkDocs build output
 site/
+
+# Raw/derived data never enters git (DVC); only placeholders and DVC pointer files are kept.
+data/raw/*
+data/interim/*
+data/processed/*
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+!data/raw/*.dvc
+!data/interim/*.dvc
+!data/processed/*.dvc

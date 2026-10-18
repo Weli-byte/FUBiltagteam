@@ -1,9 +1,9 @@
 # Boya Normalizasyonu ve Histolojik Augmentation (Mini sprint 1.8)
 
 > **Durum:** Macenko ve Reinhard normalizasyonu ile histolojiye uygun augmentation modülleri
-> yazıldı ve test edildi (`models/histo/stain/`). Karşılaştırma betiği sentetik iki "merkez"
-> üzerinde çalıştırıldı (§4); **gerçek merkez verisiyle ölçüm ve 3 seed'li kısa ViT deneyi
-> yapılmadı**. Varsayılan karar gerçek ölçüme kadar askıda (§5).
+> yazıldı ve birim testleriyle sınandı (`models/histo/stain/`, `tests/test_histo_stain.py`).
+> **Gerçek merkez verisiyle ölçüm ve 3 seed'li kısa ViT deneyi yapılmadı**; §4 gerçek sonuç
+> gelince dolacak. Varsayılan karar gerçek ölçüme kadar askıda (§5).
 
 **Sade anlatım:** Her hastane dokuyu biraz farklı tonda boyar; biri pembe, diğeri mor. Model
 renk farkını "hastalık" sanabilir. Normalizasyon tüm görüntüleri benzer tona getirir;
@@ -47,18 +47,11 @@ TTA: 8 dihedral görünüm (`dihedral_views`) + ortalama (`predict_tta`), `train
 5. Kısa ViT deneyi (3 seed, none vs macenko vs reinhard, aynı bölme) → `train_patch_classifier.py`
    `train.stain=...` bayrağı Sprint 2'de eklenecek; sonuç AUROC + GA olarak buraya.
 
-## 4. Sentetik demo sonucu (yalnızca hat kontrolü; bilimsel sonuç DEĞİL)
+## 4. Gerçek veri sonucu
 
-Sentetik iki merkez (pembe vs mor doku tonu), 120 patch/merkez, 3 seed:
-
-| yöntem | merkezler arası LAB farkı | merkez sınıflandırıcı doğruluğu | şans |
-|---|---|---|---|
-| none | 1,873 | 0,824 ± 0,035 | 0,500 |
-| macenko | 1,347 | 0,704 ± 0,013 | 0,500 |
-| reinhard | 0,006 | 0,616 ± 0,052 | 0,500 |
-
-Yorum: hat beklenen yönde çalışıyor (fark düşüyor, merkez tahmini zorlaşıyor). Sentetik renk
-farkı tek tonlu olduğundan Reinhard'ın "mükemmel" görünmesi gerçek veriye genellenmez.
+Henüz yok. Gerçek slaytlardan üretilen patch'lerle `scripts/compare_stain_norm.py` çalıştırıldığında
+tablo buraya, ham çıktı `docs/histo/raporlar/` altına yazılacak. Sentetik veriyle üretilmiş hiçbir
+sayı bu belgede raporlanmaz; hattın kendisi `tests/test_histo_stain.py` ile sınanır.
 
 ## 5. Karar ve öneri
 

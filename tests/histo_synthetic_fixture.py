@@ -1,10 +1,11 @@
-"""Synthetic pyramidal slides for tests, demos and environment checks.
+"""TEST FIXTURE: synthetic pyramidal slides for the histo unit tests only.
 
-Bu dosya ne işe yarar? Gerçek slayt (yüzlerce MB-GB) olmadan hattı test edebilmek için küçük,
-OpenSlide'ın okuyabildiği piramit TIFF dosyaları üretir: beyaz cam üzerinde pembe "doku", içinde
-daha mor "tümör" bölgesi, isteğe bağlı mavi kalem izi ve bulanık bölge. Ayrıca aynı tümör bölgesi
-için CAMELYON16 biçiminde (ASAP XML) anotasyon yazar. **Bu veri gerçek doku değildir**; yalnızca
-geometri, koordinat ve biçim testleri içindir, bilimsel sonuç üretmek için kullanılmaz.
+Bu dosya ne işe yarar? Birim testlerinin gerçek slayt (yüzlerce MB-GB) olmadan geometri,
+koordinat ve dosya biçimi mantığını sınayabilmesi için küçük, OpenSlide'ın okuyabildiği piramit
+TIFF dosyaları üretir: beyaz cam üzerinde pembe "doku", içinde daha mor "tümör" bölgesi, isteğe
+bağlı mavi kalem izi ve bulanık bölge; aynı bölge için CAMELYON16 biçiminde (ASAP XML) anotasyon.
+**Bu veri gerçek doku değildir ve yalnızca ``tests/`` altında kullanılır**: üretim hattı,
+betikler ve konfigürasyonlar bu modüle bağımlı değildir; hiçbir rapor/sonuç bundan üretilmez.
 """
 
 from __future__ import annotations

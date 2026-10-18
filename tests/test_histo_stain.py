@@ -23,7 +23,7 @@ from models.histo.stain.normalizer import (  # noqa: E402
     od_to_rgb,
     rgb_to_od,
 )
-from models.histo.wsi.synthetic import SyntheticSlideSpec, render_synthetic_rgb  # noqa: E402
+from tests.histo_synthetic_fixture import SyntheticSlideSpec, render_synthetic_rgb  # noqa: E402
 
 
 def _he_like(seed: int, shift: tuple[int, int, int] = (0, 0, 0)) -> Any:

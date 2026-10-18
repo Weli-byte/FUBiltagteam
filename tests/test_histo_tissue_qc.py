@@ -12,7 +12,6 @@ np = pytest.importorskip("numpy")
 
 from models.histo.wsi.qc import QcConfig, compute_qc, decide, pen_mask, qc_row  # noqa: E402
 from models.histo.wsi.reader import SlideReader  # noqa: E402
-from models.histo.wsi.synthetic import SyntheticSlideSpec, render_synthetic_rgb  # noqa: E402
 from models.histo.wsi.tissue import (  # noqa: E402
     TissueMaskConfig,
     box_fractions,
@@ -20,6 +19,7 @@ from models.histo.wsi.tissue import (  # noqa: E402
     tissue_stats,
 )
 from tests.histo_fixtures import make_slide  # noqa: E402
+from tests.histo_synthetic_fixture import SyntheticSlideSpec, render_synthetic_rgb  # noqa: E402
 
 V0 = TissueMaskConfig(morphology=False, min_object_px=0, fill_holes=False)
 
@@ -99,7 +99,7 @@ def test_clean_pen_blur_and_blank_slides_are_separated(tmp_path: Path) -> None:
     spec_blank = SyntheticSlideSpec(
         width=512, height=384, tissue_radius=(0.0, 0.0), tumor_rect=None
     )
-    from models.histo.wsi.synthetic import write_synthetic_slide
+    from tests.histo_synthetic_fixture import write_synthetic_slide
 
     write_synthetic_slide(tmp_path / "glass.tif", spec_blank)
     m_glass, d_glass = _qc(tmp_path / "glass.tif", cfg)

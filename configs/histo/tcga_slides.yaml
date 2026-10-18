@@ -14,3 +14,7 @@ paths:
 selection:
   only_in_leader_list: true  # download only patients that have omics + mutation data
   limit: null                # e.g. 5 for a trial run
+  # --from-manifests sample (no GDC query): first N per project by file id inside the size band
+  per_project_limit: 3
+  min_size_mb: 100           # tiny files (<100 MB) are usually degenerate scans
+  max_size_mb: 500           # keeps a laptop download practical (~0.6 MB/s observed)

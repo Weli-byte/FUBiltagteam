@@ -17,7 +17,8 @@ download:
   workers: 2
   verify_md5: true           # only possible for single-part ETags; size is always checked
   include: [annotations, evaluation]   # start small; add "images" for the full 0.75 TB
-  limit: null                # e.g. 10 for a trial run
+  limit: null                # e.g. 10 for a trial run (first N images in listing order)
+  only: null                 # explicit slide ids, e.g. [tumor_091, normal_108]; overrides limit
 masks:
   downsample: 32.0           # mask resolution: level-0 px per mask px (32 -> ~8 µm/px at 0.25)
   tumor_groups: [Tumor, _0, _1, metastases, Metastases]

@@ -50,8 +50,7 @@ başlığında).
 ## 3. Üretim
 
 ```bash
-uv run --group histo python scripts/make_sample_pack.py                 # gerçek liste
-uv run --group histo python scripts/make_sample_pack.py --demo outputs/demo   # sentetik, 1 dk
+uv run --group histo python scripts/make_sample_pack.py                 # configs/histo/patch_v0.yaml
 dvc add data/processed/patch_v0 && git add data/processed/patch_v0.dvc && dvc push
 ```
 
@@ -63,7 +62,7 @@ from torch.utils.data import DataLoader
 from models.histo.patch_classifier.data import load_labelled_rows, rows_for_split, split_rows_by_slide
 from models.histo.patches.dataset import SamplePackDataset
 
-pack = Path("data/processed/patch_v0")                   # veya outputs/demo/patch_v0
+pack = Path("data/processed/patch_v0")
 rows = load_labelled_rows(pack)                          # label 0/1 olanlar
 train_rows, val_rows = split_rows_by_slide(rows_for_split(rows, "train"), val_fraction=0.2, seed=0)
 loader = DataLoader(SamplePackDataset(pack, train_rows, image_px=224), batch_size=32, shuffle=True)

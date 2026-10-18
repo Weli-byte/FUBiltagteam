@@ -1,9 +1,11 @@
 """Environment check for the GPU training box, Colab or a laptop (mini sprint 1.2).
 
 Bu dosya ne işe yarar? Kurulumun çalıştığını 30 saniyede kanıtlar: PyTorch sürümü, CUDA (GPU)
-görünüyor mu, karışık hassasiyet (AMP) matris çarpımı çalışıyor mu, OpenSlide sentetik bir
-piramit TIFF'i (ya da verilen gerçek slaytı) açabiliyor mu, h5py/OpenCV/timm yükleniyor mu.
-Hata varsa sıfırdan farklı çıkış kodu verir; ``--require-cuda`` ile GPU yoksa da hata verir.
+görünüyor mu, karışık hassasiyet (AMP) matris çarpımı çalışıyor mu, OpenSlide kütüphanesi
+yükleniyor mu ve ``--slide`` ile verilen **gerçek** slayt açılıp bir patch okunabiliyor mu,
+h5py/OpenCV/timm yükleniyor mu. Hata varsa sıfırdan farklı çıkış kodu verir; ``--require-cuda``
+ile GPU yoksa da hata verir. Sentetik/sahte slayt üretmez: slayt verilmezse okuma testi
+"atlandı" olarak raporlanır.
 
 Usage:
     uv run --group histo python scripts/verify_env.py
@@ -16,7 +18,6 @@ import argparse
 import importlib
 import platform
 import sys
-import tempfile
 import time
 from pathlib import Path
 
@@ -67,30 +68,30 @@ def check_torch(require_cuda: bool) -> bool:
     return ok
 
 
-def check_openslide(slide: Path | None) -> bool:
+def check_openslide(slide: Path | None, mpp_override: float | None) -> bool:
     import openslide
 
     from models.histo.wsi.reader import SlideReader
-    from models.histo.wsi.synthetic import SyntheticSlideSpec, write_synthetic_slide
 
     ok = _check(
         "openslide", True, f"python {openslide.__version__}, lib {openslide.__library_version__}"
     )
-    with tempfile.TemporaryDirectory() as tmp:
-        path = slide or Path(tmp) / "synthetic.tif"
-        if slide is None:
-            write_synthetic_slide(path, SyntheticSlideSpec(width=1024, height=768))
-        try:
-            with SlideReader(path, mpp_override=0.5 if slide is None else None) as reader:
-                info = reader.info
-                patch = reader.read_patch(0, 0, 64, max(info.mpp or 0.5, 0.5))
-                detail = (
-                    f"{path.name}: {info.width}x{info.height}, {info.level_count} levels, "
-                    f"mpp={info.mpp}, magnification={info.magnification}, patch {patch.shape}"
-                )
-                ok &= _check("open slide + read_patch", patch.shape == (64, 64, 3), detail)
-        except Exception as exc:
-            ok &= _check("open slide + read_patch", False, repr(exc))
+    if slide is None:
+        print("[SKIP] open slide + read_patch: pass --slide <real WSI> to run this check")
+        return ok
+    try:
+        with SlideReader(slide, mpp_override=mpp_override) as reader:
+            info = reader.info
+            target = max(reader.mpp, 0.5)
+            patch = reader.read_patch(0, 0, 64, target)
+            detail = (
+                f"{slide.name}: {info.width}x{info.height}, {info.level_count} levels, "
+                f"mpp={info.mpp}, magnification={info.magnification}, vendor={info.vendor}, "
+                f"patch {patch.shape} @ {target} µm/px"
+            )
+            ok &= _check("open slide + read_patch", patch.shape == (64, 64, 3), detail)
+    except Exception as exc:
+        ok &= _check("open slide + read_patch", False, repr(exc))
     return ok
 
 
@@ -99,14 +100,15 @@ def main(argv: list[str] | None = None) -> int:
         description=__doc__, formatter_class=argparse.RawTextHelpFormatter
     )
     parser.add_argument("--require-cuda", action="store_true", help="fail when no GPU is visible")
+    parser.add_argument("--slide", type=Path, default=None, help="a real WSI to open and read")
     parser.add_argument(
-        "--slide", type=Path, default=None, help="a real WSI to open instead of a synthetic one"
+        "--mpp", type=float, default=None, help="mpp override when the slide has no resolution tag"
     )
     args = parser.parse_args(argv)
     print(f"python {sys.version.split()[0]} on {platform.platform()}")
     ok = check_imports()
     ok &= check_torch(args.require_cuda)
-    ok &= check_openslide(args.slide)
+    ok &= check_openslide(args.slide, args.mpp)
     print("RESULT:", "environment OK" if ok else "environment has problems (see FAIL lines)")
     return 0 if ok else 1
 

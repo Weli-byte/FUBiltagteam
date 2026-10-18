@@ -52,12 +52,10 @@ timm 1.0.30 (Apache-2.0). Ağırlıklar ilk kullanımda indirilir (HF cache; GPU
 ```bash
 uv run --group histo python scripts/train_patch_classifier.py                 # 2 model x 3 seed
 uv run --group histo python scripts/train_patch_classifier.py train.models=[vit_small] train.seeds=[0] train.epochs=3
-# hızlı sağlık testi (CPU, sentetik):
-uv run --group histo python scripts/make_sample_pack.py --demo outputs/demo grid.patch_px=64 grid.thumbnail_px=512
-uv run --group histo python scripts/train_patch_classifier.py data.pack_dir=outputs/demo/patch_v0 \
-    out_dir=outputs/demo_run data.image_px=64 train.models=[tiny_cnn] train.seeds=[0,1] train.epochs=2 \
-    train.pretrained=false train.batch_size=16 train.amp=false tracking.mlflow=false
 ```
+
+Hattın kendisi `tests/test_histo_sample_pack_classifier.py` ile (sentetik test düzeneği, yalnızca
+`tests/` altında) sınanır; betikler sentetik veri üretmez.
 
 Beklenen süre (doğrulanmalı): ~10k patch, 10 epoch, ViT-S fp16, L4/A10G: 10-15 dk/seed;
 ResNet-50 benzer; 2x3 koşu < 2 saat.

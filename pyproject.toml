@@ -73,10 +73,13 @@ packages = ["onkos", "models", "services"]
 [tool.black]
 line-length = 100
 target-version = ["py311"]
+# Downloaded datasets ship their own scripts (e.g. CAMELYON16/evaluation/evaluate.py): not ours.
+extend-exclude = "^/(data|outputs)/"
 
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+extend-exclude = ["data", "outputs"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]

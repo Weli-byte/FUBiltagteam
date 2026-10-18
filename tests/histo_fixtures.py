@@ -1,6 +1,6 @@
 """Helpers that build small synthetic slides for the histo tests.
 
-The slides are rendered by ``models.histo.wsi.synthetic`` (pink 'tissue' on white glass with a
+The slides are rendered by ``tests.histo_synthetic_fixture`` (pink 'tissue' on white glass with a
 purple 'tumor' rectangle). They are geometry fixtures only, never real tissue, and exist so the
 pipeline can be tested without downloading hundreds of gigabytes.
 """
@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from models.histo.wsi.synthetic import (
+from tests.histo_synthetic_fixture import (
     SyntheticSlideSpec,
     rect_polygon,
     write_asap_xml,

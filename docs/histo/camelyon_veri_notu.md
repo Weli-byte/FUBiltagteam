@@ -2,8 +2,8 @@
 
 > **Durum (13.10.2026):** Kova listesi **canlı olarak** okundu ve manifest yazıldı
 > (`data/manifests/camelyon16_objects.csv`: 399 görüntü 752,5 GB, 160 XML, 399 maske, 3
-> değerlendirme dosyası). Görüntüler indirilmedi (0,75 TB). Maske hattı ve bölme üretimi sentetik
-> CAMELYON düzeniyle uçtan uca çalıştırıldı; gerçek slaytlarda 20 slaytlık görsel doğrulama
+> değerlendirme dosyası). Görüntüler indirilmedi (0,75 TB). Maske hattı ve bölme üretimi yalnızca
+> birim testleriyle sınandı; gerçek slaytlarda maske üretimi ve 20 slaytlık görsel doğrulama
 > indirme sonrasına kaldı.
 
 **Sade anlatım:** CAMELYON, patoloji yapay zekasının "sınav kâğıdı": meme kanserinin lenf

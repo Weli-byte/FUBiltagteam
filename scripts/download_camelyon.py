@@ -65,14 +65,24 @@ def main(argv: list[str] | None = None) -> int:
         for o in objects
         if any(o.key.startswith(str(cfg.source.prefixes[n])) for n in include) or o.size == 0
     ]
-    limit = cfg.download.limit
-    if limit is not None:
-        images = [o for o in wanted if o.key.startswith(str(cfg.source.prefixes.images))][
-            : int(limit)
+    images_prefix = str(cfg.source.prefixes.images)
+    only = cfg.download.get("only")
+    if only:  # explicit slide ids, e.g. download.only=[tumor_091,normal_108]
+        wanted_ids = {str(s).lower() for s in only}
+        images = [
+            o
+            for o in wanted
+            if o.key.startswith(images_prefix)
+            and o.key.split("/")[-1].rsplit(".", 1)[0].lower() in wanted_ids
         ]
-        wanted = [
-            o for o in wanted if not o.key.startswith(str(cfg.source.prefixes.images))
-        ] + images
+        missing = wanted_ids - {o.key.split("/")[-1].rsplit(".", 1)[0].lower() for o in images}
+        if missing:
+            print(f"UYARI: kovada bulunamayan slaytlar: {sorted(missing)}")
+        wanted = [o for o in wanted if not o.key.startswith(images_prefix)] + images
+    limit = cfg.download.limit
+    if limit is not None and not only:
+        images = [o for o in wanted if o.key.startswith(images_prefix)][: int(limit)]
+        wanted = [o for o in wanted if not o.key.startswith(images_prefix)] + images
     dest = ROOT / str(cfg.download.dest_root)
     print(
         f"downloading {len(wanted)} objects ({sum(o.size for o in wanted) / 1e9:.2f} GB) -> {dest}"

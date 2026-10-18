@@ -118,7 +118,7 @@ def test_broken_slide_is_reported_not_raised(tmp_path: Path) -> None:
     result = extract_one(SlideSpec("broken", bad), tmp_path / "out", GRID, MASK)
     assert result.status == "failed" and result.error and result.out_path is None
     glass = tmp_path / "glass.tif"
-    from models.histo.wsi.synthetic import SyntheticSlideSpec, write_synthetic_slide
+    from tests.histo_synthetic_fixture import SyntheticSlideSpec, write_synthetic_slide
 
     write_synthetic_slide(glass, SyntheticSlideSpec(width=512, height=384, tissue_radius=(0, 0)))
     result = extract_one(SlideSpec("glass", glass), tmp_path / "out", GRID, MASK)

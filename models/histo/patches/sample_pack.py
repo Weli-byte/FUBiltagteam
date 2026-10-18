@@ -37,6 +37,7 @@ CSV_COLUMNS = (
     "image",
     "slide_id",
     "source",
+    "centre",
     "split",
     "label",
     "label_name",
@@ -77,6 +78,7 @@ class PackSlide:
     slide_label: str | None = None
     annotation_xml: Path | None = None
     mpp_override: float | None = None
+    centre: str | None = None  # scanning centre / tissue source site (stain comparison)
 
 
 def _balanced_subsample(
@@ -156,6 +158,7 @@ def sample_slide(
                     "image": rel.as_posix(),
                     "slide_id": slide.slide_id,
                     "source": slide.source,
+                    "centre": slide.centre or "",
                     "split": slide.split,
                     "label": label,
                     "label_name": LABEL_NAMES.get(label, "unknown"),

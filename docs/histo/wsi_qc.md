@@ -1,9 +1,9 @@
 # WSI Kalite Kontrolü ve Doku Tespiti v1 (Mini sprint 1.6)
 
 > **Durum:** Hat ve testler hazır (`models/histo/wsi/{tissue,qc}.py`, `scripts/run_wsi_qc.py`);
-> sentetik slaytlarda temiz / kalem izli / bulanık / boş cam ayrımı test edildi. **Eşikler gerçek
-> slaytlarda kalibre edilmedi** (bu makinede WSI yok). Kalibrasyon protokolü §4'tedir ve gerçek
-> veriyle ilk 50 slaytta uygulanacak.
+> birim testleri (sentetik test düzeneği, yalnızca `tests/` altında) temiz / kalem izli / bulanık /
+> boş cam ayrımını sınar. **Eşikler gerçek slaytlarda kalibre edilmedi.** Kalibrasyon protokolü
+> §4'tedir ve gerçek veriyle ilk 50 slaytta uygulanacak.
 
 **Sade anlatım:** Bazı doku görüntüleri kötüdür: bulanık, üzerinde kalem izi olan, katlanmış ya da
 neredeyse boş camlar. Bu adım "kalite kontrol bandı" gibi çalışır: her slaytı ölçer, kötüleri
@@ -65,8 +65,8 @@ uv run --group histo python scripts/run_wsi_qc.py run.manual_sample=50 qc.blur_l
 
 ## 6. Doğrulama (bitti kriteri)
 
-- [x] Doku maskeleri testlerde doğrulandı (IoU > 0,9 sentetik; speck/hole temizliği).
-- [x] Kalem izli, bulanık ve boş cam sentetik slaytlar doğru ayrıldı (`tests/test_histo_tissue_qc.py`).
+- [x] Doku maskesi mantığı birim testlerinde doğrulandı (IoU > 0,9 test düzeneğinde; speck/hole temizliği).
+- [x] Kalem izli, bulanık ve boş cam ayrımı birim testlerinde doğru (`tests/test_histo_tissue_qc.py`); gerçek slaytta henüz değil.
 - [ ] 50 gerçek slaytta manuel-otomatik uyum ≥ %90 raporlandı (tablo buraya).
 - [ ] Dışlananların kanser türü ve kurum dağılımı raporlandı.
 - [ ] 20 rastgele gerçek slaytta doku maskesi gözle doğrulandı.
