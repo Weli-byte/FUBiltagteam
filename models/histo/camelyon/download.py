@@ -124,14 +124,18 @@ def download_object(
             if have > obj.size:
                 part.unlink()
                 have = 0
-            headers = {"Range": f"bytes={have}-"} if have else {}
-            with session.get(url, headers=headers, stream=True, timeout=timeout) as response:
-                if have and response.status_code != 206:
-                    have = 0  # server ignored the range: start over
-                response.raise_for_status()
-                with part.open("ab" if have else "wb") as out:
-                    for block in response.iter_content(chunk_size=1 << 20):
-                        out.write(block)
+            if have < obj.size:  # a complete .part (interrupted verify/rename) skips the request
+                headers = {"Range": f"bytes={have}-"} if have else {}
+                with session.get(url, headers=headers, stream=True, timeout=timeout) as response:
+                    if have and response.status_code == 416:  # range not satisfiable: restart
+                        part.unlink()
+                        raise OSError(f"server rejected resume offset {have} for {obj.key}")
+                    if have and response.status_code != 206:
+                        have = 0  # server ignored the range: start over
+                    response.raise_for_status()
+                    with part.open("ab" if have else "wb") as out:
+                        for block in response.iter_content(chunk_size=1 << 20):
+                            out.write(block)
             if part.stat().st_size != obj.size:
                 raise OSError(f"size mismatch for {obj.key}: {part.stat().st_size} != {obj.size}")
             if verify_md5 and obj.md5 is not None and md5_of(part) != obj.md5:

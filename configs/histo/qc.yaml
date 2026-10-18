@@ -27,7 +27,7 @@ tissue_mask:
   fill_holes: true
   max_hole_px: 2000
 run:
-  slide_list: data/manifests/slides_to_extract.csv
+  slide_list: data/manifests/sprint1_gercek_ornek_slaytlar.csv
   out_parquet: data/interim/qc_results.parquet
   report: docs/histo/qc_raporu.md
   overlay_dir: data/interim/qc_overlays     # thumbnail + mask overlays for the manual check

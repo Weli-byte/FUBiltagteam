@@ -22,6 +22,7 @@ tissue_mask:               # v0 = simple Otsu (morphology off); set morphology: 
   fill_holes: false
   max_hole_px: 0
 run:
-  slide_list: data/manifests/patch_v0_slides.csv
-  # columns: slide_id,path,source,split,slide_label,annotation_xml,mpp_override
+  slide_list: data/manifests/sprint1_gercek_ornek_pack.csv
+  # columns: slide_id,path,source,split,slide_label,annotation_xml,mpp_override,centre
+  # relative paths resolve against the CSV directory (../raw/... from data/manifests/)
   out_dir: data/processed/patch_v0

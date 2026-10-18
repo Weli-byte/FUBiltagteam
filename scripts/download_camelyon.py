@@ -67,17 +67,19 @@ def main(argv: list[str] | None = None) -> int:
     ]
     images_prefix = str(cfg.source.prefixes.images)
     only = cfg.download.get("only")
-    if only:  # explicit slide ids, e.g. download.only=[tumor_091,normal_108]
-        wanted_ids = {str(s).lower() for s in only}
-        images = [
-            o
-            for o in wanted
-            if o.key.startswith(images_prefix)
-            and o.key.split("/")[-1].rsplit(".", 1)[0].lower() in wanted_ids
-        ]
-        missing = wanted_ids - {o.key.split("/")[-1].rsplit(".", 1)[0].lower() for o in images}
+    if only:  # explicit slide ids, e.g. download.only=[tumor_091,normal_108]; implies images
+        only_list = [only] if isinstance(only, str) else list(only)
+        wanted_ids = {str(s).lower() for s in only_list}
+
+        def _sid(o: RemoteObject) -> str:
+            return o.key.split("/")[-1].rsplit(".", 1)[0].lower()
+
+        # Select from the FULL listing: an explicit id list must not depend on download.include.
+        images = [o for o in objects if o.key.startswith(images_prefix) and _sid(o) in wanted_ids]
+        missing = wanted_ids - {_sid(o) for o in images}
         if missing:
-            print(f"UYARI: kovada bulunamayan slaytlar: {sorted(missing)}")
+            print(f"HATA: kovada bulunamayan slaytlar: {sorted(missing)}")
+            return 2
         wanted = [o for o in wanted if not o.key.startswith(images_prefix)] + images
     limit = cfg.download.limit
     if limit is not None and not only:
@@ -103,13 +105,20 @@ def main(argv: list[str] | None = None) -> int:
             for o in wanted
             if o.size > 0
         }
-        for done, future in enumerate(as_completed(futures), start=1):
-            try:
-                status = future.result()
-            except Exception as exc:
-                failed.append((futures[future].key, repr(exc)))
-                status = "failed"
-            print(f"{done}/{len(futures)} {futures[future].key} {status}", flush=True)
+        try:
+            for done, future in enumerate(as_completed(futures), start=1):
+                try:
+                    status = future.result()
+                except Exception as exc:
+                    failed.append((futures[future].key, repr(exc)))
+                    status = "failed"
+                print(f"{done}/{len(futures)} {futures[future].key} {status}", flush=True)
+        except KeyboardInterrupt:  # stop queued downloads instead of finishing the whole batch
+            pool.shutdown(wait=False, cancel_futures=True)
+            print(
+                "kesildi: kuyruktaki indirmeler iptal edildi; aynı komut kaldığı yerden devam eder"
+            )
+            raise
     for o in wanted:  # README / license have unknown size in this listing: fetch directly
         if o.size == 0:
             target = dest / o.key

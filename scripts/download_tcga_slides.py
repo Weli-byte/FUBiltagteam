@@ -25,7 +25,8 @@ import argparse
 import csv
 import logging
 import sys
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from collections.abc import Iterator
+from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from dataclasses import asdict
 from pathlib import Path
 
@@ -97,10 +98,28 @@ def files_from_manifests(
     return files
 
 
+def _interruptible(
+    iterator: Iterator[tuple[int, Future[str]]], pool: ThreadPoolExecutor
+) -> Iterator[tuple[int, Future[str]]]:
+    """Yield from ``iterator``; on Ctrl-C cancel queued downloads instead of finishing the batch."""
+    try:
+        yield from iterator
+    except KeyboardInterrupt:
+        pool.shutdown(wait=False, cancel_futures=True)
+        print("kesildi: kuyruktaki indirmeler iptal edildi; aynı komut kaldığı yerden devam eder")
+        raise
+
+
 def download_all(
     chosen: list[GdcFile], raw_dir: Path, interim_dir: Path, api: str, workers: int, attempts: int
 ) -> list[tuple[str, str]]:
     """Download ``chosen`` (md5-verified, resumable); return the failures and write a log table."""
+    if not chosen:
+        print(
+            "HATA: indirilecek slayt yok "
+            "(projects / size band / per_project_limit ayarlarını kontrol edin)"
+        )
+        return [("-", "empty selection")]
     failed: list[tuple[str, str]] = []
     rows: list[dict[str, object]] = []
     counts = {"downloaded": 0, "skipped": 0}
@@ -108,7 +127,7 @@ def download_all(
         futures = {
             pool.submit(download_file, f, raw_dir, api=api, attempts=attempts): f for f in chosen
         }
-        for done, future in enumerate(as_completed(futures), start=1):
+        for done, future in _interruptible(enumerate(as_completed(futures), start=1), pool):
             f = futures[future]
             try:
                 status = future.result()
@@ -231,16 +250,18 @@ def main(argv: list[str] | None = None) -> int:
     selected = inventory[inventory["selected"]]
     if bool(cfg.selection.only_in_leader_list) and patients:
         selected = selected[selected["patient_barcode"].isin(set(patients))]
+    by_id = {f.file_id: f for f in files}
+    # Committed manifests always hold the FULL selection; `selection.limit` only trims the
+    # download list, so a trial run never truncates what --from-manifests relies on.
+    for project in projects:
+        write_manifest(
+            [by_id[s] for s in selected["slide_id"] if by_id[s].project_id == project],
+            manifest_dir / f"{project}_dx_slides_selected.tsv",
+        )
     limit = cfg.selection.limit
     if limit is not None:
         selected = selected.head(int(limit))
-    by_id = {f.file_id: f for f in files}
     chosen = [by_id[s] for s in selected["slide_id"]]
-    for project in projects:
-        write_manifest(
-            [f for f in chosen if f.project_id == project],
-            manifest_dir / f"{project}_dx_slides_selected.tsv",
-        )
     summary = inventory_summary(inventory, table)
     report = ROOT / str(cfg.paths.report)
     report.parent.mkdir(parents=True, exist_ok=True)

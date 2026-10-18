@@ -23,7 +23,7 @@ stages:
       - scripts/run_wsi_qc.py
       - models/histo/wsi
       - configs/histo/qc.yaml
-      - data/manifests/slides_to_extract.csv
+      - data/manifests/sprint1_gercek_ornek_slaytlar.csv
     outs:
       - data/interim/qc_results.parquet
 
@@ -34,7 +34,7 @@ stages:
       - models/histo/patches
       - models/histo/wsi
       - configs/histo/patch_extract.yaml
-      - data/manifests/slides_to_extract.csv
+      - data/manifests/sprint1_gercek_ornek_slaytlar.csv
     outs:
       - data/processed/patches/coords_v1
 
@@ -44,6 +44,6 @@ stages:
       - scripts/make_sample_pack.py
       - models/histo/patches/sample_pack.py
       - configs/histo/patch_v0.yaml
-      - data/manifests/patch_v0_slides.csv
+      - data/manifests/sprint1_gercek_ornek_pack.csv
     outs:
       - data/processed/patch_v0

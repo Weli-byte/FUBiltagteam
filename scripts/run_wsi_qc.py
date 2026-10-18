@@ -23,7 +23,7 @@ import numpy as np
 import pandas as pd
 
 from models.histo.camelyon.annotations import overlay_mask
-from models.histo.config import load_histo_config, section
+from models.histo.config import load_histo_config, redact_path, section
 from models.histo.patches.extract import read_slide_list
 from models.histo.wsi.qc import HsvRange, QcConfig, compute_qc, decide, qc_row
 from models.histo.wsi.reader import SlideReader
@@ -152,10 +152,9 @@ def main(argv: list[str] | None = None) -> int:
                     )
             log.info("%s: %s %s", spec.slide_id, decision.decision, "; ".join(decision.reasons))
         except Exception as exc:
-            log.exception("%s failed", spec.slide_id)
-            rows.append(
-                {"slide_id": spec.slide_id, "decision": "exclude", "reasons": f"error: {exc!r}"}
-            )
+            log.exception("%s failed", spec.slide_id)  # full detail stays in the local log only
+            reason = redact_path(f"error: {type(exc).__name__}: {exc}", spec.path, spec.slide_id)
+            rows.append({"slide_id": spec.slide_id, "decision": "exclude", "reasons": reason})
     frame = pd.DataFrame(rows)
     out.parent.mkdir(parents=True, exist_ok=True)
     frame.to_parquet(out, index=False)

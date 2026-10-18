@@ -77,13 +77,27 @@ def _output_path(out_dir: Path, slide_id: str) -> Path:
     return out_dir / f"{slide_id}.h5"
 
 
-def _already_done(path: Path) -> bool:
+def _already_done(path: Path, expected_config_hash: str) -> bool:
+    """True only if a valid file produced with the SAME grid/mask configuration exists."""
     if not path.exists():
         return False
     try:
-        validate_coords_h5(path)
+        attrs = validate_coords_h5(path)
     except (OSError, ValueError, KeyError):
         log.warning("existing file %s is invalid; it will be regenerated", path)
+        return False
+    if (
+        attrs.config_hash != expected_config_hash
+        or attrs.tissue_mask_version != TISSUE_MASK_VERSION
+    ):
+        log.warning(
+            "existing file %s was produced with another config (%s/%s vs %s/%s); regenerating",
+            path,
+            attrs.config_hash,
+            attrs.tissue_mask_version,
+            expected_config_hash,
+            TISSUE_MASK_VERSION,
+        )
         return False
     return True
 
@@ -97,7 +111,8 @@ def extract_one(
 ) -> ExtractResult:
     """Process one slide to ``<out_dir>/<slide_id>.h5``. Never raises: failures are reported."""
     out_path = _output_path(out_dir, spec.slide_id)
-    if not overwrite and _already_done(out_path):
+    expected_hash = config_hash({"grid": grid_cfg.to_dict(), "mask": mask_cfg.to_dict()})
+    if not overwrite and _already_done(out_path, expected_hash):
         return ExtractResult(
             spec.slide_id, "skipped", 0, 0, 0.0, str(out_path), source_path=str(spec.path)
         )
@@ -124,7 +139,7 @@ def extract_one(
                 level_count=reader.info.level_count,
                 min_tissue_fraction=grid_cfg.min_tissue_fraction,
                 tissue_mask_version=TISSUE_MASK_VERSION,
-                config_hash=config_hash({"grid": grid_cfg.to_dict(), "mask": mask_cfg.to_dict()}),
+                config_hash=expected_hash,
                 created_at=datetime.now(UTC).isoformat(timespec="seconds"),
             )
             write_coords_h5(out_path, grid.coords, grid.tissue_fraction, attrs)

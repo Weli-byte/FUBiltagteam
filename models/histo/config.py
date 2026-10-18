@@ -58,6 +58,20 @@ def section(cfg: DictConfig, name: str) -> dict[str, Any]:
     return to_plain(value)
 
 
+def redact_path(message: str, path: Path | str, slide_id: str) -> str:
+    """Replace a slide's path, file name and stem in ``message`` by its anonymous ``slide_id``.
+
+    TCGA file names carry the patient barcode; error messages that end up in shared reports
+    (QC report, pack metadata) must only mention the anonymous slide id.
+    """
+    p = Path(path)
+    out = message
+    for needle in (str(p), p.as_posix(), p.name, p.stem.split(".")[0]):
+        if needle:
+            out = out.replace(needle, slide_id)
+    return out
+
+
 def config_hash(cfg: DictConfig | Mapping[str, Any], length: int = 16) -> str:
     """Short, order-independent SHA-256 of a config; stored in output files for provenance."""
     payload = json.dumps(to_plain(cfg), sort_keys=True, default=str).encode("utf-8")

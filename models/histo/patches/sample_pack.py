@@ -28,6 +28,7 @@ from models.histo.camelyon.annotations import (
     patch_tumor_fractions,
     polygons_to_mask,
 )
+from models.histo.config import redact_path
 from models.histo.patches.grid import PatchGridConfig, draw_boxes, tissue_patch_grid
 from models.histo.wsi.reader import SlideReader
 from models.histo.wsi.tissue import TissueMaskConfig
@@ -216,9 +217,10 @@ def build_sample_pack(
     for slide in slides:
         try:
             rows += sample_slide(slide, out_dir, cfg, grid_cfg, mask_cfg)
-        except Exception as exc:  # keep going; report at the end
+        except Exception as exc:  # keep going; report at the end (anonymised: shared file)
             log.exception("%s failed", slide.slide_id)
-            failed.append({"slide_id": slide.slide_id, "error": repr(exc)})
+            message = redact_path(f"{type(exc).__name__}: {exc}", slide.path, slide.slide_id)
+            failed.append({"slide_id": slide.slide_id, "error": message})
     write_rows(rows, out_dir / "patches.csv")
     counts = {
         "patches": len(rows),
