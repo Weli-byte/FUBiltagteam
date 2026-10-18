@@ -9,13 +9,15 @@ precision is poor. The no-skill AUPRC equals the prevalence, which is reported n
 """
 
 from collections.abc import Callable, Mapping
-from typing import Any
+from typing import Any, TypeAlias
 
 import numpy as np
 import pandas as pd
 from sklearn.metrics import average_precision_score, roc_auc_score
 
-Array = np.ndarray[Any, Any]
+# Explicit TypeAlias: in CI (no numpy installed) ``np`` is ``Any`` and a bare assignment is not
+# accepted as a type by mypy --strict.
+Array: TypeAlias = np.ndarray[Any, Any]
 MetricFn = Callable[[Array, Array], float]
 
 
