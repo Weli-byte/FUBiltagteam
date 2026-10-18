@@ -1,10 +1,11 @@
 # patch_v0 Örnek Veri Seti: Teslim Notu (Mini sprint 1.3)
 
-> **Durum (13.10.2026):** Hat hazır ve sentetik slaytlarla uçtan uca çalıştırıldı; **gerçek
-> slaytlarla paket henüz üretilmedi** çünkü bu makinede WSI yok (CAMELYON16 görüntüleri 0,75 TB,
-> TCGA seçilenler 1,7 TB). Gerçek paket, GPU/veri makinesi kurulur kurulmaz (Sprint 1 sonu /
-> Sprint 2 başı) aşağıdaki komutla üretilip ekibe DVC üzerinden verilecek. Ekip bu arada format
-> ve DataLoader ile `--demo` çıktısı üzerinde çalışabilir.
+> **Durum (18.10.2026):** Hat hazır ve **gerçek slaytlarla küçük bir paket üretildi**: 13 slayt
+> (4 CAMELYON16 + 9 TCGA), 2.600 patch (CAMELYON 200 tümör + 600 normal; TCGA 1.800 slayt düzeyi
+> etiket), `data/processed/patch_v0/` (git'te değil; DVC remote ekip kararı bekliyor). Liste:
+> `data/manifests/sprint1_gercek_ornek_pack.csv`. Planlanan ~50 slaytlık paket, WSI indirmesi
+> GPU/veri makinesinde yapılınca aynı betikle üretilecek. Ayrıntı ve görsel kontrol:
+> `raporlar/sprint1_gercek_veri_raporu.md` §6.
 
 **Sade anlatım:** Ekibin yapay zeka denemelerine başlaması için birkaç düzine slayttan kesilmiş
 küçük doku kareleri (patch) ve her karenin "tümör / normal" etiketi. İlk yemek tadımlığı:

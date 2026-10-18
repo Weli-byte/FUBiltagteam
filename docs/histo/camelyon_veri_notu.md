@@ -1,10 +1,13 @@
 # CAMELYON16/17 ve PAIP: Veri Notu, Maskeler, Resmi Bölme (Mini sprint 1.5)
 
-> **Durum (13.10.2026):** Kova listesi **canlı olarak** okundu ve manifest yazıldı
+> **Durum (18.10.2026):** Kova listesi **canlı olarak** okundu ve manifest yazıldı
 > (`data/manifests/camelyon16_objects.csv`: 399 görüntü 752,5 GB, 160 XML, 399 maske, 3
-> değerlendirme dosyası). Görüntüler indirilmedi (0,75 TB). Maske hattı ve bölme üretimi yalnızca
-> birim testleriyle sınandı; gerçek slaytlarda maske üretimi ve 20 slaytlık görsel doğrulama
-> indirme sonrasına kaldı.
+> değerlendirme dosyası). **Gerçek örnek indirildi:** 2 tümör (`tumor_091`, `tumor_084`) + 2 normal
+> (`normal_108`, `normal_150`) slayt, 160 XML ve `reference.csv`; maskeler gerçek XML'den üretildi ve
+> 2 tümör slaydında bindirme görseliyle gözle doğrulandı (`raporlar/sprint1_gercek_veri_raporu.md`).
+> Tam set (0,75 TB) indirilmedi; 20 slaytlık görsel doğrulama tam indirme sonrasına kaldı.
+> Not: `reference.csv`'nin `center` sütunu merkez adı değil **0/1 kodu**dur; görüntü adları `.tif`
+> uzantılıdır (okuyucu uzantıyı atar).
 
 **Sade anlatım:** CAMELYON, patoloji yapay zekasının "sınav kâğıdı": meme kanserinin lenf
 düğümüne yayılmasını (metastaz) arayan, patologların tümör bölgelerini elle çizdiği slaytlar.

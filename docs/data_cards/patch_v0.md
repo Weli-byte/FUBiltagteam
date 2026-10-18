@@ -13,5 +13,5 @@
 | Kalite | Patch'ler gözle 30 örnekte kontrol edilecek; overlay ile koordinat doğrulaması; QC (1.6) uygulanmamış olabilir (v0) |
 | Sınırlılıklar | Küçük (~50 slayt); doku tespiti v0 basit; TCGA etiketi zayıf; yalnızca gerçek slaytlardan üretilir (sentetik veri yok) |
 | Depolama | `data/processed/patch_v0/` (DVC; git'te değil); boyut ~1-2 GB |
-| Durum | Hat hazır; gerçek paket WSI indirmesi sonrası üretilecek (`docs/histo/patch_v0_teslim_notu.md`) |
+| Durum | Küçük gerçek örnek üretildi (18.10.2026): 13 slayt, 2.600 patch (`data/processed/patch_v0`, git'te değil); ~50 slaytlık tam paket WSI indirmesi sonrası (`docs/histo/patch_v0_teslim_notu.md`) |
 | Sorumlu | Nisa |

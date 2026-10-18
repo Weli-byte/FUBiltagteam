@@ -22,12 +22,18 @@
 
 ## Hafta 2-3 (gerçek veriyle Sprint 1'in açık kalan doğrulamaları)
 
-- [ ] `patch_v0` gerçek paketi üret, 30 patch gözle kontrol, DVC ile paylaş; ekibe 5 dk özet.
-- [ ] QC eşik kalibrasyonu: 50 slayt manuel inceleme, uyum % → `wsi_qc.md` §4.
-- [ ] Extraction performansı: 10 gerçek slaytta slayt/dakika → `koordinat_sistemi.md` §5.
-- [ ] Boya normalizasyonu gerçek ölçümü (RUMC vs UMCU) + 3 seed kısa ViT → `boya_normalizasyonu.md`.
-- [ ] ViT-S vs ResNet-50 gerçek sonuç tablosu + model kartı (3 seed).
-- [ ] `check_split_compat.py` liderin `slide_splits.parquet`'iyle çalıştır (kesişim 0).
+- [x] (küçük örnek, 18.10.2026) `patch_v0` gerçek paketi: 13 slayt, 2.600 patch; 32 patch gözle
+      kontrol edildi (`raporlar/img/camelyon_patch_ornekleri.jpg`). **Kalan:** ~50 slaytlık paket ve
+      DVC paylaşımı (remote kararı), ekibe 5 dk özet.
+- [ ] QC eşik kalibrasyonu: 50 slayt manuel inceleme, uyum % → `wsi_qc.md` §4. (18.10 bulgusu:
+      Laplacian ölçeği tarayıcıya bağlı; "siyah mürekkep" aralığı BRCA slaydında olası yanlış pozitif.)
+- [x] Extraction performansı (koordinat aşaması): 13 gerçek slayt, 0,82 sn/slayt, 73 slayt/dk →
+      `koordinat_sistemi.md` §5. **Kalan:** patch okuma/özellik çıkarımı hızı (Sprint 2).
+- [x] Boya normalizasyonu gerçek ölçümü (7 merkez, merkez-doku karışık) → `boya_normalizasyonu.md` §4.
+      **Kalan:** aynı doku/çok merkez (CAMELYON17) ölçümü ve 3 seed kısa ViT yok/var deneyi.
+- [x] ViT-S vs ResNet-50 (3 seed, 2+2 slayt) ön bulgu → `vit_baseline_v1.md` §5, model kartı.
+      **Kalan:** ≥ 20 slaytla nihai karşılaştırma (NİHAİ DEĞİL).
+- [ ] `check_split_compat.py` liderin `slide_splits.parquet`'iyle çalıştır (kesişim 0) — dosya gelmedi.
 
 ## Sprint 2 ana işler (Nisa planı 2.1-2.10)
 

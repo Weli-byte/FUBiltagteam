@@ -2,8 +2,8 @@
 
 > **Durum:** Macenko ve Reinhard normalizasyonu ile histolojiye uygun augmentation modülleri
 > yazıldı ve birim testleriyle sınandı (`models/histo/stain/`, `tests/test_histo_stain.py`).
-> **Gerçek merkez verisiyle ölçüm ve 3 seed'li kısa ViT deneyi yapılmadı**; §4 gerçek sonuç
-> gelince dolacak. Varsayılan karar gerçek ölçüme kadar askıda (§5).
+> **Gerçek patch'lerde ölçüldü** (18.10.2026, 13 slayt, §4); merkez/doku karışıklığı nedeniyle
+> varsayılan karar askıda (§5). 3 seed'li kısa ViT deneyi (normalizasyon yok/var) yapılmadı.
 
 **Sade anlatım:** Her hastane dokuyu biraz farklı tonda boyar; biri pembe, diğeri mor. Model
 renk farkını "hastalık" sanabilir. Normalizasyon tüm görüntüleri benzer tona getirir;
@@ -47,11 +47,21 @@ TTA: 8 dihedral görünüm (`dihedral_views`) + ortalama (`predict_tta`), `train
 5. Kısa ViT deneyi (3 seed, none vs macenko vs reinhard, aynı bölme) → `train_patch_classifier.py`
    `train.stain=...` bayrağı Sprint 2'de eklenecek; sonuç AUROC + GA olarak buraya.
 
-## 4. Gerçek veri sonucu
+## 4. Gerçek veri sonucu (18.10.2026, küçük örnek)
 
-Henüz yok. Gerçek slaytlardan üretilen patch'lerle `scripts/compare_stain_norm.py` çalıştırıldığında
-tablo buraya, ham çıktı `docs/histo/raporlar/` altına yazılacak. Sentetik veriyle üretilmiş hiçbir
-sayı bu belgede raporlanmaz; hattın kendisi `tests/test_histo_stain.py` ile sınanır.
+`scripts/compare_stain_norm.py`, gerçek `patch_v0` örneğinde (13 slayt; 7 "merkez" = 6 TCGA TSS +
+CAMELYON16 center1; 100 patch/merkez; 3 seed):
+
+| yöntem | merkezler arası LAB farkı | merkez sınıflandırıcı doğruluğu (ort ± sd) | şans |
+|---|---|---|---|
+| none | 6,47 | 0,676 ± 0,007 | 0,143 |
+| macenko | 2,29 | 0,419 ± 0,010 | 0,143 |
+| reinhard | 0,22 | 0,489 ± 0,022 | 0,143 |
+
+Her iki yöntem renk farkını azaltıp merkez tahminini zorlaştırıyor; şansa inmiyor. **Sınırlılık:**
+merkezler kanser türü/dokuyla karışık (akciğer, meme, kolon, lenf düğümü), farkın bir kısmı
+biyolojik. Macenko 700 gerçek patch'te 0 hata. Görsel: `raporlar/img/boya_once_sonra.jpg`.
+Kısa ViT deneyi (yok/var) henüz yapılmadı.
 
 ## 5. Karar ve öneri
 

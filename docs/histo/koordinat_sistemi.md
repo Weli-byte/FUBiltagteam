@@ -88,10 +88,10 @@ ihtiyaç anında okur (her DataLoader işçisi slaytı kendisi açar).
 
 ### Performans (dürüst not)
 
-Gerçek slaytlarda henüz ölçülmedi. Beklenti (literatür/CLAM deneyimi, doğrulanmalı): thumbnail +
-maske + ızgara slayt başına 2-10 sn (koordinat üretimi I/O'ya bağlı değil); patch okuma özellik
-çıkarımında (Sprint 2) darboğaz olur. Gerçek slaytlarla ölçüm yapıldığında sayılar
-`_summary.json` çıktısından alınıp buraya yazılacak; sentetik test slaytlarının süreleri raporlanmaz.
+Gerçek ölçüm (18.10.2026, dizüstü, 4 işçi, 13 gerçek slayt; `_summary.json`): 13/13 slayt,
+67.116 koordinat, **0,82 sn/slayt**, 73 slayt/dk; slayt başına 1.056–11.246 patch. Bu yalnızca
+koordinat aşamasıdır (thumbnail 2048 px + maske + ızgara); patch okuma ve özellik çıkarımı (Sprint 2)
+darboğaz olacaktır ve ayrıca ölçülecek. Ayrıntı: `raporlar/sprint1_gercek_veri_raporu.md` §4.
 
 ## 6. Doğrulama (bitti kriteri)
 

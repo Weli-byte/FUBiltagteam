@@ -120,7 +120,9 @@ Patch çıkarımı ve indirmeler zaten dosya düzeyinde devam eder.
 ## 7. Doğrulama ve kabul
 
 - [ ] `setup_gpu_machine.sh` temiz makinede 30 dk içinde bitti (süreyi buraya yazın: __).
-- [ ] `verify_env.py --require-cuda`: torch.cuda OK, fp16 matmul OK, OpenSlide 4.0.1 OK, örnek SVS açıldı.
+- [x] `verify_env.py --require-cuda --slide <gerçek slayt>`: dizüstü RTX 4060 + ayrı cu126 ortamında
+      geçti (18.10.2026: torch 2.14.1+cu126, fp16 matmul OK, OpenSlide 4.0.1 gerçek CAMELYON16 slaydını açtı).
+      Bulut makinesinde henüz çalıştırılmadı.
 - [ ] En az iki ekip üyesi kendi SSH anahtarıyla bağlanıp `scripts/hello_world.py` çalıştırdı.
 - [ ] `auto_shutdown.sh` cron'da; `/var/log/onkos-auto-shutdown.log` doluyor.
 - [ ] Docker imajı bir kez derlendi ve `run --rm verify` geçti (imaj boyutunu not edin).

@@ -1,9 +1,11 @@
 # WSI Kalite Kontrolü ve Doku Tespiti v1 (Mini sprint 1.6)
 
-> **Durum:** Hat ve testler hazır (`models/histo/wsi/{tissue,qc}.py`, `scripts/run_wsi_qc.py`);
-> birim testleri (sentetik test düzeneği, yalnızca `tests/` altında) temiz / kalem izli / bulanık /
-> boş cam ayrımını sınar. **Eşikler gerçek slaytlarda kalibre edilmedi.** Kalibrasyon protokolü
-> §4'tedir ve gerçek veriyle ilk 50 slaytta uygulanacak.
+> **Durum (18.10.2026):** Hat ve testler hazır; **13 gerçek slaytta çalıştırıldı** (9 TCGA + 4
+> CAMELYON16): 12 `use`, 1 `exclude` (TCGA-BRCA, kalem izi oranı 0,064 > 0,05), doku maskeleri 3
+> slaytta gözle kontrol edildi (`raporlar/sprint1_gercek_veri_raporu.md` §3). **Eşikler kalibre
+> edilmedi**: Laplacian varyans medyanı tarayıcıya göre 940–4.000 (Aperio) ile 22.000–34.000
+> (Philips) arasında; varsayılan bulanıklık eşiği (40) bu ölçekte anlamsız derecede düşüktür ve
+> 50 slaytlık manuel inceleme (§4) ile tarayıcı bazında belirlenecek.
 
 **Sade anlatım:** Bazı doku görüntüleri kötüdür: bulanık, üzerinde kalem izi olan, katlanmış ya da
 neredeyse boş camlar. Bu adım "kalite kontrol bandı" gibi çalışır: her slaytı ölçer, kötüleri

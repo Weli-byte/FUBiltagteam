@@ -1,9 +1,9 @@
 # ViT Baseline v1: Patch Düzeyinde Tümör/Normal (Mini sprint 1.9)
 
-> **Durum:** Eğitim/değerlendirme hattı yazıldı, test edildi ve sentetik pakette uçtan uca
-> çalıştırıldı (MLflow kaydı dahil). **Gerçek veriyle ViT-S/16 ve ResNet-50 eğitimi
-> yapılmadı** (GPU/veri makinesi bekleniyor); dolayısıyla "ViT, ResNet'ten %8-15 daha iyi" iddiası
-> henüz **test edilmedi**; sonuç tablosu §5'te boş bırakıldı, uydurulmadı.
+> **Durum (18.10.2026):** Eğitim/değerlendirme hattı yazıldı, birim testleriyle sınandı ve
+> **gerçek CAMELYON16 patch'leriyle GPU'da çalıştırıldı** (ViT-S/16 ve ResNet-50, 3 seed, MLflow
+> kaydı dahil). Veri çok küçük (2 eğitim + 2 doğrulama slaydı): §5 sonuçları **ön bulgudur, NİHAİ
+> DEĞİL**; "ViT %8-15 daha iyi" iddiası bu örnekle desteklenmiyor (fark anlamlı değil).
 
 **Sade anlatım:** Yapay zekanın ilk sınavı: küçük doku karelerine bakıp "tümör mü, normal mi"
 demek. İki aday yarışır: ViT (görüntüyü 16x16 parçalara bölüp parçalar arası ilişkiye bakan
@@ -60,12 +60,20 @@ Hattın kendisi `tests/test_histo_sample_pack_classifier.py` ile (sentetik test 
 Beklenen süre (doğrulanmalı): ~10k patch, 10 epoch, ViT-S fp16, L4/A10G: 10-15 dk/seed;
 ResNet-50 benzer; 2x3 koşu < 2 saat.
 
-## 5. Sonuçlar (gerçek veri; doldurulacak)
+## 5. Sonuçlar (gerçek veri, küçük örnek — NİHAİ DEĞİL)
 
-| model | AUROC (ort, %95 GA) | AUPRC | F1 | doğruluk | seed |
+18.10.2026, CAMELYON16 eğitim slaytları: eğitim 2 slayt (400 patch: 100 tümör / 300 normal),
+doğrulama 2 slayt (400 patch); 8 epoch, batch 32, AMP, RTX 4060; `outputs/sprint1_real/patch_baseline`.
+
+| model | AUROC (ort, %95 GA) | AUPRC | F1@0,5 | doğruluk | seed |
 |---|---|---|---|---|---|
-| vit_small | — | — | — | — | 3 |
-| resnet50 | — | — | — | — | 3 |
+| vit_small | 0,780 [0,729, 0,831] | 0,426 | 0,057 | 0,745 | 3 |
+| resnet50 | 0,769 [0,659, 0,879] | 0,453 | 0,169 | 0,738 | 3 |
+
+Seed bazında AUROC: ViT 0,740 / 0,770 / 0,829; ResNet 0,803 / 0,845 / 0,659. Güven aralıkları
+örtüşüyor; fark anlamlı değil. ViT 400 patch'te ezberliyor (eğitim kaybı → 0, doğrulama kaybı ↑);
+F1@0,5 düşük çünkü tümör olasılıkları 0,5'in altında kalıyor (sınıf oranı 1:3). Ayrıntı ve
+görseller: `raporlar/sprint1_gercek_veri_raporu.md` §7.
 
 Hattın sentetik düzenekle sınanması yalnızca `tests/test_histo_sample_pack_classifier.py` içindedir;
 sentetik veriden hiçbir sayı raporlanmaz.

@@ -15,5 +15,5 @@
 | Sınırlılıklar | Tek organ/tek hastalık (lenf nodu metastazı); iki merkez; test etiketleri slayt düzeyi; ONKOS hedef dokularına (akciğer/kolon/meme primer) doğrudan genellenmez |
 | Depolama | `data/raw/camelyon/CAMELYON16/` (git'te değil); maskeler ve koordinatlar DVC |
 | Atıf | Ehteshami Bejnordi B ve ark. JAMA 2017;318(22):2199-2210, doi:10.1001/jama.2017.14585; Litjens G ve ark. GigaScience 2018;7(6):giy065, doi:10.1093/gigascience/giy065 |
-| Durum | Tam set indirilmedi (0,75 TB); yalnızca küçük gerçek örnek (bkz. `docs/histo/raporlar/`). XML→maske hattı birim testleriyle sınandı; gerçek slaytta doğrulama örnek üzerinde yapıldı/yapılacak (rapora bakın) |
+| Durum | Tam set indirilmedi (0,75 TB). Gerçek örnek (18.10.2026): 4 slayt (tumor_091, tumor_084, normal_108, normal_150) + 160 XML + reference.csv; XML→maske 2 tümör slaydında gözle doğrulandı; resmi bölme belgesi tam listeden (270/129) üretildi (`docs/histo/raporlar/sprint1_gercek_veri_raporu.md` §5) |
 | Sorumlu | Nisa |

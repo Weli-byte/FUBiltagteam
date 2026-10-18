@@ -46,6 +46,9 @@ nav:
       - Boya normalizasyonu (1.8): histo/boya_normalizasyonu.md
       - ViT baseline v1 (1.9): histo/vit_baseline_v1.md
       - Model kartı v0: histo/MODEL_CARD_v0.md
+      - Gerçek veri raporu (18.10.2026): histo/raporlar/sprint1_gercek_veri_raporu.md
+      - Gerçek veri ham tabloları: histo/raporlar/sprint1_gercek_veri_ham_tablolar.md
+      - TCGA slayt envanteri: histo/tcga_slayt_envanteri.md
   - Veri kartları:
       - TCGA tanı slaytları: data_cards/tcga_tani_slaytlari.md
       - CAMELYON16: data_cards/camelyon16.md
