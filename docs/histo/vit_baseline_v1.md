@@ -63,7 +63,10 @@ ResNet-50 benzer; 2x3 koşu < 2 saat.
 ## 5. Sonuçlar (gerçek veri, küçük örnek — NİHAİ DEĞİL)
 
 18.10.2026, CAMELYON16 eğitim slaytları: eğitim 2 slayt (400 patch: 100 tümör / 300 normal),
-doğrulama 2 slayt (400 patch); 8 epoch, batch 32, AMP, RTX 4060; `outputs/sprint1_real/patch_baseline`.
+doğrulama 2 slayt (400 patch; 4 slaytla %80/%20 yerine gerçekleşen bölme %50/%50; tüm slaytlar
+center 1); CLI override `train.epochs=8 train.batch_size=32 train.num_workers=0` (yaml: 10/64/4),
+erken durdurmayla gerçekleşen epoch ViT 4/8/7, ResNet 8/8/8; AMP, RTX 4060;
+`outputs/sprint1_real/patch_baseline`.
 
 | model | AUROC (ort, %95 GA) | AUPRC | F1@0,5 | doğruluk | seed |
 |---|---|---|---|---|---|
@@ -91,6 +94,6 @@ olabilir; bu baseline onların referans noktasıdır.
 
 - [x] Eğitim ve doğrulama slaytları kesişmiyor (test + kod).
 - [x] Test bölmesi kilitli (PermissionError).
-- [ ] Gerçek veride 3 seed ortalaması ve GA ile sonuçlar (§5).
+- [x] Gerçek veride 3 seed ortalaması ve GA ile sonuçlar (§5) — küçük örnek, ÖN BULGU; nihai tablo ≥ 20 slaytla.
 - [x] Aynı config + seed CPU'da aynı kayıp (tekrarlanabilirlik testi).
-- [ ] Model kartı v0 gerçek sonuçlarla güncellendi (`MODEL_CARD_v0.md`).
+- [x] Model kartı v0 ön bulguyla güncellendi (`MODEL_CARD_v0.md`); nihai sonuç satırı boş.

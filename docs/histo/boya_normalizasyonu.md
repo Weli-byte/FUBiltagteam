@@ -58,10 +58,12 @@ CAMELYON16 center1; 100 patch/merkez; 3 seed):
 | macenko | 2,29 | 0,419 ± 0,010 | 0,143 |
 | reinhard | 0,22 | 0,489 ± 0,022 | 0,143 |
 
-Her iki yöntem renk farkını azaltıp merkez tahminini zorlaştırıyor; şansa inmiyor. **Sınırlılık:**
-merkezler kanser türü/dokuyla karışık (akciğer, meme, kolon, lenf düğümü), farkın bir kısmı
-biyolojik. Macenko 700 gerçek patch'te 0 hata. Görsel: `raporlar/img/boya_once_sonra.jpg`.
-Kısa ViT deneyi (yok/var) henüz yapılmadı.
+Her iki yöntem renk farkını azaltıp merkez tahminini zorlaştırıyor; şansa inmiyor. **ÖN BULGU,
+sınırlılıklar:** merkezler kanser türü/dokuyla karışık (akciğer, meme, kolon, lenf düğümü), farkın
+bir kısmı biyolojik; `n_per_centre=100` CLI override (yaml 300); hedef (referans) patch olarak
+`reference_patch.png` bulunmadığı için betik **örneklenen ilk patch'i** kullandı (temsili seçim
+yapılmadı, `outputs/logs/final_stain.log`). Macenko 700 gerçek patch'te 0 hata. Görsel:
+`raporlar/img/boya_once_sonra.jpg`. Kısa ViT deneyi (yok/var) henüz yapılmadı.
 
 ## 5. Karar ve öneri
 
@@ -77,7 +79,7 @@ Kısa ViT deneyi (yok/var) henüz yapılmadı.
 ## 6. Doğrulama (bitti kriteri)
 
 - [x] Birim testi (sentetik test düzeneği, gerçek patch değil): Macenko iki boyalı karışımı neredeyse birebir geri üretiyor; tarayıcı farkı (döndürülmüş boya vektörleri) %50+ azalıyor (`tests/test_histo_stain.py`).
-- [x] Birim testi (sentetik test düzeneği): Reinhard LAB istatistiklerini < 3 birim hatayla eşliyor; gerçek patch'te ölçülmedi.
-- [ ] Gerçek merkezlerde renk istatistiği farkı azaldı (sayısal, bu belgeye).
+- [x] Birim testi (sentetik test düzeneği): Reinhard LAB istatistiklerini < 3 birim hatayla eşliyor.
+- [x] Gerçek merkezlerde renk istatistiği farkı azaldı (§4, 7 merkez; ÖN BULGU: merkez-doku karışık, hedef patch rastgele).
 - [ ] 50 rastgele augmentation örneği gözle doku anlamını bozmuyor.
 - [ ] Etki (yok/var) en az 3 seed ile raporlandı.

@@ -23,7 +23,7 @@ eğitim/test ayrımına sadık kalırız ki sonuçlarımız dünyadakilerle kar�
 | Test | 129 (`test_001..130`, 049 yok) | S3 sayımı |
 | Merkezler | Radboud UMC (3DHistech Pannoramic 250, ~0,243 µm/px) ve UMC Utrecht (Hamamatsu NanoZoomer-XR, ~0,226 µm/px) | Litjens ve ark. 2018 (PMC6007545); `reference.csv` `center` sütunu |
 | Test etiketleri | `CAMELYON16/evaluation/reference.csv`: `image,type,class,center` (399 satır; tumor/normal, negative/micro/macro, merkez) | S3 |
-| Anotasyon | ASAP XML; `PartOfGroup` değerleri S3 kopyasında **"Tumor"** (3.263) ve **"Exclusion"** (284); README `_0/_1/_2` anlatır (eski yarışma dosyaları). Koordinatlar seviye-0 piksel | 160 XML tarandı; camelyon17.grand-challenge.org/Data |
+| Anotasyon | ASAP XML; indirilen 160 XML'de `PartOfGroup` değerleri **"Tumor"** (3.781 çokgen) ve **"Exclusion"** (525 çokgen) + `test_066`'da 1 `Dot` işareti; README `_0/_1/_2` anlatır (eski yarışma dosyaları). Koordinatlar seviye-0 piksel | 160 XML yerelde ayrıştırıldı (18.10.2026); camelyon17.grand-challenge.org/Data |
 | Tam anotasyonlu olmayan | `test_114` ve 20 tumor slaydı (listesi `configs/histo/camelyon.yaml`) | resmi README |
 | Format | BigTIFF (ASAP dönüştürücü), tile 512, JPEG; dosya 0,33-3,97 GB | README, S3 |
 | Lisans | **CC0 1.0** (`CAMELYON16/license.txt`; AWS kaydı "License: CC0") | https://registry.opendata.aws/camelyon/ |
@@ -67,7 +67,8 @@ uv run --group histo python scripts/build_tumor_masks.py                  # mask
 ## 3. Doğrulama (bitti kriteri)
 
 - [ ] Rastgele 20 slaytta maske bindirme görseli gözle kontrol edildi (`masks.overlay_sample=20`,
-      `data/processed/camelyon16/mask_overlays/`); hizalama hatası yok. Sonuç: __/20.
+      `data/processed/camelyon16/mask_overlays/`). Şimdiye kadar: indirilen 2 tümör slaydı 2/2 uygun
+      (`raporlar/sprint1_gercek_veri_raporu.md` §9); 20 slayt tam indirme sonrası.
 - [x] Eğitim ve test listeleri kesişmiyor (kodda zorunlu; `test_build_splits_counts_overlap_and_flags`).
 - [ ] Slayt ve maske sayıları resmi kaynakla tutarlı: 399 görüntü, 160 XML (111 tumor + 49 test)
       — manifestte doğrulandı, indirme sonrası dosya sayımıyla yinelenecek.

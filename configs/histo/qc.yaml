@@ -29,7 +29,7 @@ tissue_mask:
 run:
   slide_list: data/manifests/sprint1_gercek_ornek_slaytlar.csv
   out_parquet: data/interim/qc_results.parquet
-  report: docs/histo/qc_raporu.md
+  report: docs/histo/raporlar/qc_raporu.md
   overlay_dir: data/interim/qc_overlays     # thumbnail + mask overlays for the manual check
   manual_sample: 50                         # slides to review by eye (seeded random sample)
   seed: 42

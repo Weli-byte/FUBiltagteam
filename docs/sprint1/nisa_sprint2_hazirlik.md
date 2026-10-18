@@ -27,10 +27,11 @@
       DVC paylaşımı (remote kararı), ekibe 5 dk özet.
 - [ ] QC eşik kalibrasyonu: 50 slayt manuel inceleme, uyum % → `wsi_qc.md` §4. (18.10 bulgusu:
       Laplacian ölçeği tarayıcıya bağlı; "siyah mürekkep" aralığı BRCA slaydında olası yanlış pozitif.)
-- [x] Extraction performansı (koordinat aşaması): 13 gerçek slayt, 0,82 sn/slayt, 73 slayt/dk →
+- [x] Extraction performansı (koordinat aşaması, ÖN BULGU): 13 gerçek slayt, 0,82 sn/slayt, 73 slayt/dk →
       `koordinat_sistemi.md` §5. **Kalan:** patch okuma/özellik çıkarımı hızı (Sprint 2).
-- [x] Boya normalizasyonu gerçek ölçümü (7 merkez, merkez-doku karışık) → `boya_normalizasyonu.md` §4.
-      **Kalan:** aynı doku/çok merkez (CAMELYON17) ölçümü ve 3 seed kısa ViT yok/var deneyi.
+- [x] Boya normalizasyonu gerçek ölçümü (ÖN BULGU: 7 merkez, merkez-doku karışık, hedef patch rastgele)
+      → `boya_normalizasyonu.md` §4. **Kalan:** temsili hedef patch seçimi, aynı doku/çok merkez
+      (CAMELYON17) ölçümü ve 3 seed kısa ViT yok/var deneyi.
 - [x] ViT-S vs ResNet-50 (3 seed, 2+2 slayt) ön bulgu → `vit_baseline_v1.md` §5, model kartı.
       **Kalan:** ≥ 20 slaytla nihai karşılaştırma (NİHAİ DEĞİL).
 - [ ] `check_split_compat.py` liderin `slide_splits.parquet`'iyle çalıştır (kesişim 0) — dosya gelmedi.

@@ -1,6 +1,6 @@
 # Sprint 1 Gerçek Veri: Ham Çıktı Tabloları (18.10.2026)
 
-> `collect_report.py` ile `data/` ve `outputs/sprint1_real/` altındaki gerçek çıktılardan otomatik üretildi; elle düzenlenmez. Yorum için `sprint1_gercek_veri_raporu.md`.
+> `scripts/collect_real_data_report.py` ile `data/` ve `outputs/sprint1_real/` altındaki gerçek çıktılardan otomatik üretildi; elle düzenlenmez. Yorum için `sprint1_gercek_veri_raporu.md`.
 
 ## Slaytlar (4a/4b)
 
@@ -46,15 +46,15 @@ Karar dağılımı: {'use': 12, 'exclude': 1}
 
 | slide_id | durum | patch | aday | sn |
 |---|---|---|---|---|
-| 001b7d97-9 | done | 8537 | 29887 | 0.80 |
-| 004d8238-0 | done | 9104 | 28013 | 0.66 |
-| 00ab866f-a | done | 3510 | 8023 | 1.09 |
-| 00efe162-7 | done | 11246 | 18468 | 0.87 |
-| 011da0ba-0 | done | 4025 | 13624 | 0.17 |
-| 015862cf-a | done | 9715 | 22331 | 1.01 |
-| 01c79d06-a | done | 1236 | 7954 | 0.85 |
-| 023ca8d1-d | done | 4397 | 20475 | 0.20 |
-| 032fc1ed-c | done | 6203 | 13875 | 1.51 |
+| 001b7d97-9… | done | 8537 | 29887 | 0.80 |
+| 004d8238-0… | done | 9104 | 28013 | 0.66 |
+| 00ab866f-a… | done | 3510 | 8023 | 1.09 |
+| 00efe162-7… | done | 11246 | 18468 | 0.87 |
+| 011da0ba-0… | done | 4025 | 13624 | 0.17 |
+| 015862cf-a… | done | 9715 | 22331 | 1.01 |
+| 01c79d06-a… | done | 1236 | 7954 | 0.85 |
+| 023ca8d1-d… | done | 4397 | 20475 | 0.20 |
+| 032fc1ed-c… | done | 6203 | 13875 | 1.51 |
 | normal_108 | done | 1056 | 4977 | 0.82 |
 | normal_150 | done | 2728 | 12528 | 0.68 |
 | tumor_084 | done | 3156 | 17365 | 0.74 |
@@ -82,9 +82,9 @@ Merkez anahtarı: centre; merkezler: ['TCGA-BRCA-TSSA8', 'TCGA-BRCA-TSSAC', 'TCG
 | vit_small | 0.780 [0.729, 0.831] | 0.426 [0.373, 0.479] | 0.057 [-0.055, 0.170] | 0.745 [0.735, 0.755] | 3 |
 | resnet50 | 0.769 [0.659, 0.879] | 0.453 [0.317, 0.589] | 0.169 [0.097, 0.240] | 0.738 [0.717, 0.758] | 3 |
 
-- vit_small seed 0: en iyi epoch 0, AUROC 0.740 [0.691, 0.792], AUPRC 0.405, F1@0.5 0.172, doğruluk 0.735
-- vit_small seed 1: en iyi epoch 7, AUROC 0.770 [0.727, 0.812], AUPRC 0.393, F1@0.5 0.000, doğruluk 0.750
-- vit_small seed 2: en iyi epoch 3, AUROC 0.829 [0.790, 0.866], AUPRC 0.479, F1@0.5 0.000, doğruluk 0.750
-- resnet50 seed 0: en iyi epoch 7, AUROC 0.803 [0.759, 0.847], AUPRC 0.490, F1@0.5 0.202, doğruluk 0.743
-- resnet50 seed 1: en iyi epoch 5, AUROC 0.845 [0.803, 0.881], AUPRC 0.551, F1@0.5 0.208, doğruluk 0.752
-- resnet50 seed 2: en iyi epoch 7, AUROC 0.659 [0.604, 0.714], AUPRC 0.319, F1@0.5 0.096, doğruluk 0.718
+- vit_small seed 0: en iyi epoch 0, 4 epoch koştu, AUROC 0.740 [0.691, 0.792], AUPRC 0.405, F1@0.5 0.172, doğruluk 0.735
+- vit_small seed 1: en iyi epoch 7, 8 epoch koştu, AUROC 0.770 [0.727, 0.812], AUPRC 0.393, F1@0.5 0.000, doğruluk 0.750
+- vit_small seed 2: en iyi epoch 3, 7 epoch koştu, AUROC 0.829 [0.790, 0.866], AUPRC 0.479, F1@0.5 0.000, doğruluk 0.750
+- resnet50 seed 0: en iyi epoch 7, 8 epoch koştu, AUROC 0.803 [0.759, 0.847], AUPRC 0.490, F1@0.5 0.202, doğruluk 0.743
+- resnet50 seed 1: en iyi epoch 5, 8 epoch koştu, AUROC 0.845 [0.803, 0.881], AUPRC 0.551, F1@0.5 0.208, doğruluk 0.752
+- resnet50 seed 2: en iyi epoch 7, 8 epoch koştu, AUROC 0.659 [0.604, 0.714], AUPRC 0.319, F1@0.5 0.096, doğruluk 0.718

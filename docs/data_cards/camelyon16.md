@@ -4,11 +4,11 @@
 |---|---|
 | Amaç | Patch düzeyi tümör/normal baseline (1.9), doku/maske hattı doğrulaması, slayt düzeyi (ABMIL) karşılaştırma ölçütü; yayınlanmış sonuçlarla kıyas |
 | Kaynak | CAMELYON16 challenge (Radboud UMC & UMC Utrecht); AWS Open Data `s3://camelyon-dataset/CAMELYON16/` (us-west-2); GigaDB doi:10.5524/100439; https://camelyon16.grand-challenge.org/ |
-| Sürüm | AWS Open Data kopyası (listeleme 13.10.2026): 399 görüntü, 160 XML, 399 maske, `evaluation/reference.csv`, `README.md`, `license.txt`, `checksums.md5` |
+| Sürüm | AWS Open Data kopyası (listeleme 13.10.2026): 399 görüntü, 160 XML, 399 maske, `evaluation/reference.csv`, `README.md`, `license.txt` (`checksums.md5` bu listelemede görünmedi; doğrulanmadı) |
 | Lisans | **CC0 1.0** (`license.txt`; registry.opendata.aws/camelyon) |
 | İçerik | Sentinel lenf nodu H&E WSI (meme kanseri metastazı); eğitim 270 (159 normal + 111 tumor), test 129; iki merkez (`reference.csv` `center`); lezyon sınıfı negative/micro/macro |
 | Anotasyon | ASAP XML çokgenler (seviye-0 piksel), gruplar `Tumor` / `Exclusion` (eski: `_0`/`_1`/`_2`); 20 tumor + test_114 tam anotasyonlu değil |
-| Format / boyut | BigTIFF (tile 512, JPEG), 0,33-3,97 GB/dosya, görüntüler 752,5 GB; mpp etiketi eksik olabilir (RUMC ~0,243, UMCU ~0,226 µm/px; doğrulanmalı) |
+| Format / boyut | TIFF (Philips biçimi, tile 512, JPEG; OpenSlide vendor `philips`), 0,33-3,97 GB/dosya, görüntüler 752,5 GB; indirilen 4 slaytta mpp etiketi var (0,2263–0,2269 µm/px) |
 | Toplama | `scripts/download_camelyon.py` (anonim HTTPS, resume, boyut/md5 kontrolü) |
 | İşleme | `scripts/build_tumor_masks.py`: XML → ikili maske (1/32 ölçek) + overlay; `camelyon16_splits.json` (resmi bölme, merkez, etiket); patch etiketi ≥ %50 tümör |
 | Kalite | Resmi test/train ayrımı korunur; kısmi anotasyonlu slaytlar "normal" kaynağı olarak kullanılmaz; 20 slaytlık görsel maske kontrolü indirme sonrası |

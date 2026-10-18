@@ -25,7 +25,8 @@ data/processed/patch_v0/
 |---|---|
 | `image` | PNG'nin paket köküne göre yolu |
 | `slide_id` | anonim slayt anahtarı (CAMELYON: `tumor_001`; TCGA: GDC dosya UUID'si) |
-| `source` | `camelyon16` / `tcga` (gerçek pakette); merkez bilgisi ayrıca `centre` olarak eklenecek |
+| `source` | `camelyon16` / `tcga` |
+| `centre` | tarama merkezi / doku kaynağı (CAMELYON `center` kodu, TCGA TSS); boya karşılaştırması için |
 | `split` | `train` / `test` (CAMELYON16 resmi bölmesi) / `unassigned` (TCGA; proje liderinin bölmesi uygulanacak) |
 | `label`, `label_name` | 1 tümör, 0 normal, -1 bilinmiyor |
 | `label_method` | `camelyon_xml_mask` (patch'in ≥ %50'si anotasyon içinde → tümör; hiç tümör pikseli yok → normal; arası atlanır), `slide_level` (TCGA: birincil tümör slaydı → zayıf "tümör" etiketi), `none` |
@@ -45,7 +46,8 @@ PNG paketi yalnızca hızlı deneme içindir, üretim hattı (1.7) PNG yazmaz.
 | TCGA | 10 (LUAD/BRCA/COAD'dan 3-4'er; proje liderinin listesinde olan hastalar) | yalnızca slayt düzeyi etiket |
 | Toplam | ~50 slayt, 200 patch/slayt → ~10.000 patch | tümör/normal dengeli (CAMELYON'da) |
 
-Liste `data/manifests/patch_v0_slides.csv` olarak yazılacak (sütunlar `scripts/make_sample_pack.py`
+Mevcut gerçek örnek listesi `data/manifests/sprint1_gercek_ornek_pack.csv`; ~50 slaytlık liste aynı
+biçimde yazılacak (sütunlar `scripts/make_sample_pack.py`
 başlığında).
 
 ## 3. Üretim
@@ -85,12 +87,14 @@ batch["image"].shape, batch["label"][:8], batch["slide_id"][:3]   # (32, 3, 224,
   etiketlidir (çoklu örnek öğrenme, ABMIL, bunun için var).
 - CAMELYON16'da 20 tumor slaytı tam anotasyonlu değildir; bunlar "normal" patch kaynağı olarak
   kullanılmaz (`PARTIALLY_ANNOTATED`).
-- CAMELYON16 TIFF'lerinde mpp etiketi olmayabilir; `mpp_override=0.243` (tarayıcı değeri
-  doğrulanmalı: RUMC 3DHistech 0,243 / UMCU Hamamatsu 0,226 civarı, Litjens 2018).
+- İndirilen 4 CAMELYON16 TIFF'i mpp etiketi taşıyor (Philips, 0,2263–0,2269 µm/px); `mpp_override`
+  gerekmedi. Diğer slaytlarda etiket eksikse `mpp_override` ile verilir (değer tarayıcıdan doğrulanmalı).
 
 ## 6. Doğrulama (bitti kriteri)
 
-- [ ] Rastgele 30 patch gözle kontrol edildi (doku var, etiket mantıklı) — gerçek pakette.
-- [ ] Bir slaytta overlay (kutular + maske) doğru yerde — gerçek pakette; sentetikte test ediyor.
+- [x] Seed'li rastgele 32 patch (16 tümör + 16 normal) gözle kontrol edildi — küçük gerçek pakette
+      (`raporlar/sprint1_gercek_veri_raporu.md` §9); 50 slaytlık pakette yinelenecek.
+- [x] Doku/tümör maske bindirmeleri gerçek slaytlarda doğru yerde (3 doku, 2 tümör; §9); patch kutusu
+      overlay'leri `data/processed/patch_v0/overlays/` altında.
 - [ ] Ekipten biri DataLoader'ı çalıştırdı (yukarıdaki kod).
 - [x] Hat testleri: `tests/test_histo_sample_pack_classifier.py` (paket içeriği, etiketler, loader).

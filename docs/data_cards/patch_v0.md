@@ -10,7 +10,7 @@
 | Etiket | CAMELYON: XML maskesiyle patch ≥ %50 tümör → 1, hiç tümör pikseli yok → 0, arası atlanır; TCGA: slayt düzeyi zayıf etiket (`slide_level`) |
 | Bölme | CAMELYON16 resmi train/test (`split`); test kilitli; TCGA `unassigned` → proje liderinin hasta bölmesi |
 | İşleme | thumbnail → doku maskesi v0 (Otsu) → 256 px ızgara, ≥ %50 doku → dengeli rastgele seçim (seed 42) → PNG + overlay |
-| Kalite | Patch'ler gözle 30 örnekte kontrol edilecek; overlay ile koordinat doğrulaması; QC (1.6) uygulanmamış olabilir (v0) |
+| Kalite | Küçük örnekte 32 patch gözle kontrol edildi (18.10.2026, etiketler tutarlı); overlay ile koordinat doğrulaması; QC (1.6) 13 slaytta çalıştı (1 slayt `exclude`, pakete yine de girdi: v0'da QC filtresi uygulanmadı) |
 | Sınırlılıklar | Küçük (~50 slayt); doku tespiti v0 basit; TCGA etiketi zayıf; yalnızca gerçek slaytlardan üretilir (sentetik veri yok) |
 | Depolama | `data/processed/patch_v0/` (DVC; git'te değil); boyut ~1-2 GB |
 | Durum | Küçük gerçek örnek üretildi (18.10.2026): 13 slayt, 2.600 patch (`data/processed/patch_v0`, git'te değil); ~50 slaytlık tam paket WSI indirmesi sonrası (`docs/histo/patch_v0_teslim_notu.md`) |

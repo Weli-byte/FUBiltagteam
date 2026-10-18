@@ -41,7 +41,7 @@ yazılır. Eşikler `configs/histo/qc.yaml`'da; kod içinde sihirli sayı yok.
 uv run --group histo python scripts/run_wsi_qc.py                       # data/manifests/slides_to_extract.csv
 uv run --group histo python scripts/run_wsi_qc.py run.manual_sample=50 qc.blur_laplacian_var_min=30
 ```
-Çıktı: `data/interim/qc_results.parquet`, `docs/histo/qc_raporu.md` (dağılımlar, dışlama listesi),
+Çıktı: `data/interim/qc_results.parquet`, `docs/histo/raporlar/qc_raporu.md` (dağılımlar, dışlama listesi; 13 slaytlık gerçek örnek raporu commit'te),
 `data/interim/qc_overlays/*.png` (manuel inceleme için 50 rastgele slayt; thumbnail + yeşil maske).
 `select_slides(inventory, qc)` (1.4) `exclude`'ları elemek için bu parquet'i kullanır.
 

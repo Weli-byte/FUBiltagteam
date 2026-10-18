@@ -24,7 +24,7 @@ o kareyi orijinal slaytın üstünde doğru yere boyayabiliriz (ısı haritası)
 |---|---|---|---|---|---|
 | 20x taranmış TCGA | 0,50 | 0,5 | 256 | 256 | seviye 0'dan 256x256 doğrudan |
 | 40x taranmış TCGA | 0,25 | 0,5 | 256 | 512 | seviye 0'dan 512x512 okunup 256'ya küçültülür (ya da downsample=2 seviyesi varsa oradan 256) |
-| CAMELYON16 (~0,243) | 0,243 | 0,5 | 256 | 527 | seviye 0'dan 527x527 → 256 (INTER_AREA) |
+| CAMELYON16 (Philips, ölçülen 0,2263–0,2269) | 0,2263 | 0,5 | 256 | 566 | seviye 0'dan 566x566 → 256 (INTER_AREA) |
 
 `SlideReader.level_for_mpp(target_mpp)` en kaba ama hâlâ yeterince ince seviyeyi seçer (asla
 büyütme yapılmaz) ve artık ölçeği (`rescale`) döndürür; `read_patch(x, y, 256, 0.5)` bunu uygular.
@@ -70,7 +70,7 @@ from models.histo.patches.h5 import read_coords_h5
 from models.histo.wsi.reader import SlideReader
 coords, fractions, attrs = read_coords_h5("data/processed/patches/coords_v1/tumor_001.h5")
 slide_path = "data/raw/camelyon/CAMELYON16/images/tumor_001.tif"   # slayt listesinden (slides.csv)
-with SlideReader(slide_path, mpp_override=0.243) as reader:
+with SlideReader(slide_path) as reader:  # CAMELYON16 TIFF'leri mpp etiketi taşıyor (0,226)
     x, y = coords[0]
     patch = reader.read_patch(int(x), int(y), attrs.patch_size_px, attrs.target_mpp)  # (256,256,3) uint8
 ```
@@ -97,6 +97,6 @@ darboğaz olacaktır ve ayrıca ölçülecek. Ayrıntı: `raporlar/sprint1_gerce
 
 - [ ] Rastgele 100 koordinatın slayt üzerinde doğru yere düştüğü görsel olarak kontrol edildi
       (`scripts/make_sample_pack.py` overlay'leri; `draw_boxes`).
-- [ ] Hat yarıda kesilip yeniden başlatıldığında tamamlananlar atlandı (`test_extract_writes_validates_and_resumes`).
-- [ ] 20x ve 40x slaytlar aynı fiziksel ızgarayı verdi (`test_same_physical_grid_for_20x_and_40x_scans`).
+- [x] Hat yarıda kesilip yeniden başlatıldığında tamamlananlar atlandı (birim testi `test_extract_writes_validates_and_resumes`; config değişince yeniden üretim `test_extraction_regenerates_when_config_changes`).
+- [x] 20x ve 40x slaytlar aynı fiziksel ızgarayı verdi (birim testi `test_same_physical_grid_for_20x_and_40x_scans`; gerçek slaytlarda `patch_level0_px` 256 / 508–566).
 - [ ] Yusuf koordinat dönüşümünü kendi thumbnail'inde bir patch kutusuyla denedi.
