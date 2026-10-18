@@ -86,6 +86,44 @@ def test_pack_contents_and_labels(pack: Path) -> None:
     assert img is not None and img.shape == (64, 64, 3)
 
 
+def test_pack_sampling_is_deterministic_across_processes(tmp_path: Path) -> None:
+    """Same slides, same seed -> identical patches.csv, even in a fresh interpreter (hash salt)."""
+    import subprocess
+    import sys
+
+    path, _ = make_slide(tmp_path, "tumor_009", seed=3)
+    xml = make_xml(tmp_path, "tumor_009")
+    code = "\n".join(
+        [
+            "import sys",
+            "from pathlib import Path",
+            "from models.histo.patches.grid import PatchGridConfig as G",
+            "from models.histo.patches import sample_pack as sp",
+            "from models.histo.wsi.tissue import TissueMaskConfig as M",
+            "a = sys.argv",
+            "PackSlide, SamplePackConfig = sp.PackSlide, sp.SamplePackConfig",
+            "build_sample_pack = sp.build_sample_pack",
+            "slide = PackSlide('tumor_009', Path(a[1]), 'c16', 'train', 'tumor', Path(a[2]))",
+            "cfg = SamplePackConfig(patches_per_slide=20, seed=5)",
+            "grid = G(patch_px=64, target_mpp=0.5, thumbnail_px=512)",
+            "rows = build_sample_pack([slide], Path(a[3]), cfg, grid, M(min_object_px=20))",
+            "print(sorted((r['x'], r['y']) for r in rows))",
+        ]
+    )
+    outputs = []
+    for run in ("a", "b"):
+        env = {**__import__("os").environ, "PYTHONHASHSEED": "1" if run == "a" else "2"}
+        result = subprocess.run(
+            [sys.executable, "-c", code, str(path), str(xml), str(tmp_path / run)],
+            capture_output=True,
+            text=True,
+            env=env,
+            check=True,
+        )
+        outputs.append(result.stdout.strip().splitlines()[-1])
+    assert outputs[0] == outputs[1]
+
+
 def test_dataset_and_loader_from_pack(pack: Path) -> None:
     rows = load_labelled_rows(pack)
     dataset = SamplePackDataset(pack, rows[:8], image_px=32)

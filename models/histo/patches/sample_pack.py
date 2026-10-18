@@ -13,6 +13,7 @@ from __future__ import annotations
 import csv
 import json
 import logging
+import zlib
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -110,7 +111,8 @@ def sample_slide(
     """Extract patches of one slide to ``out_dir/images/<slide_id>/`` and return CSV rows."""
     import cv2
 
-    rng = np.random.default_rng(cfg.seed + (hash(slide.slide_id) % 100_000))
+    # zlib.crc32 is stable across processes (Python's str hash is salted per process).
+    rng = np.random.default_rng(cfg.seed + (zlib.crc32(slide.slide_id.encode("utf-8")) % 100_000))
     rows: list[dict[str, Any]] = []
     with SlideReader(slide.path, mpp_override=slide.mpp_override) as reader:
         grid = tissue_patch_grid(reader, grid_cfg, mask_cfg)
