@@ -17,7 +17,7 @@ ve tek bir kurulum betiği haline getiririz ki herkes aynı sonucu alsın.
 | `infra/gpu/docker-compose.gpu.yml` | `train`, `verify`, `jupyter`, `mlflow` servisleri; GPU rezervasyonu; disk bağlama |
 | `infra/gpu/setup_gpu_machine.sh` | Temiz Ubuntu 22.04/24.04 makineyi 15-30 dk'da hazırlar (sürücü kontrolü, Docker + NVIDIA Container Toolkit, uv, repo, diskler, auto-shutdown, doğrulama) |
 | `infra/gpu/auto_shutdown.sh` | 60 dk GPU boşta → makineyi kapat (cron, her 10 dk) |
-| `scripts/verify_env.py` | torch.cuda, AMP matmul, OpenSlide + örnek slayt açma, h5py/cv2/timm sürümleri |
+| `scripts/verify_env.py` | torch.cuda, AMP matmul, OpenSlide sürümü, `--slide <gerçek WSI>` verilirse slayt açma + patch okuma (verilmezse bu kontrol "SKIP"), h5py/cv2/timm sürümleri |
 | `configs/histo/*.yaml` | Tüm hat parametreleri (patch boyutu, eşikler, eğitim tarifi) |
 
 ## 2. Sürümler (sabitlenmiş; kaynak: PyPI/Docker Hub/NVIDIA, 13.10.2026)
@@ -73,6 +73,8 @@ Boyut planı: TCGA seçilen slaytlar ~1,7 TB (`docs/histo/tcga_slayt_envanteri.m
 curl -fsSL https://raw.githubusercontent.com/Weli-byte/FUBiltagteam/main/infra/gpu/setup_gpu_machine.sh -o setup.sh
 DATA_DISK=/dev/nvme1n1 bash setup.sh        # boş ek diski biçimlendirip /mnt/nvme'ye bağlar
 # 3) doğrulama (betik sonunda otomatik): uv run python scripts/verify_env.py --require-cuda
+#    gerçek slayt okuma kontrolü için: VERIFY_SLIDE=/mnt/nvme/onkos-data/raw/.../slayt.svs bash setup.sh
+#    (ya da elle: uv run python scripts/verify_env.py --require-cuda --slide <slayt>)
 ```
 
 Docker ile (isteğe bağlı, aynı imajı herkes kullanır):

@@ -67,8 +67,8 @@ ResNet-50 benzer; 2x3 koşu < 2 saat.
 | vit_small | — | — | — | — | 3 |
 | resnet50 | — | — | — | — | 3 |
 
-Sentetik demo (tiny_cnn, 2 epoch, 420 patch) anlamlı sonuç üretmez ve raporlanmaz; yalnızca hattın
-çalıştığını gösterir (`outputs/demo_run/results_table.md`).
+Hattın sentetik düzenekle sınanması yalnızca `tests/test_histo_sample_pack_classifier.py` içindedir;
+sentetik veriden hiçbir sayı raporlanmaz.
 
 ## 6. "ViT ResNet'ten %8-15 daha iyi" iddiası
 

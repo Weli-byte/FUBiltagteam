@@ -10,7 +10,7 @@ Usage:
     uv run --group histo python scripts/train_patch_classifier.py train.epochs=1 \
         train.seeds=[0] train.models=[tiny_cnn] train.pretrained=false
     uv run --group histo python scripts/train_patch_classifier.py \
-        data.pack_dir=outputs/demo/patch_v0 out_dir=outputs/demo_run
+        data.pack_dir=data/processed/patch_v0 out_dir=outputs/patch_baseline_v1
 """
 
 from __future__ import annotations

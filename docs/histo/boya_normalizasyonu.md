@@ -66,8 +66,8 @@ sayı bu belgede raporlanmaz; hattın kendisi `tests/test_histo_stain.py` ile s�
 
 ## 6. Doğrulama (bitti kriteri)
 
-- [x] Macenko iki boyalı karışımı neredeyse birebir geri üretiyor; tarayıcı farkı (döndürülmüş boya vektörleri) %50+ azalıyor (`tests/test_histo_stain.py`).
-- [x] Reinhard LAB istatistiklerini < 3 birim hatayla eşliyor.
+- [x] Birim testi (sentetik test düzeneği, gerçek patch değil): Macenko iki boyalı karışımı neredeyse birebir geri üretiyor; tarayıcı farkı (döndürülmüş boya vektörleri) %50+ azalıyor (`tests/test_histo_stain.py`).
+- [x] Birim testi (sentetik test düzeneği): Reinhard LAB istatistiklerini < 3 birim hatayla eşliyor; gerçek patch'te ölçülmedi.
 - [ ] Gerçek merkezlerde renk istatistiği farkı azaldı (sayısal, bu belgeye).
 - [ ] 50 rastgele augmentation örneği gözle doku anlamını bozmuyor.
 - [ ] Etki (yok/var) en az 3 seed ile raporlandı.

@@ -45,7 +45,9 @@ def report_markdown(frame: pd.DataFrame, cfg: QcConfig, slide_list: Path) -> str
     counts = frame["decision"].value_counts().to_dict()
     excluded = frame[frame["decision"] == "exclude"].sort_values("slide_id")
     suspect = frame[frame["decision"] == "suspect"].sort_values("slide_id")
-    stats = frame[["tissue_fraction", "blur_fraction", "pen_fraction", "dark_fraction"]].describe()
+    metric_names = ["tissue_fraction", "blur_fraction", "pen_fraction", "dark_fraction"]
+    # When every slide failed to open, the metric columns do not exist; report what there is.
+    stats = frame[[c for c in metric_names if c in frame.columns]]
     lines = [
         "# WSI Kalite Kontrol Raporu",
         "",
@@ -65,7 +67,9 @@ def report_markdown(frame: pd.DataFrame, cfg: QcConfig, slide_list: Path) -> str
         "|---|---|---|---|---|",
     ]
     for name in stats.columns:
-        col = frame[name]
+        col = frame[name].dropna()
+        if col.empty:
+            continue
         lines.append(
             f"| {name} | {col.mean():.3f} | {col.median():.3f} | {col.quantile(0.9):.3f} "
             f"| {col.max():.3f} |"

@@ -39,6 +39,18 @@
 - Patch veri paketi → Diffusion (proje lideri) için tümör patch'leri listesi.
 - DVC remote (ekip kararı: Google Drive) ve `dvc push` düzeni; `.dvc/config` PR'ı.
 
+## Bekleyen iş: proje liderinden gelecek dosyalar (Adım 5, 2026-10-18)
+
+| Dosya | Nereden | Ne için | Durum |
+|---|---|---|---|
+| `data/interim/patient_map.parquet` | Liderin 1.3 betiği (`scripts/download_gdc.py`) | TCGA slayt seçimini omics+MAF'ı olan hastalarla kesiştirmek (`download_tcga_slides.py`, `patients_in_leader_list` sütunları) | **gelmedi** (parquet git'e girmez; DVC remote henüz yok) |
+| `data/processed/splits/<sürüm>/slide_splits.parquet` | Liderin 1.6 betiği (`scripts/make_splits.py`) | Patch/slayt tablolarının hasta düzeyi bölmeyle uyumu: `scripts/check_split_compat.py --slide-splits ... --coords-dir ...` | **gelmedi** |
+
+Kural: bu dosyalar bu dalda **üretilmez** (liderin kimlik sözleşmesi); gelene kadar
+`check_split_compat.py` yalnızca birim testleriyle (`tests/test_histo_split_leakage.py`) doğrulanmış
+sayılır. Dosyalar gelince komut çalıştırılır, çıktı `docs/histo/raporlar/` altına eklenir ve
+`docs/data_cards/tcga_tani_slaytlari.md` "Bölme" satırı güncellenir.
+
 ## Açık sorular (ekibe)
 
 1. TCGA'da hasta başına tek DX slayt yeterli mi, yoksa tüm DX slaytlar (ABMIL torbasına) mı? (öneri: önce tek)

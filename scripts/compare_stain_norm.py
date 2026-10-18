@@ -12,7 +12,7 @@ used as a coarse proxy (CAMELYON vs TCGA); the report says which one was used.
 
 Usage:
     uv run --group histo python scripts/compare_stain_norm.py
-    uv run --group histo python scripts/compare_stain_norm.py compare.pack_dir=outputs/demo/patch_v0
+    uv run --group histo python scripts/compare_stain_norm.py compare.n_per_centre=100
 """
 
 from __future__ import annotations

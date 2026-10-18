@@ -101,7 +101,8 @@ sudo chmod +x /usr/local/bin/onkos-auto-shutdown
 echo "cron: every 10 min; shuts the machine down after 60 min of idle GPU (edit IDLE_MINUTES in the script)"
 
 log "7/7 Verify"
-uv run python scripts/verify_env.py --require-cuda
+# VERIFY_SLIDE=/mnt/nvme/onkos-data/raw/.../x.svs adds the real-slide read check (otherwise skipped).
+uv run python scripts/verify_env.py --require-cuda ${VERIFY_SLIDE:+--slide "$VERIFY_SLIDE"}
 echo
 echo "Done. Next: tmux new -s train; uv run python scripts/train_patch_classifier.py"
 echo "Stop the machine when finished (cloud console or: sudo shutdown -h now)."
