@@ -1,0 +1,35 @@
+# Slide quality control (mini sprint 1.6). Thresholds are STARTING values and must be
+# calibrated on real slides (docs/histo/wsi_qc.md); never tuned on test performance.
+qc:
+  thumbnail_px: 2048
+  analysis_mpp: 2.0          # ~5x analysis resolution
+  tile_px: 256
+  tile_tissue_min: 0.5
+  blur_laplacian_var_min: 40.0
+  dark_value_max: 60
+  tissue_fraction_min: 0.02
+  min_tissue_tiles: 10
+  blur_fraction_max: 0.30
+  pen_fraction_max: 0.05
+  dark_fraction_max: 0.25
+  suspect_ratio: 0.6
+  pen_ranges:                # OpenCV HSV: H 0-179, S 0-255, V 0-255; [lower, upper]
+    - [[95, 80, 40], [130, 255, 255]]   # blue marker
+    - [[40, 80, 40], [85, 255, 255]]    # green marker
+    - [[0, 0, 0], [179, 90, 45]]        # black marker (dark + unsaturated)
+tissue_mask:
+  median_blur_px: 7
+  saturation_floor: 15
+  morphology: true
+  open_px: 5
+  close_px: 9
+  min_object_px: 400
+  fill_holes: true
+  max_hole_px: 2000
+run:
+  slide_list: data/manifests/sprint1_gercek_ornek_slaytlar.csv
+  out_parquet: data/interim/qc_results.parquet
+  report: docs/histo/raporlar/qc_raporu.md
+  overlay_dir: data/interim/qc_overlays     # thumbnail + mask overlays for the manual check
+  manual_sample: 50                         # slides to review by eye (seeded random sample)
+  seed: 42

@@ -1,0 +1,20 @@
+# Baseline omics models (mini sprint 1.8). Hyper-parameter grids are searched INSIDE each outer fold.
+seed: 42
+genes: [TP53, KRAS, EGFR, BRCA1]
+models: [logreg_l1, logreg_l2, random_forest, gbm, mlp]   # `gbm` = xgboost if installed, else HistGradientBoosting
+feature_version: protein_coding   # protein_coding | all
+top_genes: 2000                   # highest-variance genes kept (learned on training rows only); null = all
+min_tpm: 1.0
+min_fraction: 0.2                 # gene must be expressed in >= 20% of the fold's training samples
+inner_folds: 3                    # inner CV for hyper-parameters and the F1 threshold
+n_boot: 1000                      # bootstrap resamples for 95% CIs (>= 1000)
+min_positives: 30                 # fewer positive patients in a scope -> reported as skipped, not trained
+per_cancer: true                  # also train one model per cancer type (besides the pooled model)
+drop_flagged: false               # QC-flagged samples are kept unless true
+n_jobs: 1
+grids:
+  logreg_l1: {C: [0.01, 0.1, 1.0]}
+  logreg_l2: {C: [0.01, 0.1, 1.0]}
+  random_forest: {max_depth: [null, 8], min_samples_leaf: [1, 5]}
+  gbm: {max_depth: [3, 6], learning_rate: [0.05, 0.1]}
+  mlp: {alpha: [0.0001, 0.01]}

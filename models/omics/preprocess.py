@@ -18,16 +18,31 @@ from sklearn.exceptions import NotFittedError
 LOG = logging.getLogger(__name__)
 
 
-def _check_matrix(x: Any, name: str = "X") -> np.ndarray[Any, Any]:
+BLOCK = 4000  # genes per block; temporary arrays stay at n_samples x BLOCK
+MIN_STD = 1e-8  # log2 units; below this a gene is constant (float rounding would give ~1e-16)
+
+
+def _check_matrix(
+    x: Any, name: str = "X", block: int = BLOCK, rows: np.ndarray[Any, Any] | None = None
+) -> np.ndarray[Any, Any]:
+    """Validate shape/numeric/NaN/negatives block by block, optionally only for ``rows``.
+
+    Restricting the check to the rows actually used keeps ``fit(sample_idx=...)`` from reading (or
+    being broken by) samples outside the training set.
+    """
     array = np.asarray(x)
     if array.ndim != 2:
         raise ValueError(f"{name} must be 2-D (samples, genes); got shape {array.shape}")
     if not np.issubdtype(array.dtype, np.number):
         raise ValueError(f"{name} must be numeric")
-    if np.isnan(array).any():
-        raise ValueError(f"{name} contains NaN; remove or impute these samples first")
-    if (array < 0).any():
-        raise ValueError(f"{name} contains negative TPM values")
+    for start in range(0, array.shape[1], block):
+        part = (
+            array[:, start : start + block] if rows is None else array[rows, start : start + block]
+        )
+        if np.isnan(part).any():
+            raise ValueError(f"{name} contains NaN; remove or impute these samples first")
+        if (part < 0).any():
+            raise ValueError(f"{name} contains negative TPM values")
     return array
 
 
@@ -59,9 +74,24 @@ class ExpressionPreprocessor(BaseEstimator, TransformerMixin):  # type: ignore[m
         self.zscore = zscore
         self.clip = clip
 
-    def fit(self, X: Any, y: Any = None) -> "ExpressionPreprocessor":  # noqa: N803
-        tpm = _check_matrix(X)
-        n_samples, n_genes = tpm.shape
+    def fit(
+        self,
+        X: Any,  # noqa: N803
+        y: Any = None,
+        sample_idx: np.ndarray[Any, Any] | None = None,
+    ) -> "ExpressionPreprocessor":
+        """Learn the gene selection and scaling.
+
+        ``sample_idx`` restricts learning to those rows of ``X`` (e.g. the training split) without
+        copying them; all statistics are computed in gene blocks to keep memory small.
+        """
+        tpm = np.asarray(X)
+        if tpm.ndim != 2:
+            raise ValueError(f"X must be 2-D (samples, genes); got shape {tpm.shape}")
+        n_genes = tpm.shape[1]
+        rows = np.arange(tpm.shape[0]) if sample_idx is None else np.asarray(sample_idx)
+        n_samples = len(rows)
+        _check_matrix(tpm, rows=rows)  # only the rows that are actually used for learning
         if n_samples < 2:
             raise ValueError("need at least 2 samples to fit")
         if not 0.0 <= self.min_fraction <= 1.0:
@@ -72,24 +102,33 @@ class ExpressionPreprocessor(BaseEstimator, TransformerMixin):  # type: ignore[m
             if allowed.shape != (n_genes,):
                 raise ValueError("allowed_genes must have one entry per input gene")
 
-        prevalence = (tpm > self.min_tpm).mean(axis=0)
+        prevalence = np.empty(n_genes)
+        for start in range(0, n_genes, BLOCK):
+            part = tpm[rows, start : start + BLOCK]
+            prevalence[start : start + BLOCK] = (part > self.min_tpm).mean(axis=0)
         candidates = np.flatnonzero(allowed & (prevalence >= self.min_fraction))
-        logged = np.log2(tpm[:, candidates].astype(np.float64) + 1.0)
-        variance = logged.var(axis=0)
-        varying = variance > 0
-        candidates, logged, variance = candidates[varying], logged[:, varying], variance[varying]
+
+        mean = np.empty(candidates.size)
+        std = np.empty(candidates.size)
+        for start in range(0, candidates.size, BLOCK):
+            cols = candidates[start : start + BLOCK]
+            logged = np.log2(tpm[np.ix_(rows, cols)].astype(np.float64) + 1.0)
+            mean[start : start + BLOCK] = logged.mean(axis=0)
+            std[start : start + BLOCK] = logged.std(axis=0)
+        varying = std > MIN_STD
+        candidates, mean, std = candidates[varying], mean[varying], std[varying]
         if candidates.size == 0:
             raise ValueError("no gene passed the expression filter with non-zero variance")
         if self.top_k is not None and self.top_k < candidates.size:
-            top = np.sort(np.argsort(-variance, kind="stable")[: self.top_k])
-            candidates, logged = candidates[top], logged[:, top]
+            top = np.sort(np.argsort(-(std**2), kind="stable")[: self.top_k])
+            candidates, mean, std = candidates[top], mean[top], std[top]
         elif self.top_k is not None and self.top_k > candidates.size:
             LOG.warning("top_k=%d > %d genes available; keeping all", self.top_k, candidates.size)
 
         self.n_features_in_ = n_genes
         self.selected_idx_ = candidates
-        self.mean_ = logged.mean(axis=0)
-        self.scale_ = logged.std(axis=0)
+        self.mean_ = mean
+        self.scale_ = std
         self.n_fit_samples_ = n_samples
         return self
 

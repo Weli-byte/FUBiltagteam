@@ -1,0 +1,14 @@
+slide_id,path,source,split,slide_label,annotation_xml,mpp_override,centre
+tumor_091,../raw/camelyon/CAMELYON16/images/tumor_091.tif,camelyon16,train,tumor,../raw/camelyon/CAMELYON16/annotations/tumor_091.xml,,camelyon16-center1
+tumor_084,../raw/camelyon/CAMELYON16/images/tumor_084.tif,camelyon16,train,tumor,../raw/camelyon/CAMELYON16/annotations/tumor_084.xml,,camelyon16-center1
+normal_108,../raw/camelyon/CAMELYON16/images/normal_108.tif,camelyon16,train,normal,,,camelyon16-center1
+normal_150,../raw/camelyon/CAMELYON16/images/normal_150.tif,camelyon16,train,normal,,,camelyon16-center1
+004d8238-0a74-40bd-9547-f48a2086c416,../raw/tcga_slides/TCGA-LUAD/slides/004d8238-0a74-40bd-9547-f48a2086c416/TCGA-75-7030-01Z-00-DX1.5DDF24B5-00D1-4418-A067-A9B609E15314.svs,tcga,unassigned,tumor,,,TCGA-LUAD-TSS75
+00efe162-75c1-4451-814c-1576cf6856f8,../raw/tcga_slides/TCGA-LUAD/slides/00efe162-75c1-4451-814c-1576cf6856f8/TCGA-86-6562-01Z-00-DX1.5dea3015-e606-4837-9f99-ac14f0aa091b.svs,tcga,unassigned,tumor,,,TCGA-LUAD-TSS86
+015862cf-a450-48fa-b987-f993729436a6,../raw/tcga_slides/TCGA-LUAD/slides/015862cf-a450-48fa-b987-f993729436a6/TCGA-97-7552-01Z-00-DX1.a5ab8959-ff7a-4287-b014-87439957fb67.svs,tcga,unassigned,tumor,,,TCGA-LUAD-TSS97
+00ab866f-a0a3-44c0-ad14-c9dc833239a7,../raw/tcga_slides/TCGA-BRCA/slides/00ab866f-a0a3-44c0-ad14-c9dc833239a7/TCGA-AC-A3BB-01Z-00-DX1.CE889249-2A5E-44DA-B04E-746BE82CD805.svs,tcga,unassigned,tumor,,,TCGA-BRCA-TSSAC
+01c79d06-a4a7-47a7-bb8b-b98ce6652c99,../raw/tcga_slides/TCGA-BRCA/slides/01c79d06-a4a7-47a7-bb8b-b98ce6652c99/TCGA-A8-A06O-01Z-00-DX1.FA4495B2-5B13-4448-ADCB-EF5316E0955B.svs,tcga,unassigned,tumor,,,TCGA-BRCA-TSSA8
+032fc1ed-c515-4b26-a229-f67c1eb6fdc3,../raw/tcga_slides/TCGA-BRCA/slides/032fc1ed-c515-4b26-a229-f67c1eb6fdc3/TCGA-AC-A5XU-01Z-00-DX1.1AEEFAAF-0906-4086-8022-13B689FAB9F5.svs,tcga,unassigned,tumor,,,TCGA-BRCA-TSSAC
+001b7d97-9425-43c3-a9a3-a36cb3d2a591,../raw/tcga_slides/TCGA-COAD/slides/001b7d97-9425-43c3-a9a3-a36cb3d2a591/TCGA-A6-2686-01Z-00-DX1.0540a027-2a0c-46c7-9af0-7b8672631de7.svs,tcga,unassigned,tumor,,,TCGA-COAD-TSSA6
+011da0ba-03eb-41cd-ae90-2dca944410e5,../raw/tcga_slides/TCGA-COAD/slides/011da0ba-03eb-41cd-ae90-2dca944410e5/TCGA-A6-2683-01Z-00-DX1.0dfc5d0a-68f4-45e1-a879-0428313c6dbc.svs,tcga,unassigned,tumor,,,TCGA-COAD-TSSA6
+023ca8d1-d8ef-492e-b542-e5e16e1ded09,../raw/tcga_slides/TCGA-COAD/slides/023ca8d1-d8ef-492e-b542-e5e16e1ded09/TCGA-A6-6653-01Z-00-DX1.e130666d-2681-4382-9e7a-4a4d27cb77a4.svs,tcga,unassigned,tumor,,,TCGA-COAD-TSSA6

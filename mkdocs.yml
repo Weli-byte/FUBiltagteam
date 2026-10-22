@@ -1,0 +1,58 @@
+# MkDocs skeleton (mini sprint 1.10). Build locally:
+#   uv sync --group docs && uv run mkdocs serve      # http://127.0.0.1:8000
+site_name: ONKOS Dokümantasyonu
+site_description: Yapay zeka destekli multimodal dijital onkoloji araştırma prototipi (klinik kullanım için değildir)
+repo_url: https://github.com/Weli-byte/FUBiltagteam
+docs_dir: docs
+theme:
+  name: material
+  language: tr
+  features: [navigation.sections, navigation.top, content.code.copy, search.suggest]
+markdown_extensions:
+  - tables
+  - admonition
+  - toc:
+      permalink: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+nav:
+  - Giriş: index.md
+  - Mimari ve kararlar:
+      - Mimari: architecture.md
+      - Veri sözleşmesi: veri_sozlesmesi.md
+      - Sözleşme alanları: veri_sozlesmesi_alanlar.md
+      - ADR-0001 Monorepo: adr/0001-monorepo-ve-modul-sinirlari.md
+      - ADR-0002 Veri formatı: adr/0002-veri-formati.md
+      - ADR-0003 MLflow: adr/0003-deney-takibi-mlflow.md
+      - ADR-0004 Model serileştirme: adr/0004-model-serilestirme.md
+      - ADR-0005 API stili: adr/0005-api-stili.md
+  - Ortam ve altyapı:
+      - Ortam kurulumu: ortam_kurulumu.md
+      - GPU stratejisi (1.1): gpu_strateji.md
+      - GPU ortam rehberi (1.2): gpu_ortam_rehberi.md
+  - Veri hattı (omics):
+      - TCGA omics indirme: veri_indirme_rehberi.md
+      - Omics ön işleme: omics_on_isleme.md
+  - Veri hattı (histoloji):
+      - patch_v0 teslim notu (1.3): histo/patch_v0_teslim_notu.md
+      - TCGA slayt indirme (1.4): histo/tcga_slayt_indirme.md
+      - TCGA slayt envanteri: histo/tcga_slayt_envanteri.md
+      - CAMELYON ve PAIP (1.5): histo/camelyon_veri_notu.md
+      - WSI kalite kontrolü (1.6): histo/wsi_qc.md
+      - Koordinat sistemi ve HDF5 (1.7): histo/koordinat_sistemi.md
+      - Boya normalizasyonu (1.8): histo/boya_normalizasyonu.md
+      - ViT baseline v1 (1.9): histo/vit_baseline_v1.md
+      - Model kartı v0: histo/MODEL_CARD_v0.md
+      - Gerçek veri raporu (18.10.2026): histo/raporlar/sprint1_gercek_veri_raporu.md
+      - Gerçek veri ham tabloları: histo/raporlar/sprint1_gercek_veri_ham_tablolar.md
+      - QC raporu (13 gerçek slayt, 18.10.2026): histo/raporlar/qc_raporu.md
+  - Veri kartları:
+      - TCGA tanı slaytları: data_cards/tcga_tani_slaytlari.md
+      - CAMELYON16: data_cards/camelyon16.md
+      - patch_v0: data_cards/patch_v0.md
+  - Sprint 1 kapanışı:
+      - Nisa retrospektif: sprint1/nisa_retrospektif.md
+      - Nisa Sprint 2 hazırlık: sprint1/nisa_sprint2_hazirlik.md

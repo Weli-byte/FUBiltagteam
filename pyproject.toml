@@ -30,7 +30,7 @@ train = [
     "h5py>=3.10",
 ]
 omics = [
-    "scikit-learn>=1.4",
+    "scikit-learn>=1.8",
     "matplotlib>=3.8",
     "anndata>=0.10",
     "umap-learn>=0.5",
@@ -40,6 +40,27 @@ data = [
     "requests>=2.31",
     "pandas>=2.1",
     "pyarrow>=15.0",
+]
+histo = [
+    "h5py>=3.10",
+    "matplotlib>=3.8",
+    "mlflow>=2.14",
+    "numpy>=1.26",
+    "opencv-python-headless>=4.10",
+    "openslide-bin>=4.0",
+    "openslide-python>=1.4",
+    "pandas>=2.1",
+    "pillow>=10.0",
+    "pyarrow>=15.0",
+    "requests>=2.31",
+    "scikit-learn>=1.4",
+    "tifffile>=2024.8",
+    "timm>=1.0",
+    "torch>=2.3",
+]
+docs = [
+    "mkdocs>=1.6",
+    "mkdocs-material>=9.5",
 ]
 
 [build-system]
@@ -52,13 +73,20 @@ packages = ["onkos", "models", "services"]
 [tool.black]
 line-length = 100
 target-version = ["py311"]
+# Downloaded datasets ship their own scripts (e.g. CAMELYON16/evaluation/evaluate.py): not ours.
+extend-exclude = "^/(data|outputs)/"
 
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+extend-exclude = ["data", "outputs"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+# Markdown table rows are long by nature.
+"models/omics/eval_report.py" = ["E501"]
 
 [tool.mypy]
 python_version = "3.11"
@@ -66,13 +94,21 @@ strict = true
 files = ["onkos", "models", "services", "scripts", "tests"]
 
 [[tool.mypy.overrides]]
-module = ["torch.*", "mlflow.*", "numpy.*", "h5py.*", "openapi_spec_validator.*", "pandas.*", "pyarrow.*", "sklearn.*", "matplotlib.*", "anndata.*", "umap.*", "scipy.*", "joblib.*"]
+module = ["torch.*", "mlflow.*", "numpy.*", "h5py.*", "openapi_spec_validator.*", "pandas.*", "pyarrow.*", "xgboost.*", "sklearn.*", "matplotlib.*", "anndata.*", "umap.*", "scipy.*", "joblib.*", "cv2.*", "openslide.*", "timm.*", "tifffile.*", "torchvision.*"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
 # numpy/pandas/sklearn return loosely typed values; strict return checks add noise here.
 module = ["models.omics.*"]
 warn_return_any = false
+
+[[tool.mypy.overrides]]
+# cv2/numpy return loosely typed values. torch is not installed in CI (core + dev only), so there
+# nn.Module / Dataset resolve to Any: allow subclassing them and the @torch.no_grad() decorator.
+module = ["models.histo.*"]
+warn_return_any = false
+disallow_subclassing_any = false
+disallow_untyped_decorators = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

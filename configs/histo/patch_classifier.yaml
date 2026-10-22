@@ -1,0 +1,43 @@
+# ViT vs ResNet patch baseline (mini sprint 1.9). Same data, same split, same recipe.
+data:
+  pack_dir: data/processed/patch_v0
+  val_fraction: 0.2          # whole slides held out from the CAMELYON16 *training* slides
+  split_seed: 0
+  image_px: 224
+train:
+  models: [vit_small, resnet50]
+  seeds: [0, 1, 2]
+  epochs: 10
+  batch_size: 64
+  lr: 1.0e-4
+  weight_decay: 0.05
+  layer_decay: 0.75
+  warmup_fraction: 0.1
+  amp: true
+  grad_accum: 1
+  early_stop_patience: 3
+  num_workers: 4
+  class_weighting: true
+  pretrained: true
+  device: auto
+  tta: false
+augment:
+  rot90: true
+  flip_horizontal: true
+  flip_vertical: true
+  hed_sigma: 0.05
+  hed_p: 0.8
+  brightness: 0.08
+  contrast: 0.08
+  color_p: 0.8
+  blur_p: 0.1
+  blur_sigma_max: 1.0
+  noise_p: 0.1
+  noise_sigma: 4.0
+eval:
+  n_boot: 1000
+  final_evaluation: false    # true ONLY for the one final run on the official test split
+out_dir: outputs/patch_baseline_v1
+tracking:
+  mlflow: true
+  experiment: onkos-histo

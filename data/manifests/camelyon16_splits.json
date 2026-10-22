@@ -1,0 +1,2814 @@
+{
+  "dataset": "CAMELYON16",
+  "rule": "official split from slide names; test slides are never used for training, model selection or hyper-parameter tuning",
+  "counts": {
+    "train": 270,
+    "train_tumor": 111,
+    "train_normal": 159,
+    "test": 129,
+    "test_tumor": 49,
+    "test_normal": 80,
+    "test_unlabelled": 0
+  },
+  "centres": [
+    "0",
+    "1"
+  ],
+  "train": [
+    {
+      "slide_id": "normal_001",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_002",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_003",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_004",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_005",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_006",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_007",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_008",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_009",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_010",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_011",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_012",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_013",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_014",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_015",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_016",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_017",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_018",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_019",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_020",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_021",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_022",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_023",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_024",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_025",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_026",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_027",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_028",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_029",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_030",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_031",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_032",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_033",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_034",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_035",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_036",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_037",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_038",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_039",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_040",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_041",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_042",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_043",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_044",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_045",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_046",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_047",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_048",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_049",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_050",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_051",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_052",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_053",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_054",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_055",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_056",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_057",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_058",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_059",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_060",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_061",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_062",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_063",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_064",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_065",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_066",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_067",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_068",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_069",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_070",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_071",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_072",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_073",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_074",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_075",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_076",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_077",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_078",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_079",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_080",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_081",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_082",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_083",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_084",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_085",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_087",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_088",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_089",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_090",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_091",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_092",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_093",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_094",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_095",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_096",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_097",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_098",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_099",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_100",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_101",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_102",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_103",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_104",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_105",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_106",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_107",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_108",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_109",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_110",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_111",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_112",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_113",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_114",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_115",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_116",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_117",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_118",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_119",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_120",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_121",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_122",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_123",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_124",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_125",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_126",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_127",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_128",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_129",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_130",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_131",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_132",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_133",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_134",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_135",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_136",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_137",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_138",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_139",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_140",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_141",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_142",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_143",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_144",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_145",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_146",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_147",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_148",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_149",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_150",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_151",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_152",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_153",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_154",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_155",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_156",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_157",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_158",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_159",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "normal_160",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "tumor_001",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_002",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_003",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_004",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_005",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_006",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_007",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_008",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_009",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_010",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_011",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_012",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_013",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_014",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_015",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_016",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_017",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_018",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_019",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_020",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_021",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_022",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_023",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_024",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_025",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_026",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_027",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_028",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_029",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_030",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_031",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_032",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_033",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_034",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_035",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_036",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_037",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_038",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_039",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_040",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_041",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_042",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_043",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_044",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_045",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_046",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_047",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_048",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_049",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_050",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_051",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_052",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_053",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_054",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_055",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_056",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_057",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_058",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_059",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_060",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_061",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_062",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_063",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_064",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_065",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_066",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_067",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_068",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_069",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_070",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_071",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_072",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_073",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_074",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_075",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_076",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_077",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_078",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_079",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_080",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_081",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_082",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_083",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_084",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_085",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_086",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_087",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_088",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_089",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_090",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_091",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_092",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_093",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_094",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_095",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_096",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_097",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_098",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_099",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_100",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_101",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_102",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_103",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_104",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_105",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_106",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_107",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_108",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_109",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_110",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "tumor_111",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    }
+  ],
+  "test": [
+    {
+      "slide_id": "test_001",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_002",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_003",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_004",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_005",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_006",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_007",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_008",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_009",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_010",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_011",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_012",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_013",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_014",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_015",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_016",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_017",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_018",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_019",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_020",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_021",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_022",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_023",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_024",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_025",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_026",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_027",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_028",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_029",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_030",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_031",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_032",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_033",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_034",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_035",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_036",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_037",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_038",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_039",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_040",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_041",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_042",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_043",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_044",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_045",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_046",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_047",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_048",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_050",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_051",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_052",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_053",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_054",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_055",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_056",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_057",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_058",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_059",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_060",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_061",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_062",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_063",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_064",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_065",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_066",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_067",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_068",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_069",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_070",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_071",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_072",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_073",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_074",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_075",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_076",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_077",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_078",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_079",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_080",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_081",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_082",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_083",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_084",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_085",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_086",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_087",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_088",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_089",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_090",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_091",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_092",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_093",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_094",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_095",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_096",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_097",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_098",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_099",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_100",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_101",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_102",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_103",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_104",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_105",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_106",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_107",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_108",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_109",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_110",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_111",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_112",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_113",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_114",
+      "centre": "1",
+      "lesion_class": "macro",
+      "partially_annotated": true,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_115",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_116",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_117",
+      "centre": "0",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_118",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_119",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_120",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_121",
+      "centre": "0",
+      "lesion_class": "macro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_122",
+      "centre": "1",
+      "lesion_class": "micro",
+      "partially_annotated": false,
+      "label": "tumor"
+    },
+    {
+      "slide_id": "test_123",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_124",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_125",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_126",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_127",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_128",
+      "centre": "1",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_129",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    },
+    {
+      "slide_id": "test_130",
+      "centre": "0",
+      "lesion_class": "negative",
+      "partially_annotated": false,
+      "label": "normal"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+# GPU training stack (mini sprint 1.2). Run from the repository root:
+#   docker compose -f infra/gpu/docker-compose.gpu.yml build
+#   docker compose -f infra/gpu/docker-compose.gpu.yml run --rm verify
+#   docker compose -f infra/gpu/docker-compose.gpu.yml run --rm train python scripts/train_patch_classifier.py
+#   docker compose -f infra/gpu/docker-compose.gpu.yml up -d mlflow jupyter
+#
+# Storage layout (docs/gpu_ortam_rehberi.md): DATA_ROOT = fast local NVMe (raw/interim/processed),
+# OUTPUT_ROOT = checkpoints/logs (persist on a durable disk), MLFLOW_ROOT = tracking DB + artifacts.
+# Set them in an .env next to this file or in the shell: DATA_ROOT=/mnt/nvme/onkos-data ...
+services:
+  train:
+    build: { context: ../.., dockerfile: infra/gpu/Dockerfile.train, target: train }
+    image: onkos-train:cu126
+    working_dir: /workspace
+    volumes:
+      - ../..:/workspace
+      - ${DATA_ROOT:-/mnt/nvme/onkos-data}:/workspace/data
+      - ${OUTPUT_ROOT:-/mnt/persist/onkos-outputs}:/workspace/outputs
+      - ${HF_HOME:-/mnt/persist/hf-cache}:/root/.cache/huggingface   # timm/HF weights cache
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - PYTHONUNBUFFERED=1
+      - OMP_NUM_THREADS=8
+    shm_size: "8gb"          # DataLoader workers need shared memory
+    ipc: host
+    deploy:
+      resources:
+        reservations:
+          devices: [{ driver: nvidia, count: all, capabilities: [gpu] }]
+    depends_on: [mlflow]
+
+  verify:
+    extends: train
+    command: ["python", "scripts/verify_env.py", "--require-cuda"]
+    depends_on: []
+
+  jupyter:
+    build: { context: ../.., dockerfile: infra/gpu/Dockerfile.train, target: dev }
+    image: onkos-dev:cu126
+    volumes:
+      - ../..:/workspace
+      - ${DATA_ROOT:-/mnt/nvme/onkos-data}:/workspace/data
+      - ${OUTPUT_ROOT:-/mnt/persist/onkos-outputs}:/workspace/outputs
+    # Bound to localhost only: reach it through an SSH tunnel (ssh -L 8888:localhost:8888 gpu-box).
+    ports: ["127.0.0.1:8888:8888"]
+    command: >
+      jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --ServerApp.token=${JUPYTER_TOKEN:?set JUPYTER_TOKEN}
+    deploy:
+      resources:
+        reservations:
+          devices: [{ driver: nvidia, count: all, capabilities: [gpu] }]
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v3.17.0     # tag verified 2026-10-13 (ghcr.io/mlflow/mlflow)
+    command: >
+      mlflow server --host 0.0.0.0 --port 5000
+      --backend-store-uri sqlite:////mlflow/mlflow.db --default-artifact-root /mlflow/artifacts
+    ports: ["127.0.0.1:5000:5000"]           # localhost only; use an SSH tunnel
+    volumes:
+      - ${MLFLOW_ROOT:-/mnt/persist/onkos-mlflow}:/mlflow
